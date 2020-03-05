@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+rsync -av data/ oagba@qce-cluster-login.ewi.tudelft.nl:/home/oagba/bulk/thesisdata
+
