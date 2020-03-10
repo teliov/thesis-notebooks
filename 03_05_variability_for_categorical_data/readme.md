@@ -1,0 +1,1 @@
+This notebook aims to evaluate possible descriptive statistics for datasets that are made up of only categorical variables.
