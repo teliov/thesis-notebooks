@@ -1,10 +1,11 @@
 import numpy as np
 
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.utils.fixes import logsumexp
 
 
-class ThesisNaiveBayes:
+class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
     """
     The idea for this class is quite straightforward
     With Naive Bayes, we make a strong conditional independence assumption on the data that we do have
@@ -85,4 +86,6 @@ class ThesisNaiveBayes:
         if not self.fitted:
             raise ValueError("Model has not been fitted.")
         jll = self._joint_log_likelihood(X)
+        if type(jll) != "numpy.ndarray":
+            jll = jll.values
         return self.classes[np.argmax(jll, axis=1)]
