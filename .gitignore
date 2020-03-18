@@ -5,4 +5,7 @@ data/
 .ipynb_checkpoints
 .idea
 __pycache__
-
+zz_scripts/**/bin
+zz_scripts/**/include
+zz_scripts/**/lib
+zz_scripts/**/pyvenv.cfg

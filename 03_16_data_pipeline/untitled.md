@@ -1,0 +1,1 @@
+This notebook works on large sized data (patients, conditions and symptoms) which have been split into smaller files to allow for a multi-worker processing.
