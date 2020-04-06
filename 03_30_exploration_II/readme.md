@@ -1,0 +1,1 @@
+Noticed some discrepancies in the data exported from synthea. Going to investigate these gotchas on a fresh batch of generated data!

@@ -9,3 +9,4 @@ zz_scripts/**/bin
 zz_scripts/**/include
 zz_scripts/**/lib
 zz_scripts/**/pyvenv.cfg
+*/**/dask-worker-space
