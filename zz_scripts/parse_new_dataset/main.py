@@ -7,17 +7,46 @@ from collections import OrderedDict
 
 
 def _race_txform(val):
+    """
+    Takes val which can either be white, black, asian, native or other
+    And returns the integer code corresponding to the value
+    :param val:
+    :return:
+    """
     race_code = {'white': 0, 'black':1, 'asian':2, 'native':3, 'other':4}
     return race_code.get(val)
 
 
 def _label_txform(val, labels):
+    """
+    Given a mapping of values to integer code, this function returns the integer code corresponding to the provided
+    val
+    :param val:
+    :param labels:
+    :return:
+    """
     return labels.get(val)
 
 
 def _symptom_transform(val, labels):
-    if type(val) is not str:
-        print(val)
+    """
+    Val is a string in the form: "symptom_0;symptom_1;...;symptom_n"
+    This function assumes the coding scheme for the symptoms are chosen such the sum the transformed integer codes
+    for any combination of symptoms is always unique.
+    i.e if code_0, code_1, ..., code_n correspond to symptom_0, symptom_1, ..., symptom_n
+    then the sum res = code_0 + code_1, ..., code_n can only be obtained from the exact combination of the symptoms.
+    This allows using bitwise & operator to test if a code made up this sum.
+    A classic example where this idea is used is in linux file system permissions where 1 corresponds to execute,
+    2 corresponds to write and 4 corresponds to read. All possible sums in this combination of 1, 2, 4 are unique and given
+    a sum value it is possible used bitwise & to determine which code made up the sum.
+
+    This method allows for an easy to use method for combining symptoms.
+    Though the performance has not been compared with converting the symptom string and doing  
+
+    :param val:
+    :param labels:
+    :return:
+    """
     parts = val.split(";")
     res = sum([labels.get(item) for item in parts])
     return res
