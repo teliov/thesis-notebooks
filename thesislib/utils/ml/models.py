@@ -47,7 +47,7 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         if not self.fitted:
             raise ValueError("Model has not been fitted.")
 
-        _probs = np.zeros((X.shape[0], self.classes.shape[0]))
+        _probs = np.zeros((X.shape[0], self.classes_.shape[0]))
         for idx in range(len(self.classifier_map)):
             clf, keys = self.classifier_map[idx]
             _df = X[keys]
