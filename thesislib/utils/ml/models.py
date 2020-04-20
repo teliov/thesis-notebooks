@@ -102,7 +102,7 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         jll = self._joint_log_likelihood(X)
         if type(jll) != "numpy.ndarray":
             jll = jll.values
-        return self.classes[np.argmax(jll, axis=1)]
+        return self.classes_[np.argmax(jll, axis=1)]
 
     def serialize(self):
         return {
