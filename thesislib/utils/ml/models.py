@@ -31,8 +31,8 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         :param classifier_map:
         """
         self.classifier_map = classifier_map
-        self._dfs = [None for idx in range(len(classifier_map))]
         self.fitted = False
+        self.is_partial = False
 
         self.labelbin = LabelBinarizer()
         self.labelbin.fit(classes)
@@ -82,6 +82,7 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
             self.classifier_map[idx][0] = clf
 
         self.fitted = True
+        self.is_partial = True
 
     def predict_log_proba(self, X):
         if not self.fitted:
@@ -102,3 +103,30 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         if type(jll) != "numpy.ndarray":
             jll = jll.values
         return self.classes[np.argmax(jll, axis=1)]
+
+    def serialize(self):
+        return {
+            "fitted": self.fitted,
+            "classes": self.classes_,
+            "classifier_map": self.classifier_map,
+            "is_partial": self.is_partial
+        }
+
+    @staticmethod
+    def load(serialized):
+        if type(serialized) is not dict:
+            raise ValueError("Serialized model has to be a dict")
+
+        fitted = serialized.get('fitted', None)
+        classes = serialized.get('classes', None)
+        classifier_map = serialized.get('classifier_map', None)
+        is_partial = serialized.get('is_partial', None)
+
+        if not fitted or not classifier_map or not classes or not is_partial:
+            raise ValueError("Missing required serialization entities")
+
+        clf = ThesisNaiveBayes(classifier_map, classes)
+        clf.fitted = fitted
+        clf.is_partial = is_partial
+
+        return clf
