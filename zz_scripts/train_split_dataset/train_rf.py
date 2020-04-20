@@ -30,7 +30,7 @@ def train(csv_files, columns, num_classes=801):
     symptoms = [item for item in columns if len(item) == 56]
     dtypes.update({item: np.uint8 for item in symptoms})
 
-    clf = HoeffdingTree()
+    clf = HoeffdingTree(split_confidence=0.001, leaf_prediction='mc')
 
     valid_labels = list(range(num_classes))
     labelbin = LabelBinarizer()
