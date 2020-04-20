@@ -19,7 +19,7 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
 
     This classes provides an interface for combinning different naive bayes classifiers operating on different type of variables
     """
-    def __init__(self, classifier_map):
+    def __init__(self, classifier_map, classes):
         """
         The classifier map is in this format:
         classifier_map = [[clf, [list_of_keys_for_same_variable_type]], ...]
@@ -33,6 +33,10 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         self.classifier_map = classifier_map
         self._dfs = [None for idx in range(len(classifier_map))]
         self.fitted = False
+
+        self.labelbin = LabelBinarizer()
+        self.labelbin.fit(classes)
+        self.classes_ = self.labelbin.classes_
 
     def _joint_log_likelihood(self, X):
         """
@@ -59,13 +63,22 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         :param y:
         :return:
         """
-        labelbin = LabelBinarizer()
-        _y = labelbin.fit_transform(y)
-        self.classes = labelbin.classes_
+        _y = self.labelbin.fit_transform(y)
         for idx in range(len(self.classifier_map)):
             clf, keys = self.classifier_map[idx]
             _df = X[keys]
             clf.fit(_df, y)
+            self.classifier_map[idx][0] = clf
+
+        self.fitted = True
+
+    def partial_fit(self, X, y):
+        _y = self.labelbin.fit_transform(y)
+
+        for idx in range(len(self.classifier_map)):
+            clf, keys = self.classifier_map[idx]
+            _df = X[keys]
+            clf.partial_fit(_df, y, self.classes_)
             self.classifier_map[idx][0] = clf
 
         self.fitted = True
