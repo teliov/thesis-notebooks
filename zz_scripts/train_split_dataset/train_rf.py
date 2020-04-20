@@ -47,7 +47,7 @@ def train(csv_files, columns, num_classes=801):
         running_size += size
         pd_files.append(file)
         if running_size >= BATCH_MEMORY_SIZE or (idx+1) == num_files:
-            df = [pd.read_csv(item, usecols=columns, dtype=dtypes) for item in pd_files]
+            df = [pd.read_csv(item, usecols=columns) for item in pd_files]
             df = pd.concat(df)
 
             y = df.LABEL
@@ -61,15 +61,6 @@ def train(csv_files, columns, num_classes=801):
 
 
 def validate(clf, csv_files, columns):
-    dtypes = {
-        'LABEL': np.uint16,
-        'GENDER': np.uint8,
-        'RACE': np.uint16,
-        'AGE': np.uint8
-    }
-
-    symptoms = [item for item in columns if len(item) == 56]
-    dtypes.update({item: np.uint8 for item in symptoms})
 
     csv_files = [[file, os.path.getsize(file)] for file in csv_files]
     csv_files = sorted(csv_files, key=lambda file: file[1])
@@ -84,7 +75,7 @@ def validate(clf, csv_files, columns):
         running_size += size
         pd_files.append(file)
         if running_size >= BATCH_MEMORY_SIZE or (idx + 1) == num_files:
-            df = [pd.read_csv(item, usecols=columns, dtypes=dtypes) for item in pd_files]
+            df = [pd.read_csv(item, usecols=columns) for item in pd_files]
             df = pd.concat(df)
 
             y_true = df.LABEL.values
