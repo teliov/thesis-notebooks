@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH -J train_naive_bayes
+#SBATCH -o op.%j.out
+#SBATCH -p general
+#SBATCH --cpus-per-task=16
+#SBATCH --nodes=1
+#SBATCH -t 01:00:00
+#SBATCH --mem  100G
+
+source /shares/bulk/oagba/work/medvice-parser/activate
+
+python train_nb.py "/shares/bulk/oagba/data/output_basic_50k/symptoms/train"\
+    "/shares/bulk/oagba/data/output_basic_50k/symptoms/val"\
+    "/shares/bulk/oagba/data/output_basic_50k/symptoms/trained"
