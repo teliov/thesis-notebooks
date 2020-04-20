@@ -50,8 +50,8 @@ def train(csv_files, columns, num_classes=801):
             df = [pd.read_csv(item, usecols=columns) for item in pd_files]
             df = pd.concat(df)
 
-            y = df.LABEL
-            x = df.drop(columns=['LABEL'])
+            y = df.LABEL.values
+            x = df.drop(columns=['LABEL']).values
 
             clf.partial_fit(x, y, labelbin.classes_)
             running_size = 0
@@ -79,7 +79,7 @@ def validate(clf, csv_files, columns):
             df = pd.concat(df)
 
             y_true = df.LABEL.values
-            X = df.drop(columns=['LABEL'])
+            X = df.drop(columns=['LABEL']).values
             y_predicted = clf.predict(X)
 
             num_correct += accuracy_score(y_true, y_predicted, False)
