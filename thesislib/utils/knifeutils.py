@@ -114,14 +114,8 @@ def parse_data(filepath, condition_labels, symptom_map, output_path, use_header=
 
 def concatenate_and_split(filepath, output_path, train_split=0.8):
     filenames = sorted(glob(filepath))
-
-    df = None
-
-    for file in filenames:
-        if df is None:
-            df = pd.read_csv(file)
-        else:
-            df = pd.concat([df, pd.read_csv(file)])
+    df = [pd.read_csv(file) for file in filenames]
+    df = pd.concat(df)
 
     # now we have one big df
     labels = df.LABEL

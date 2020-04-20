@@ -8,14 +8,12 @@ import argparse
 
 def concatenate_and_split(filepath, output_path, train_split=0.8):
     filenames = sorted(glob(filepath))
-
-    df = None
-
-    for file in filenames:
-        if df is None:
-            df = pd.read_csv(file)
-        else:
-            df = pd.concat([df, pd.read_csv(file)])
+    print("Reading %d files" % len(filenames))
+    df = [pd.read_csv(file) for file in filenames]
+    print("Done Reading %d files" % len(filenames))
+    print("Concatenating %d dataframes" % len(filenames))
+    df = pd.concat(df)
+    print("Done Concatenating %d dataframes" % len(filenames))
 
     # now we have one big df
     labels = df.LABEL
@@ -29,11 +27,15 @@ def concatenate_and_split(filepath, output_path, train_split=0.8):
         break
 
     train_df = df.iloc[train_index]
+    print("Saving train set")
     train_df.to_csv(os.path.join(output_path, "train.csv"))
+    print("Done Saving train set")
     del train_df
 
     test_df = df.iloc[test_index]
+    print("Saving test set")
     test_df.to_csv(os.path.join(output_path, "test.csv"))
+    print("Done Saving test set")
 
     return True
 
