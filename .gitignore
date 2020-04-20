@@ -12,3 +12,4 @@ zz_scripts/**/pyvenv.cfg
 */**/dask-worker-space
 */**/venv
 *.out
+*.swp
