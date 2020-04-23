@@ -1,0 +1,26 @@
+{
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "/dev/sda",
+      "Ebs": {
+        "DeleteOnTermination": true,
+        "VolumeSize": 60
+      },
+      "NoDevice": ""
+    }
+  ],
+  "NetworkInterfaces": [
+    {
+      "AssociatePublicIpAddress": true,
+      "DeleteOnTermination": true,
+      "Description": "allow access ",
+      "DeviceIndex": 0,
+      "Groups": ["sg-00af91340cde43f64"],
+      "SubnetId": "subnet-091aa657d095ab72e"
+    }
+  ],
+  "ImageId": "ami-07ebfd5b3428b6f4d",
+  "InstanceType": "t3.medium",
+  "KeyName": "qce-delft",
+  "UserData": "string"
+}

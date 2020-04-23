@@ -1,5 +1,3 @@
-#! /usr/env/bash
-
 WORKDIR="/home/ubuntu/work"
 
 sudo apt-get update
@@ -33,4 +31,7 @@ source $WORKDIR/notebooks/zz_aws/venv/bin/activate
 
 pip install -r "$WORKDIR/notebooks/zz_aws/requirements.txt"
 
-python $WORKDIR/notebooks/zz_aws/parse.py "$1" "$2"
+python $WORKDIR/notebooks/zz_aws/main.py parse --symptoms_db symptoms/symptoms_db.json \
+    --conditions_db symptoms/conditions_db.json \
+    --file $SYMPTOM_FILE \
+    --run $RUN_NAME
