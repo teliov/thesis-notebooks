@@ -10,8 +10,8 @@ import subprocess
 
 
 def random_word(length):
-   letters = string.ascii_lowercase
-   return ''.join(random.choice(letters) for i in range(length))
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 symptom_file = sys.argv[1]
 run_file = sys.argv[1]
@@ -36,6 +36,8 @@ if not os.path.isdir(op_directory):
 
 
 provision_script = os.path.join(op_directory, "%s.sh" % random_word(12))
+with open(provision_script, "w") as fp:
+    fp.write(string_contents)
 
 user_data = base64.b64encode(bytes(string_contents, "utf-8"))
 user_data = user_data.decode("utf-8")

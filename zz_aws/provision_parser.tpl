@@ -2,7 +2,7 @@ WORKDIR="/home/ubuntu/work"
 
 sudo apt-get update
 
-sudo apt-get -yq install python3 python3-env
+sudo apt-get -yq install python3 python3-venv
 
 if [[ ! -d $WORKDIR ]];
 then
@@ -14,8 +14,16 @@ then
     mkdir -p "/home/ubuntu/.ssh"
 fi
 
+if [[ ! -d "/home/ubuntu/.aws" ]];
+then
+    mkdir -p "/home/ubuntu/.aws"
+fi
+
 wget -O "/home/ubuntu/.ssh/id_rsa" "https://qcedelft.s3.amazonaws.com/config/qce-delft.pem"
 chmod 600 "/home/ubuntu/.ssh/id_rsa"
+
+wget -O "/home/ubuntu/.aws/config" "https://qcedelft.s3.amazonaws.com/config/config"
+wget -O "/home/ubuntu/.aws/credentials" "https://qcedelft.s3.amazonaws.com/config/credentials"
 
 # allow pull from git
 ssh-keyscan -H github.com >> "/home/ubuntu/.ssh/known_hosts"
