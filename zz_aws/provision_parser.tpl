@@ -4,6 +4,7 @@ sudo apt-get update
 
 sudo apt-get -yq install python3 python3-venv
 
+su - ubuntu << EOUSER
 if [[ ! -d $WORKDIR ]];
 then
     mkdir $WORKDIR
@@ -26,7 +27,8 @@ wget -O "/home/ubuntu/.aws/config" "https://qcedelft.s3.amazonaws.com/config/con
 wget -O "/home/ubuntu/.aws/credentials" "https://qcedelft.s3.amazonaws.com/config/credentials"
 
 # allow pull from git
-ssh-keyscan -H github.com >> "/home/ubuntu/.ssh/known_hosts"
+echo "github.com,192.30.253.112 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" \
+    | tee -a "/home/ubuntu/.ssh/known_hosts"
 
 
 git clone git@github.com:teliov/thesis-notebooks.git "$WORKDIR/notebooks"
@@ -43,3 +45,4 @@ python $WORKDIR/notebooks/zz_aws/main.py parse --symptoms_db symptoms/symptoms_d
     --conditions_db symptoms/conditions_db.json \
     --file $SYMPTOM_FILE \
     --run $RUN_NAME
+EOUSER

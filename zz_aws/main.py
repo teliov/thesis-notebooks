@@ -1,6 +1,7 @@
 import argparse
 from datetime import datetime
 from parse import parse_symptoms
+from helpers import terminate_instance
 
 
 def build_parser():
@@ -33,3 +34,4 @@ if __name__ == "__main__":
         run_name = "%s_%s" % (run_name, now)
 
         parse_symptoms(run_name, data_file, symptoms_db_file, conditions_db_file)
+        terminate_instance()

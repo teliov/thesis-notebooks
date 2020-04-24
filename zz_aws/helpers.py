@@ -12,6 +12,8 @@ S3_BUCKET = "qcedelft"
 
 AWS_REGION = "us-east-1"
 
+TERMINATE_URL = "http://999-term.teliov.xyz/lasaksalkslasl"
+
 
 class Logger(object):
 
@@ -49,6 +51,29 @@ def log(logger, message, level=logging.DEBUG, to_telegram=True):
         send_message_telegram(message)
 
     return True
+
+
+def terminate_instance():
+    url = "http://169.254.169.254/latest/meta-data/instance-id"
+    r = requests.get(url)
+
+    instance_id = r.content.decode("utf-8")
+    if not instance_id:
+        send_message_telegram("unable to get ec2 instance")
+        return False
+    else:
+        params = {
+            "instance_id": instance_id
+        }
+        try:
+            requests.get(TERMINATE_URL, params=params)
+            send_message_telegram("Terminated instance: " + instance_id)
+            return True
+        except Exception as e:
+            error_message = e.__str__()
+            message = "Failed to terminate instance: %s. i.v.m: %s" % (instance_id, error_message)
+            send_message_telegram(message)
+            return  False
 
 
 def send_message_telegram(message):
