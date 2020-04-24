@@ -52,5 +52,5 @@ json_launch_file = os.path.join(op_directory, "%s.json" % random_word(12))
 with open(json_launch_file, "w") as fp:
     json.dump(specs, fp)
 
-commands = ["aws", "ec2", "request-spot-instances" "--launch-specification file://%s" % json_launch_file]
+commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file]
 subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
