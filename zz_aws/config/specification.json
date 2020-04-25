@@ -15,7 +15,7 @@
       "DeleteOnTermination": true,
       "Description": "allow access ",
       "DeviceIndex": 0,
-      "Groups": ["sg-00af91340cde43f64"],
+      "Groups": ["sg-0a863017204724018"],
       "SubnetId": "subnet-091aa657d095ab72e"
     }
   ],
