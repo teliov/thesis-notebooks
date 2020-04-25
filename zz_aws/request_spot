@@ -1,56 +1,124 @@
 #! /usr/bin/env python
 
-import sys
+import math
 import io
 import os
 import json
 import base64
 import random,string
 import subprocess
+import argparse
 
 
 def random_word(length):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
 
-symptom_file = sys.argv[1]
-run_file = sys.argv[1]
 
-stream = io.StringIO()
+def build_arg_parser():
+    parser = argparse.ArgumentParser(description="Medvice Instance Requester")
 
-stream.write("#! /usr/bin/env bash\n\n")
-stream.write("SYMPTOM_FILE=%s\n" % symptom_file)
-stream.write("RUN_NAME=%s\n" % run_file)
+    parser.add_argument('--on_demand', action="store_true")
+    parser.add_argument('--ec2_instance', type=str, help="The type of ec2 instance to be used", default="t3.medium")
+    parser.add_argument('--duration', type=int,
+                        help="The duration in minutes for which the ec2 instance should be requested", default=60)
 
-with open("provision_parser.tpl") as fp:
-    contents = fp.read()
+    subparsers = parser.add_subparsers(dest='cmd')
 
-stream.write(contents + "\n")
+    parse_group = subparsers.add_parser('parse', help='Request ')
+    parse_group.add_argument('--file', type=str, help='Symptoms file to be parsed')
+    parse_group.add_argument('--run', type=str,
+                             help='The name for this run. The current date and time would be appended to this')
 
-string_contents = stream.getvalue()
-stream.close()
-
-op_directory = os.path.join(os.getcwd(), "outputs")
-if not os.path.isdir(op_directory):
-    os.mkdir(op_directory)
+    return parser
 
 
-provision_script = os.path.join(op_directory, "%s.sh" % random_word(12))
-with open(provision_script, "w") as fp:
-    fp.write(string_contents)
+def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_spot=True):
 
-user_data = base64.b64encode(bytes(string_contents, "utf-8"))
-user_data = user_data.decode("utf-8")
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    provision_parser_tpl = os.path.join(script_dir, "config/parse/provision.tpl")
+    json_specification = os.path.join(script_dir, "config/specification.json" )
 
-with open('parse_specification.json') as fp:
-    specs = json.load(fp)
+    stream = io.StringIO()
+    stream.write("#! /usr/bin/env bash\n\n")
+    stream.write("SYMPTOM_FILE=%s\n" % data_file)
+    stream.write("RUN_NAME=%s\n" % run_name)
 
-specs["UserData"] = user_data
+    with open(provision_parser_tpl) as fp:
+        contents = fp.read()
 
-json_launch_file = os.path.join(op_directory, "%s.json" % random_word(12))
+    stream.write(contents + "\n")
 
-with open(json_launch_file, "w") as fp:
-    json.dump(specs, fp)
+    string_contents = stream.getvalue()
+    stream.close()
 
-commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file]
-subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
+    op_directory = os.path.join(os.getcwd(), "outputs")
+
+    if not os.path.isdir(op_directory):
+        os.mkdir(op_directory)
+
+    json_launch_file = os.path.join(op_directory, "%s_%s.json" % (run_name, random_word(12)))
+    user_data_file = os.path.join(op_directory, "%s_%s.sh" % (run_name, random_word(12)))
+
+    user_data = base64.b64encode(bytes(string_contents, "utf-8"))
+    user_data = user_data.decode("utf-8")
+
+    with open(json_specification) as fp:
+        specs = json.load(fp)
+
+    specs["UserData"] = user_data
+    specs["InstanceType"] = ec2_instance
+
+    with open(json_launch_file, "w") as fp:
+        json.dump(specs, fp)
+
+    with open(user_data_file, "w") as fp:
+        fp.write(string_contents)
+
+    if duration % 60 != 0:
+        duration = int(math.ceil(duration/60) * 60)
+
+    if is_spot:
+        commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file,
+                    "--block-duration-minute %d" % duration]
+    else:
+        network_interfaces_file = os.path.join(op_directory, "%s_network.json")
+        block_device_mappings = os.path.join(op_directory, "%s_block_mapping.json")
+
+        with open(network_interfaces_file, "w") as fp:
+            json.dump(specs['NetworkInterfaces'], fp)
+
+        with open(block_device_mappings, "w") as fp:
+            json.dump(specs['BlockDeviceMappings'], fp)
+        commands = [
+            "aws",
+            "ec2",
+            "run-instances",
+            "--count 1",
+            "--image-id %s" % specs['ImageId'],
+            "--key-name %s" % specs['KeyName'],
+            "--instance-type %s" % specs['InstanceType'],
+            "--user-data file://%s" % user_data_file,
+            '--network-interfaces file://%s' % network_interfaces_file,
+            "--block-device-mappings file://%s" % block_device_mappings
+        ]
+
+    commands = " ".join(commands)
+    subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
+
+
+
+if __name__ == "__main__":
+
+    parser = build_arg_parser()
+    args = parser.parse_args()
+
+    duration = args.duration
+    ec2_instance = args.ec2_instance
+    spot_instance = not args.on_demand
+
+    if args.cmd == "parse":
+        data_file = args.file
+        run_name = args.run
+        handle_parse(data_file, run_name, ec2_instance, duration, spot_instance)
+

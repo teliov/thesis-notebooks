@@ -6,11 +6,18 @@ import helpers
 from sklearn.model_selection import StratifiedShuffleSplit
 import time
 import logging
+from dask.distributed import Client, LocalCluster
+import joblib
+import dask.dataframe as dd
+
 
 def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, telegram=True):
 
     # setup logging
     logger = helpers.Logger(data_name)
+    local = LocalCluster(host="0.0.0.0")
+    client = Client(local)
+    num_workers = len(local.workers)
     try:
         start_time = time.time()
         message = "Starting Reading Files from S3"
@@ -30,7 +37,11 @@ def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, t
         condition_codes = sorted(conditions_db.keys())
         condition_labels = {code: idx for idx, code in enumerate(condition_codes)}
 
-        symptoms_df = helpers.s3_to_pandas(s3, helpers.S3_BUCKET, data_file)
+        url = "s3://%s/%s" % (helpers.S3_BUCKET, data_file)
+        symptoms_df = dd.read_csv(url)
+
+        if symptoms_df.npartitions < num_workers:
+            symptoms_df = symptoms_df.repartition(npartitions=num_workers)
 
         curr_time = time.time()
         message = "Finished Reading Files from S3\n Took: %.3f seconds.\nStarting symptoms processor" % (curr_time - start_time)
@@ -39,21 +50,25 @@ def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, t
         start_proc_time = time.time()
 
         symptoms_df = symptoms_df.loc[symptoms_df.NUM_SYMPTOMS > 0]
-        symptoms_df['LABEL'] = symptoms_df.PATHOLOGY.apply(helpers.label_txform, labels=condition_labels)
-        symptoms_df.RACE = symptoms_df.RACE.apply(helpers.race_txform)
-        symptoms_df.GENDER = symptoms_df.GENDER.apply(lambda gender: 0 if gender == 'F' else 1)
+        symptoms_df['LABEL'] = symptoms_df.PATHOLOGY.apply(helpers.label_txform, labels=condition_labels,
+                                                           meta=('PATHOLOGY', np.uint16))
+        symptoms_df.RACE = symptoms_df.RACE.apply(helpers.race_txform, meta=('RACE', np.uint8))
+        symptoms_df.GENDER = symptoms_df.GENDER.apply(lambda gender: 0 if gender == 'F' else 1, meta=('GENDER', np.uint8))
         symptoms_df = symptoms_df.rename(columns={'AGE_BEGIN': 'AGE'})
 
         # handle the transformation of the symptoms ...
         symptom_index_map = OrderedDict({code: 2 ** idx for idx, code in enumerate(symptom_vector)})
 
-        symptoms_df['NSYMPTOMS'] = symptoms_df.SYMPTOMS.apply(helpers.symptom_transform, labels=symptom_index_map)
+        symptoms_df['NSYMPTOMS'] = symptoms_df.SYMPTOMS.apply(helpers.symptom_transform, labels=symptom_index_map, meta=('SYMPTOMS', np.object))
 
         for idx, code in enumerate(symptom_vector):
-            symptoms_df[code] = (symptoms_df.NSYMPTOMS & 2 ** idx).gt(0).astype(np.uint8)
+            symptoms_df[code] = symptoms_df.NSYMPTOMS.apply(helpers.check_bitwise, comp=2**idx,
+                                                            meta=('NSYMPTOMS', np.uint8))
 
         ordered_keys = ['LABEL', 'GENDER', 'RACE', 'AGE'] + symptom_vector
         symptoms_df = symptoms_df[ordered_keys]
+
+        symptoms_df = symptoms_df.compute()
 
         end_proc_time = time.time()
 
@@ -63,23 +78,24 @@ def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, t
         # generate a stratified test and train split
         start_shuffling_time = time.time()
 
-        split = StratifiedShuffleSplit(n_splits=1)
-        labels = symptoms_df.LABEL
+        with joblib.parallel_backend('dask'):
 
-        train_index = None
-        test_index = None
-        for tr_idx, tst_idx in split.split(symptoms_df, labels):
-            train_index = tr_idx
-            test_index = tst_idx
+            split = StratifiedShuffleSplit(n_splits=1)
+            labels = symptoms_df.LABEL
 
-        train_df = symptoms_df.iloc[train_index]
-        test_df = symptoms_df.iloc[test_index]
+            train_index = None
+            test_index = None
+            for tr_idx, tst_idx in split.split(symptoms_df, labels):
+                train_index = tr_idx
+                test_index = tst_idx
 
-        end_shuffling_time = time.time()
+            train_df = symptoms_df.iloc[train_index]
+            test_df = symptoms_df.iloc[test_index]
 
-        message = "Completed data split and shuffle.\n Took %.3f seconds.\nSaving to s3" % (end_shuffling_time - start_shuffling_time)
-        logger.log(message)
+            end_shuffling_time = time.time()
 
+            message = "Completed data split and shuffle.\n Took %.3f seconds.\nSaving to s3" % (end_shuffling_time - start_shuffling_time)
+            logger.log(message)
 
         # save to s3
         start_s3_dump = time.time()
@@ -98,10 +114,16 @@ def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, t
         log_file = "%s/%s" % (output_directory, "parse.log")
         s3.put_object(Bucket=helpers.S3_BUCKET, Key=log_file, Body=logger.to_string())
 
-        return True
+        res = True
     except Exception as e:
         message = e.__str__()
         logger.log(message, logging.ERROR)
-        return False
+        res = False
+    finally:
+        client.close()
+        local.close()
+
+    return res
+
 
 
