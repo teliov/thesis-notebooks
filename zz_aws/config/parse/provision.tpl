@@ -2,7 +2,7 @@ WORKDIR="/home/ubuntu/work"
 
 sudo apt-get update
 
-sudo apt-get -yq install python3 python3-venv
+sudo apt-get -yq install python3 python3-venv python3-dev build-essential
 
 su - ubuntu << EOUSER
 if [[ ! -d $WORKDIR ]];
@@ -39,6 +39,7 @@ python3 -m venv "$WORKDIR/notebooks/zz_aws/venv"
 
 source $WORKDIR/notebooks/zz_aws/venv/bin/activate
 
+pip install wheel
 pip install -r "$WORKDIR/notebooks/zz_aws/requirements.txt"
 
 python $WORKDIR/notebooks/zz_aws/main.py parse --symptoms_db symptoms/symptoms_db.json \

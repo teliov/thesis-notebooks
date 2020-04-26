@@ -82,8 +82,8 @@ def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_
         commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file,
                     "--block-duration-minute %d" % duration]
     else:
-        network_interfaces_file = os.path.join(op_directory, "%s_network.json")
-        block_device_mappings = os.path.join(op_directory, "%s_block_mapping.json")
+        network_interfaces_file = os.path.join(op_directory, "%s_network.json" % run_name)
+        block_device_mappings = os.path.join(op_directory, "%s_block_mapping.json" % run_name)
 
         with open(network_interfaces_file, "w") as fp:
             json.dump(specs['NetworkInterfaces'], fp)
