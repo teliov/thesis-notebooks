@@ -4,6 +4,12 @@ sudo apt-get update
 
 sudo apt-get -yq install python3 python3-venv python3-dev build-essential
 
+# setup glances
+sudo curl -L https://bit.ly/glances | /bin/bash
+sudo wget -O "/etc/systemd/system/glances.service" "https://qcedelft.s3.amazonaws.com/config/glances.service"
+sudo systemctl enable glances.service
+sudo systemctl start glances.service
+
 su - ubuntu << EOUSER
 if [[ ! -d $WORKDIR ]];
 then

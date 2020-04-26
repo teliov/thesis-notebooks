@@ -19,6 +19,7 @@ def build_arg_parser():
     parser = argparse.ArgumentParser(description="Medvice Instance Requester")
 
     parser.add_argument('--on_demand', action="store_true")
+    parser.add_argument('--spot_price', type=float, help="maximum amoun when requesting for spot instances")
     parser.add_argument('--ec2_instance', type=str, help="The type of ec2 instance to be used", default="t3.medium")
     parser.add_argument('--duration', type=int,
                         help="The duration in minutes for which the ec2 instance should be requested", default=60)
@@ -33,7 +34,7 @@ def build_arg_parser():
     return parser
 
 
-def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_spot=True):
+def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_spot=True, max_spot=None):
 
     script_dir = os.path.dirname(os.path.realpath(__file__))
     provision_parser_tpl = os.path.join(script_dir, "config/parse/provision.tpl")
@@ -81,6 +82,9 @@ def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_
     if is_spot:
         commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file,
                     "--block-duration-minute %d" % duration]
+
+        if max_spot is not None:
+            commands.append("--spot-price %.2f" % max_spot)
     else:
         network_interfaces_file = os.path.join(op_directory, "%s_network.json" % run_name)
         block_device_mappings = os.path.join(op_directory, "%s_block_mapping.json" % run_name)
@@ -115,9 +119,10 @@ if __name__ == "__main__":
     duration = args.duration
     ec2_instance = args.ec2_instance
     spot_instance = not args.on_demand
+    spot_price = args.spot_price
 
     if args.cmd == "parse":
         data_file = args.file
         run_name = args.run
-        handle_parse(data_file, run_name, ec2_instance, duration, spot_instance)
+        handle_parse(data_file, run_name, ec2_instance, duration, spot_instance, spot_price)
 
