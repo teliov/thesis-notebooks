@@ -107,7 +107,6 @@ def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_
     subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
 
 
-
 if __name__ == "__main__":
 
     parser = build_arg_parser()

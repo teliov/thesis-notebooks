@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import numpy as np
 import io
 import gzip
 import logging
@@ -54,11 +55,7 @@ def log(logger, message, level=logging.DEBUG, to_telegram=True):
 
 
 def check_bitwise(val, comp):
-    c = val & comp
-    if c > 0:
-        return 1
-    else:
-        return 0
+    return np.where((val & comp) > 0, 1, 0)
 
 
 def terminate_instance():
@@ -84,7 +81,6 @@ def terminate_instance():
         message = "Failed to terminate instance: %s. i.v.m: %s" % (instance_id, error_message)
         send_message_telegram(message)
         return False
-
 
 
 def send_message_telegram(message):
@@ -124,7 +120,7 @@ def handle_bit_wise(val, comp):
         return 0
 
 
-def s3_to_pandas(client, bucket, key):
+def s3_to_pandas(client, bucket, key, usecols=None, names=None, dtype=None):
     # get key using boto3 client
     obj = client.get_object(Bucket=bucket, Key=key)
 
@@ -136,7 +132,7 @@ def s3_to_pandas(client, bucket, key):
         gz = gzip.GzipFile(fileobj=obj['Body'])
 
     # load stream directly to DF
-    return pd.read_csv(gz)
+    return pd.read_csv(gz, usecols=usecols, names=names, dtype=dtype)
 
 
 def pandas_to_s3(df, client, bucket, key):
@@ -145,14 +141,14 @@ def pandas_to_s3(df, client, bucket, key):
     df.to_csv(csv_buffer, index=False)
 
     # reset stream position
-    # csv_buffer.seek(0)
-    # # create binary stream
-    # gz_buffer = io.BytesIO()
-    #
-    # # compress string stream using gzip
-    # with gzip.GzipFile(mode='w', fileobj=gz_buffer) as gz_file:
-    #     gz_file.write(bytes(csv_buffer.getvalue(), 'utf-8'))
+    csv_buffer.seek(0)
+    # create binary stream
+    gz_buffer = io.BytesIO()
+
+    # compress string stream using gzip
+    with gzip.GzipFile(mode='w', fileobj=gz_buffer) as gz_file:
+        gz_file.write(bytes(csv_buffer.getvalue(), 'utf-8'))
 
     # write stream to S3
-    client.put_object(Bucket=bucket, Key=key, Body=csv_buffer.getvalue())
+    client.put_object(Bucket=bucket, Key=key, Body=gz_buffer.getvalue())
     return True
