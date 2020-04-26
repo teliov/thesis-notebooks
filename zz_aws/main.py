@@ -3,6 +3,9 @@ from datetime import datetime
 from parse import parse_symptoms
 from helpers import terminate_instance
 
+import os
+os.environ["MODIN_ENGINE"] = "dask"  # Modin will use Dask
+
 
 def build_parser():
     parser = argparse.ArgumentParser(description="Medvice AWS Runner")

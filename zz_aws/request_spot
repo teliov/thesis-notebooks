@@ -5,14 +5,9 @@ import io
 import os
 import json
 import base64
-import random,string
 import subprocess
 import argparse
-
-
-def random_word(length):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(length))
+import helpers
 
 
 def build_arg_parser():
@@ -58,8 +53,8 @@ def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_
     if not os.path.isdir(op_directory):
         os.mkdir(op_directory)
 
-    json_launch_file = os.path.join(op_directory, "%s_%s.json" % (run_name, random_word(12)))
-    user_data_file = os.path.join(op_directory, "%s_%s.sh" % (run_name, random_word(12)))
+    json_launch_file = os.path.join(op_directory, "%s_%s.json" % (run_name, helpers.random_word(12)))
+    user_data_file = os.path.join(op_directory, "%s_%s.sh" % (run_name, helpers.random_word(12)))
 
     user_data = base64.b64encode(bytes(string_contents, "utf-8"))
     user_data = user_data.decode("utf-8")

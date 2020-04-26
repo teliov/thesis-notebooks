@@ -1,9 +1,11 @@
 import requests
-import pandas as pd
 import numpy as np
+import pandas as pd
 import io
 import gzip
 import logging
+import random, string
+import botocore.session
 
 TELEGRAM_CHAT_ID = "@oagba_qce_aws"
 
@@ -43,6 +45,13 @@ class Logger(object):
         self.handler.flush()
 
         return self.stream.getvalue()
+
+
+def get_s3_client():
+    session = botocore.session.get_session()
+
+    s3 = session.create_client('s3', region_name=AWS_REGION)
+    return s3
 
 
 def log(logger, message, level=logging.DEBUG, to_telegram=True):
@@ -120,6 +129,24 @@ def handle_bit_wise(val, comp):
         return 0
 
 
+def s3_to_filesystem(client, bucket, key):
+    # get key using boto3 client
+    obj = client.get_object(Bucket=bucket, Key=key)
+
+    is_gzipped = key.split('.')[-1].lower() == 'gz'
+
+    gz = obj['Body']
+
+    if is_gzipped:
+        gz = gzip.GzipFile(fileobj=obj['Body'])
+
+    filename = "/tmp/%s.csv" % random_word(12)
+    with open(filename, 'wb') as fp:
+        fp.write(gz.read())
+
+    return filename
+
+
 def s3_to_pandas(client, bucket, key, usecols=None, names=None, dtype=None):
     # get key using boto3 client
     obj = client.get_object(Bucket=bucket, Key=key)
@@ -152,3 +179,7 @@ def pandas_to_s3(df, client, bucket, key):
     # write stream to S3
     client.put_object(Bucket=bucket, Key=key, Body=gz_buffer.getvalue())
     return True
+
+def random_word(length):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
