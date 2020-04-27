@@ -20,3 +20,14 @@ def pretty_print_confusion_matrix(target, predicted, label_map):
         labels[idx] = label
 
     return cnf_mat, tabulate(table, headers=labels)
+
+
+def top_5_scorer(estimator, X, y):
+    """
+    Returns 1 if the true label is in top 5 predicted label
+    :param estimator:
+    :param X:
+    :param y:
+    :return:
+    """
+    pass

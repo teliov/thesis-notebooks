@@ -19,7 +19,7 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
 
     This classes provides an interface for combinning different naive bayes classifiers operating on different type of variables
     """
-    def __init__(self, classifier_map, classes):
+    def __init__(self, classifier_map, classes=None):
         """
         The classifier map is in this format:
         classifier_map = [[clf, [list_of_keys_for_same_variable_type]], ...]
@@ -33,7 +33,13 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         self.classifier_map = classifier_map
         self.fitted = False
         self.is_partial = False
+        self.classes_ = None
+        self.labelbin = None
 
+        if classes is not None:
+            self.fit_classes(classes)
+
+    def fit_classes(self, classes):
         self.labelbin = LabelBinarizer()
         self.labelbin.fit(classes)
         self.classes_ = self.labelbin.classes_
@@ -63,6 +69,10 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         :param y:
         :return:
         """
+        if self.classes_ is None:
+            classes = np.unique(y)
+            self.fit_classes(classes)
+
         _y = self.labelbin.fit_transform(y)
         for idx in range(len(self.classifier_map)):
             clf, keys = self.classifier_map[idx]
