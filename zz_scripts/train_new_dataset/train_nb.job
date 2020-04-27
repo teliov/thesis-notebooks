@@ -2,7 +2,7 @@
 #SBATCH -J train_naive_bayes
 #SBATCH -o op.%j.out
 #SBATCH -p general
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=8
 #SBATCH --nodes=1
 #SBATCH -t 03:00:00
 #SBATCH --mem  100G
