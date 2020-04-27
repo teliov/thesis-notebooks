@@ -36,10 +36,10 @@ def train_nb(data_file, output_dir):
     y_target = df.LABEL
     X_data = df.drop(columns=['LABEL'])
 
-    num_jobs = os.cpu_count()
+    num_jobs = 1
     scorer = make_scorer(accuracy_score)
-    results = cross_validate(nb_clf, X_data, y=y_target, scoring=scorer, cv=5, n_jobs=num_jobs,
-                   pre_dispatch='n_jobs', return_train_score=True, return_estimator=True, error_score='raise')
+    results = cross_validate(nb_clf, X_data, y=y_target, scoring=scorer, cv=3, n_jobs=num_jobs,
+                             return_train_score=True, return_estimator=True, error_score='raise')
 
     # save the model with the highest test score
     test_scores = results['test_score']
