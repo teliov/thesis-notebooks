@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH -J train_naive_bayes
+#SBATCH -o op.%j.out
+#SBATCH -p general
+#SBATCH --cpus-per-task=32
+#SBATCH --nodes=1
+#SBATCH -t 03:00:00
+#SBATCH --mem  100G
+
+source /shares/bulk/oagba/work/medvice-parser/activate
+
+python main.py --data "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/parsed/train.csv.csv" \
+    --output_dir "/home/oagba/bulk/data/output_basic_5k/symptoms/csv/training/naive_bayes"
