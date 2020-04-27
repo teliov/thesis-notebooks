@@ -1,12 +1,12 @@
 import os
 import argparse
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, make_scorer
+from sklearn.metrics import accuracy_score
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import cross_validate
 import joblib
 import json
+from sklearn.model_selection import StratifiedShuffleSplit
 
 
 def train_rf(data_file, output_dir):
@@ -26,47 +26,53 @@ def train_rf(data_file, output_dir):
     df = pd.read_csv(data_file, usecols=columns, dtype=dtypes)
     print("Done reading csv files")
 
-    y_target = df.LABEL
-    X_data = df.drop(columns=['LABEL'])
+    labels = df.LABEL
 
-    num_jobs = 1
+    splitter = StratifiedShuffleSplit(1, train_size=0.8)
+    train_index = None
+    test_index = None
+    for tr_idx, tst_index in splitter.split(df, labels):
+        train_index = tr_idx
+        test_index = tst_index
+        break
+
+    train_df = df.iloc[train_index]
+    test_df = df.iloc[test_index]
+
+    train_y_target = train_df.LABEL
+    train_df = train_df.drop(columns=['LABEL'])
+
+    test_y_target = test_df.LABEL
+    test_df = test_df.drop(columns=['LABEL'])
+
+    num_jobs = os.cpu_count()
     clf = RandomForestClassifier(n_estimators=140, criterion='gini', max_depth=None, min_samples_split=2,
                                  min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto',
                                  max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
-                                 bootstrap=True, oob_score=False, n_jobs=1, random_state=None, verbose=0,
+                                 bootstrap=True, oob_score=False, n_jobs=num_jobs, random_state=None, verbose=0,
                                  warm_start=False, class_weight=None)
 
-    scorer = make_scorer(accuracy_score)
-    print("Starting cross validation")
-    results = cross_validate(clf, X_data, y=y_target, scoring=scorer, cv=3, n_jobs=num_jobs,
-                             pre_dispatch='n_jobs', return_train_score=True, return_estimator=True, error_score='raise')
-    print("Done with cross validation")
+    print("Starting Train")
+    clf.fit(train_df, train_y_target)
+    print("Done with Train")
+
+    print("Calculating Train score")
+    train_y_pred = clf.predict(train_df)
+    train_score = accuracy_score(train_y_target, train_y_pred)
+    print("Done calculating Train score")
+
+    print("Calculating Test score")
+    test_y_predict = clf.predict(test_df)
+    test_score = accuracy_score(test_y_target, test_y_predict)
+    print("Done calculating Test score")
 
     # save the model with the highest test score
-    test_scores = results['test_score']
-    train_score = results['train_score']
-    fit_time = results['fit_time']
-    score_time = results['score_time']
-    estimators = results['estimator']
-
-    avg_test_score = np.mean(test_scores)
-    avg_train_score = np.mean(train_score)
-    avg_fit_time = np.mean(fit_time)
-    avg_score_time = np.mean(score_time)
-
-    # best score
-    best_idx = np.argmax(test_scores)
-    best_estimator = estimators[best_idx]
 
     # save results
     train_results = {
         "name": "Random Forest Classifier",
-        "avg_test_score": avg_test_score,
-        "avg_train_score": avg_train_score,
-        "avg_fit_time": avg_fit_time,
-        "avg_score_time": avg_score_time,
-        "best_test_score": np.max(test_scores),
-        "best_train_score": np.max(train_score)
+        "test_score": test_score,
+        "train_score": train_score
     }
 
     train_results_file = os.path.join(output_dir, "rf_train_results.json")
@@ -74,7 +80,7 @@ def train_rf(data_file, output_dir):
         json.dump(train_results, fp)
 
     estimator_serialized = {
-        "clf": best_estimator,
+        "clf": clf,
         "name": "random forest classifier"
     }
     estimator_serialized_file = os.path.join(output_dir, "rf_serialized.joblib")
