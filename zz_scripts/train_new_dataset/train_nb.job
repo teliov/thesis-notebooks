@@ -9,5 +9,5 @@
 
 source /shares/bulk/oagba/work/medvice-parser/activate
 
-python main.py --data "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/parsed/train.csv.csv" \
+python train_nb.py --data "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/parsed/train.csv.csv" \
     --output_dir "/home/oagba/bulk/data/output_basic_5k/symptoms/csv/training/naive_bayes"
