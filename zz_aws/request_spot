@@ -31,6 +31,11 @@ def build_arg_parser():
     parse_group.add_argument('--run', type=str,
                              help='The name for this run. The current date and time would be appended to this')
 
+    train_rf_group = subparsers.add_parser('train_rf', help='Fit a RandomForest Classifier')
+    parse_group.add_argument('--file', type=str, help='S3 path to train Data')
+    train_rf_group.add_argument('--run', type=str,
+                                help='The name for this run. The current date and time would be appended to this')
+
     return parser
 
 
@@ -109,6 +114,85 @@ def handle_parse(data_file, run_name, ec2_instance="t3.medium", duration=60, is_
 
     commands = " ".join(commands)
     subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
+    return True
+
+
+def handle_train_rf(data_file, run_name, ec2_instance="t3.medium", duration=60, is_spot=True, max_spot=None):
+
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    provision_parser_tpl = os.path.join(script_dir, "config/train_rf/provision.tpl")
+    json_specification = os.path.join(script_dir, "config/specification.json" )
+
+    stream = io.StringIO()
+    stream.write("#! /usr/bin/env bash\n\n")
+    stream.write("DATA_FILE=%s\n" % data_file)
+    stream.write("RUN_NAME=%s\n" % run_name)
+
+    with open(provision_parser_tpl) as fp:
+        contents = fp.read()
+
+    stream.write(contents + "\n")
+
+    string_contents = stream.getvalue()
+    stream.close()
+
+    op_directory = os.path.join(os.getcwd(), "outputs")
+
+    if not os.path.isdir(op_directory):
+        os.mkdir(op_directory)
+
+    json_launch_file = os.path.join(op_directory, "%s_%s.json" % (run_name, random_word(12)))
+    user_data_file = os.path.join(op_directory, "%s_%s.sh" % (run_name, random_word(12)))
+
+    user_data = base64.b64encode(bytes(string_contents, "utf-8"))
+    user_data = user_data.decode("utf-8")
+
+    with open(json_specification) as fp:
+        specs = json.load(fp)
+
+    specs["UserData"] = user_data
+    specs["InstanceType"] = ec2_instance
+
+    with open(json_launch_file, "w") as fp:
+        json.dump(specs, fp)
+
+    with open(user_data_file, "w") as fp:
+        fp.write(string_contents)
+
+    if duration % 60 != 0:
+        duration = int(math.ceil(duration/60) * 60)
+
+    if is_spot:
+        commands = ["aws", "ec2", "request-spot-instances", "--launch-specification file://%s" % json_launch_file,
+                    "--block-duration-minute %d" % duration]
+
+        if max_spot is not None:
+            commands.append("--spot-price %.2f" % max_spot)
+    else:
+        network_interfaces_file = os.path.join(op_directory, "%s_network.json" % run_name)
+        block_device_mappings = os.path.join(op_directory, "%s_block_mapping.json" % run_name)
+
+        with open(network_interfaces_file, "w") as fp:
+            json.dump(specs['NetworkInterfaces'], fp)
+
+        with open(block_device_mappings, "w") as fp:
+            json.dump(specs['BlockDeviceMappings'], fp)
+        commands = [
+            "aws",
+            "ec2",
+            "run-instances",
+            "--count 1",
+            "--image-id %s" % specs['ImageId'],
+            "--key-name %s" % specs['KeyName'],
+            "--instance-type %s" % specs['InstanceType'],
+            "--user-data file://%s" % user_data_file,
+            '--network-interfaces file://%s' % network_interfaces_file,
+            "--block-device-mappings file://%s" % block_device_mappings
+        ]
+
+    commands = " ".join(commands)
+    subprocess.run(commands, shell=True, stdout=subprocess.PIPE)
+    return True
 
 
 if __name__ == "__main__":
@@ -125,4 +209,8 @@ if __name__ == "__main__":
         data_file = args.file
         run_name = args.run
         handle_parse(data_file, run_name, ec2_instance, duration, spot_instance, spot_price)
+    elif args.cmd == "train_rf":
+        data_file = args.file
+        run_name = args.run
+        handle_train_rf(data_file, run_name, ec2_instance, duration, spot_instance, spot_price)
 

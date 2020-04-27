@@ -48,8 +48,6 @@ source $WORKDIR/notebooks/zz_aws/venv/bin/activate
 pip install wheel
 pip install -r "$WORKDIR/notebooks/zz_aws/requirements.txt"
 
-python $WORKDIR/notebooks/zz_aws/main.py train_rf --symptoms_db symptoms/symptoms_db.json \
-    --conditions_db symptoms/conditions_db.json \
-    --file $SYMPTOM_FILE \
+python $WORKDIR/notebooks/zz_aws/main.py train_rf --file $DATA_FILE \
     --run $RUN_NAME
 EOUSER

@@ -1,6 +1,7 @@
 import argparse
 from datetime import datetime
 from parse import parse_symptoms
+from train_rf import train_rf
 from helpers import terminate_instance
 
 
@@ -14,6 +15,10 @@ def build_parser():
     parse_group.add_argument('--conditions_db', type=str, help='S3 key to conditions db')
     parse_group.add_argument('--file', type=str, help='Gzipped symptoms file to be parsed')
     parse_group.add_argument('--run', type=str, help='The name for this run. The current date and time would be appended to this')
+
+    train_rf_group = subparsers.add_parser('train_rf', help='Fit a RandomForest Classifier')
+    train_rf_group.add_argument('--file', type=str, help='S3 path to train Data')
+    train_rf_group.add_argument('--run', type=str, help='The name for this run. The current date and time would be appended to this')
 
     return parser
 
@@ -34,4 +39,11 @@ if __name__ == "__main__":
         run_name = "%s_%s" % (run_name, now)
 
         parse_symptoms(run_name, data_file, symptoms_db_file, conditions_db_file)
+        terminate_instance()
+    elif args.cmd == 'train_rf':
+        data_file = args.file
+        run_name = args.run
+        now = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+        run_name = "%s_%s" % (run_name, now)
+        train_rf(data_file, run_name)
         terminate_instance()

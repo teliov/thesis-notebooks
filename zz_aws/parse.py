@@ -6,7 +6,6 @@ import helpers
 from sklearn.model_selection import StratifiedShuffleSplit
 import time
 import logging
-import swifter
 
 
 def parse_symptoms(data_name, data_file, symptoms_db_file, conditions_db_file, telegram=True):
