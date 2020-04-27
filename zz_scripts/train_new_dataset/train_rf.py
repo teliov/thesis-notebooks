@@ -29,7 +29,7 @@ def train_rf(data_file, output_dir):
     y_target = df.LABEL
     X_data = df.drop(columns=['LABEL'])
 
-    num_jobs = 2
+    num_jobs = 1
     clf = RandomForestClassifier(n_estimators=140, criterion='gini', max_depth=None, min_samples_split=2,
                                  min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto',
                                  max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
