@@ -64,7 +64,9 @@ def train_rf(data_file, run_name):
         test_y_target = test_df.LABEL
         test_df = test_df.drop(columns=['LABEL'])
 
-        num_jobs = 8
+        del df
+
+        num_jobs = 2
         clf = RandomForestClassifier(n_estimators=140, criterion='gini', max_depth=None, min_samples_split=2,
                                      min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto',
                                      max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
