@@ -32,7 +32,7 @@ def build_arg_parser():
                              help='The name for this run. The current date and time would be appended to this')
 
     train_rf_group = subparsers.add_parser('train_rf', help='Fit a RandomForest Classifier')
-    parse_group.add_argument('--file', type=str, help='S3 path to train Data')
+    train_rf_group.add_argument('--file', type=str, help='S3 path to train Data')
     train_rf_group.add_argument('--run', type=str,
                                 help='The name for this run. The current date and time would be appended to this')
 

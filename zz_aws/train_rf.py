@@ -109,6 +109,11 @@ def train_rf(data_file, run_name):
             fp.seek(0)
             s3.put_object(Body=fp.read(), Bucket=helpers.S3_BUCKET, Key=estimator_serialized_file)
 
+        end_train_time = time.time()
+        message = "Finished processing\n Took: %.3f seconds" % (
+                end_train_time - start_time)
+        logger.log(message)
+
         res = True
     except Exception as e:
         message = e.__str__()
