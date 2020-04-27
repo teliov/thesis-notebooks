@@ -64,10 +64,12 @@ def parse_data(filepath, condition_labels, symptom_map, output_path, use_header=
     symptom_columns = ['PATIENT', 'GENDER', 'RACE', 'ETHNICITY', 'AGE_BEGIN', 'AGE_END',
                        'PATHOLOGY', 'NUM_SYMPTOMS', 'SYMPTOMS']
 
+    usecols = ['GENDER', 'RACE', 'AGE_BEGIN', 'PATHOLOGY', 'NUM_SYMPTOMS', 'SYMPTOMS']
+
     if use_header:
-        symptoms_df = pd.read_csv(filepath, names=symptom_columns)
+        symptoms_df = pd.read_csv(filepath, names=symptom_columns, usecols=usecols)
     else:
-        symptoms_df = pd.read_csv(filepath)
+        symptoms_df = pd.read_csv(filepath, usecols=usecols)
     filename = filepath.split("/")[-1]
 
     # drop the guys that have no symptoms
