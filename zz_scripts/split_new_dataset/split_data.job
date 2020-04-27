@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH -J split_medvice_data
+#SBATCH -o op.%j.out
+#SBATCH -p general
+#SBATCH --cpus-per-task=32
+#SBATCH --nodes=1
+#SBATCH -t 03:00:00
+#SBATCH --mem  100G
+
+source /shares/bulk/oagba/work/medvice-parser/activate
+
+python main.py --symptom_file "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/symptoms.csv"\
+    --output_dir "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/split"\
