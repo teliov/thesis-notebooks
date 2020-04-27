@@ -25,8 +25,8 @@ def split_data(symptom_file, output_path, use_headers=False, train_split=0.8):
     train_df = df.iloc[train_index]
     test_df = df.iloc[test_index]
 
-    train_df.to_csv(os.path.join(output_path, "train.csv"))
-    test_df.to_csv(os.path.join(output_path, "test.csv"))
+    train_df.to_csv(os.path.join(output_path, "train.csv"), index=False)
+    test_df.to_csv(os.path.join(output_path, "test.csv"), index=False)
 
     return True
 
