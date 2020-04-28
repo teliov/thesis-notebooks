@@ -72,7 +72,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
 
     print("Training RF Classifier")
     start = timer()
-    clf = RandomForestClassifier(n_estimators=140, criterion='gini', max_depth=None, min_samples_split=2,
+    clf = RandomForestClassifier(n_estimators=5, criterion='gini', max_depth=None, min_samples_split=2,
                                  min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto',
                                  max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
                                  bootstrap=True, oob_score=False, n_jobs=2, random_state=None, verbose=0,
