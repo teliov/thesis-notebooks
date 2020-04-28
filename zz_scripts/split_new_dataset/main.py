@@ -13,6 +13,8 @@ def split_data(symptom_file, output_path, use_headers=False, train_split=0.8):
     else:
         df = pd.read_csv(symptom_file)
 
+    df.index.name = "Index"
+
     labels = df["PATHOLOGY"]
     splitter = StratifiedShuffleSplit(1, train_size=train_split)
     train_index = None
@@ -25,8 +27,8 @@ def split_data(symptom_file, output_path, use_headers=False, train_split=0.8):
     train_df = df.iloc[train_index]
     test_df = df.iloc[test_index]
 
-    train_df.to_csv(os.path.join(output_path, "train.csv"), index=False)
-    test_df.to_csv(os.path.join(output_path, "test.csv"), index=False)
+    train_df.to_csv(os.path.join(output_path, "train.csv"))
+    test_df.to_csv(os.path.join(output_path, "test.csv"))
 
     return True
 

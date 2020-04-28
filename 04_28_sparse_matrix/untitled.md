@@ -1,0 +1,1 @@
+This notebook explores the possibility of using sparse matrices to store and process the data and so reduce the memory footprint!
