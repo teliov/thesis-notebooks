@@ -33,12 +33,12 @@ def parse_data(filepath, conditions_db_json, symptoms_db_json, output_path):
 
     usecols = ['GENDER', 'RACE', 'AGE_BEGIN', 'PATHOLOGY', 'NUM_SYMPTOMS', 'SYMPTOMS']
 
-    symptoms_df = pd.read_csv(filepath, usecols=usecols)
+    df = pd.read_csv(filepath, usecols=usecols)
 
     filename = filepath.split("/")[-1]
 
     # drop the guys that have no symptoms
-    df = symptoms_df[symptoms_df.NUM_SYMPTOMS > 0]
+    df = df[df.NUM_SYMPTOMS > 0]
     df['LABEL'] = df.PATHOLOGY.apply(lambda v: condition_labels.get(v))
     df['RACE'] = df.RACE.apply(lambda v: RACE_CODE.get(v))
     df['GENDER'] = df.GENDER.apply(lambda gender: 0 if gender == 'F' else 1)
