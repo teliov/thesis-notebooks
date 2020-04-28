@@ -9,19 +9,6 @@ import os
 import joblib
 import argparse
 from timeit import default_timer as timer
-import itertools
-
-
-def conv_symptoms(val):
-    if type(val) is str:
-        return [int(idx) for idx in val.split(",")]
-    else:
-        return [int(val)]
-
-
-def agg_columns(val, init=[]):
-    init += val
-    return init
 
 
 def train_rf(data_file, symptoms_db_json, output_dir):
@@ -48,23 +35,13 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     df = df.drop(columns=['LABEL', 'SYMPTOMS'])
 
     dense_matrix = sparse.coo_matrix(df.values)
-    symptoms = symptoms.apply(conv_symptoms)
+    symptoms = symptoms.apply(lambda v: [int(idx) for idx in v.split(",")])
 
     columns = []
-    symptoms.aggregate(agg_columns, init=columns)
-
     rows = []
-    size_rows = symptoms.aggregate(len)
-    for idx, val in size_rows.iteritems():
-        rows += list(itertools.repeat(idx, val))
-
-
-
-    # columns = []
-    # rows = []
-    # for idx, val in symptoms.iteritems():
-    #     rows += [idx for item in val]
-    #     columns += val
+    for idx, val in symptoms.iteritems():
+        rows += [idx for item in val]
+        columns += val
 
     print("N_Row: %d\tN_col: %d" % (len(rows), len(columns)))
     print("Max_Row: %d\tMax_col: %d" % (np.max(rows), np.max(columns)))
