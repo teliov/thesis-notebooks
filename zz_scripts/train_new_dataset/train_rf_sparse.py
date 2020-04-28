@@ -51,6 +51,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
         columns += val
 
     print("N_Row: %d\tN_col: %d" % (len(rows), len(columns)))
+    print("Max_Row: %d\tMax_col: %d" % (np.max(rows), np.max(columns)))
 
     data = np.ones(len(rows))
     symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(num_rows, num_symptoms))
