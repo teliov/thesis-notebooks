@@ -18,6 +18,11 @@ def conv_symptoms(val):
         return [int(val)]
 
 
+def agg_columns(val, init=[]):
+    init += val
+    return init
+
+
 def train_rf(data_file, symptoms_db_json, output_dir):
     print("Starting Random Forest Classification")
     begin = timer()
@@ -43,11 +48,12 @@ def train_rf(data_file, symptoms_db_json, output_dir):
 
     dense_matrix = sparse.coo_matrix(df.values)
 
+
     symptoms = symptoms.apply(conv_symptoms)
     columns = []
     rows = []
     for idx, val in symptoms.iteritems():
-        rows += [idx] * len(val)
+        rows += [idx for item in val]
         columns += val
 
     print("N_Row: %d\tN_col: %d" % (len(rows), len(columns)))
