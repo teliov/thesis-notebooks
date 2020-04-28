@@ -11,6 +11,13 @@ import argparse
 from timeit import default_timer as timer
 
 
+def conv_symptoms(val):
+    if type(val) is str:
+        return [int(idx) for idx in val.split(",")]
+    else:
+        return [int(val)]
+
+
 def train_rf(data_file, symptoms_db_json, output_dir):
     print("Starting Random Forest Classification")
     begin = timer()
@@ -25,6 +32,8 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     end = timer()
     print("Reading CSV: %.5f secs" % (end - start))
 
+    print("DataFrame Shape: ", df.shape)
+
     print("Prepping Sparse Representation")
     start = timer()
     label_values = df.LABEL.values
@@ -33,12 +42,14 @@ def train_rf(data_file, symptoms_db_json, output_dir):
 
     dense_matrix = sparse.coo_matrix(df.values)
 
-    symptoms = symptoms.apply(lambda v: [int(idx) for idx in v.split(",")])
+    symptoms = symptoms.apply(conv_symptoms)
     columns = []
     rows = []
     for idx, val in symptoms.iteritems():
         rows += [idx] * len(val)
         columns += val
+
+    print("N_Row: %d\tN_col: %d" % (len(rows), len(columns)))
 
     data = np.ones(len(rows))
     symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(df.shape[0], num_symptoms))
