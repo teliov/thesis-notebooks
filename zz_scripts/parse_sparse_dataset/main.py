@@ -72,8 +72,6 @@ if __name__ == "__main__":
     conditions_db_json = args.conditions_json
     output_dir = args.output_dir
 
-    use_headers = args.use_headers
-
     if not os.path.isfile(symptoms_db_json) or not os.path.isfile(conditions_db_json):
         raise ValueError("Invalid symptoms and/or conditions db file passed")
 
