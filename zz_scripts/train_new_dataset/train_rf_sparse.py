@@ -32,6 +32,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     end = timer()
     print("Reading CSV: %.5f secs" % (end - start))
 
+    num_rows = df.shape[0]
     print("DataFrame Shape: ", df.shape)
 
     print("Prepping Sparse Representation")
@@ -52,7 +53,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     print("N_Row: %d\tN_col: %d" % (len(rows), len(columns)))
 
     data = np.ones(len(rows))
-    symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(df.shape[0], num_symptoms))
+    symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(num_rows, num_symptoms))
 
     data_csc = sparse.hstack([dense_matrix, symptoms_coo])
     data_csc = data_csc.tocsc()
