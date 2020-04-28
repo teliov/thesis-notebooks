@@ -39,7 +39,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
 
     columns = []
     rows = []
-    for idx, val in symptoms.iteritems():
+    for idx, val in enumerate(symptoms):
         rows += [idx for item in val]
         columns += val
 
