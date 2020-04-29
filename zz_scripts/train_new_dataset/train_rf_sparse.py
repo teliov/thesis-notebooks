@@ -9,15 +9,66 @@ import os
 import joblib
 import argparse
 from timeit import default_timer as timer
+from sklearn.preprocessing import LabelEncoder
 
 
-def train_rf(data_file, symptoms_db_json, output_dir):
+def check_is_in(needles, haystack):
+    if needles.shape[0] != haystack.shape[0]:
+        raise ValueError("Needles and Haystack shape mismatch")
+
+    result = np.zeros((needles.shape[0], ), dtype=bool)
+
+    for idx in range(haystack.shape[0]):
+        result[idx] = np.isin(needles[idx], haystack[idx, :]).reshape(1, )[0]
+
+    return result
+
+
+def top_n_score(y_target, y_pred, class_labels, top_n=10, weighted=True):
+    """
+    This method returns the top_n_score.
+    The top_n_score returns 1 if the target_label is in the first n predictions in y_pred
+    :param y_target: This is an array of target labels with shape (n_samples,)
+    :param y_pred: This is an array of predicted probabilities with shape (n_samples, n_classes)
+    :param class_labels: This is the list of all possible classes
+    :param top_n: This determines how many predictions to consider
+    :param weighted: Return the raw score or weighted by the number of samples
+    :return:
+    """
+
+    if top_n >= len(class_labels):
+        top_n -= 1
+
+    labelbin = LabelEncoder()
+    labelbin.fit(class_labels)
+
+    encoded_labels = labelbin.transform(y_target)
+
+    sorted_prob = np.argsort(-y_pred, axis=1)
+
+    top_n_predictions = sorted_prob[:, :top_n]
+    encoded_probability = np.take_along_axis(y_pred, encoded_labels[:, None], axis=1)
+    encoded_probability = encoded_probability.reshape(encoded_probability.shape[0], )
+
+    bool_top_n = check_is_in(encoded_labels, top_n_predictions)
+    combined = np.logical_and(bool_top_n, (encoded_probability > 0))
+
+    score = sum(combined) if not weighted else sum(combined)/combined.shape[0]
+    return score
+
+
+def train_rf(data_file, symptoms_db_json, conditions_db_json, output_dir):
     print("Starting Random Forest Classification")
     begin = timer()
     with open(symptoms_db_json) as fp:
         symptoms_db = json.load(fp)
+        num_symptoms = len(symptoms_db)
 
-    num_symptoms = len(symptoms_db)
+    with open(conditions_db_json) as fp:
+        conditions_db = json.load(fp)
+        num_conditions = len(conditions_db)
+
+    classes = list(range(num_conditions))
 
     print("Reading CSV")
     start = timer()
@@ -86,8 +137,16 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     start = timer()
 
     accuracy_scorer = make_scorer(accuracy_score)
+    top_2_scorer = make_scorer(top_n_score, needs_proba=True, class_labels=classes, top_n=2)
+    top_5_scorer = make_scorer(top_n_score, needs_proba=True, class_labels=classes, top_n=5)
+
+
     train_score = accuracy_scorer(clf, train_data, train_labels)
     test_score = accuracy_scorer(clf, test_data, test_labels)
+    top_2_train_score = top_2_scorer(clf, train_data, train_labels)
+    top_2_test_score = top_2_scorer(clf, test_data, test_labels)
+    top_5_train_score = top_5_scorer(clf, train_data, train_labels)
+    top_5_test_score = top_5_scorer(clf, test_data, test_labels)
 
     end = timer()
     print("Calculating Accuracy: %.5f secs" % (end - start))
@@ -95,7 +154,12 @@ def train_rf(data_file, symptoms_db_json, output_dir):
     train_results = {
         "name": "Random Forest Classifier",
         "test_score": test_score,
-        "train_score": train_score
+        "train_score": train_score,
+        "top_2_train_score": top_2_train_score,
+        "top_2_test_score": top_2_test_score,
+        "top_5_train_score": top_5_train_score,
+        "top_5_test_score": top_5_test_score,
+
     }
 
     train_results_file = os.path.join(output_dir, "rf_train_results_sparse.json")
@@ -118,12 +182,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Medvice RandomForest Trainer')
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
+    parser.add_argument('--conditions_json', help='Path to conditions db.json')
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
 
     args = parser.parse_args()
     data_file = args.data
     output_dir = args.output_dir
     symptoms_db_json = args.symptoms_json
+    conditions_db_json = args.conditions_json
 
     if not os.path.isfile(data_file):
         raise ValueError("data file does not exist")
@@ -131,7 +197,10 @@ if __name__ == "__main__":
     if not os.path.isfile(symptoms_db_json):
         raise ValueError("Invalid symptoms db file passed")
 
+    if not os.path.isfile(conditions_db_json):
+        raise ValueError("Invalid conditions db file passed")
+
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json)
+    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, conditions_db_json=conditions_db_json)
