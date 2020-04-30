@@ -176,7 +176,7 @@ def train_nb(data_file, symptoms_db_json, conditions_db_json, output_dir):
         json.dump(train_results, fp, indent=4)
 
     estimator_serialized = {
-        "clf": clf,
+        "clf": clf.serialize(),
         "name": "naive bayes classifier on sparse"
     }
     estimator_serialized_file = os.path.join(output_dir, "nb_serialized_sparse.joblib")
