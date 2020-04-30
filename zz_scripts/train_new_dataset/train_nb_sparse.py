@@ -73,7 +73,7 @@ def train_nb(data_file, symptoms_db_json, conditions_db_json, output_dir):
 
     clf = models.ThesisSparseNaiveBayes(classifier_map=classifier_map, classes=classes)
 
-    clf = clf.fit(train_data, train_labels)
+    clf.fit(train_data, train_labels)
     end = timer()
     print("Training Naive Classifier: %.5f secs" % (end - start))
 
