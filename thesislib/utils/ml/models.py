@@ -1,5 +1,6 @@
 import numpy as np
-
+import scipy.sparse as sparse
+from scipy.sparse import sputils
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.utils.fixes import logsumexp
@@ -138,5 +139,147 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         clf = ThesisNaiveBayes(classifier_map, classes)
         clf.fitted = fitted
         clf.is_partial = is_partial
+
+        return clf
+
+
+class ThesisSymptomSparseMaker(BaseEstimator):
+    def __init__(self, num_symptoms):
+        self.num_symptoms = num_symptoms
+
+    def fit_transform(self, df, y=None):
+        symptoms = df.SYMPTOMS
+        df = df.drop(columns=['SYMPTOMS'])
+
+        dense_matrix = sparse.coo_matrix(df.values)
+        symptoms = symptoms.apply(lambda v: [int(idx) for idx in v.split(",")])
+
+        columns = []
+        rows = []
+        for idx, val in enumerate(symptoms):
+            rows += [idx] * len(val)
+            columns += val
+
+        data = np.ones(len(rows))
+
+        symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(df.shape[0],self.num_symptoms))
+
+        data_coo = sparse.hstack([dense_matrix, symptoms_coo])
+
+        return data_coo.tocsc()
+
+
+class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
+    def __init__(self, classifier_map, classes=None):
+        self.fitted = False
+        self.classes = None
+        self.labelbin = None
+        self.classifier_map = classifier_map
+
+        if classes is not None:
+            self.fit_classes(classes)
+
+    def fit_classes(self, classes):
+        self.labelbin = LabelBinarizer()
+        self.labelbin.fit(classes)
+        self.classes = self.labelbin.classes_
+
+    @staticmethod
+    def _get_data(keys, X):
+        index, is_sparse = keys
+        if not sputils.issequence(index):
+            data = X[:, index]
+        else:
+            start, end = index
+            if end is None:
+                data = X[:, start:]
+            else:
+                data = X[:, start:end]
+
+        if not is_sparse:
+            return data.toarray()
+
+        return data
+
+    def fit(self, X, y):
+        """
+        Fits the different classifiers on the relevant part of the data and stores the
+        fitted classifiers for further use
+        :param X:
+        :param y:
+        :return:
+        """
+        if self.classes is None:
+            classes = np.unique(y)
+            self.fit_classes(classes)
+
+        _y = self.labelbin.fit_transform(y)
+        for idx in range(len(self.classifier_map)):
+            clf, keys = self.classifier_map[idx]
+            data = self._get_data(keys, X)
+            clf.fit(data, y)
+
+            self.classifier_map[idx][0] = clf
+
+        self.fitted = True
+
+    def _joint_log_likelihood(self, X):
+        """
+        Computes the join log likelihood for the different classifiers
+        :param X:
+        :return:
+        """
+        if not self.fitted:
+            raise ValueError("Model has not been fitted.")
+
+        _probs = np.zeros((X.shape[0], self.classes.shape[0]))
+
+        for idx in range(len(self.classifier_map)):
+            clf, keys = self.classifier_map[idx]
+            data = self._get_data(keys, X)
+
+            _probs += clf._joint_log_likelihood(data)
+
+        return _probs
+
+    def predict_log_proba(self, X):
+        if not self.fitted:
+            raise ValueError("Model has not been fitted.")
+
+        _probs = self._joint_log_likelihood(X)
+        # normalize (see naive_bayes.py in sklearn for explanation!!)
+        _log_prob_x = logsumexp(_probs, axis=1)
+        return _probs - np.atleast_2d(_log_prob_x).T
+
+    def predict_proba(self, X):
+        return np.exp(self.predict_log_proba(X))
+
+    def predict(self, X):
+        if not self.fitted:
+            raise ValueError("Model has not been fitted.")
+        jll = self._joint_log_likelihood(X)
+        return self.classes[np.argmax(jll, axis=1)]
+
+    def serialize(self):
+        return {
+            "fitted": self.fitted,
+            "classes": self.classes,
+            "classifier_map": self.classifier_map,
+        }
+
+    @staticmethod
+    def load(serialized):
+        if type(serialized) is not dict:
+            raise ValueError("Serialized model has to be a dict")
+
+        fitted = serialized.get('fitted', None)
+        classes = serialized.get('classes', None)
+        classifier_map = serialized.get('classifier_map', None)
+
+        if fitted is None or classifier_map is None:
+            raise ValueError("Missing required serialization entities")
+
+        clf = ThesisSparseNaiveBayes(classifier_map, classes)
+        clf.fitted = fitted
 
         return clf
