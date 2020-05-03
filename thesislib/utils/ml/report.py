@@ -40,18 +40,6 @@ def pretty_print_confusion_matrix(target, predicted, label_map):
     return cnf_mat, tabulate(table, headers=labels)
 
 
-def check_is_in(needles, haystack):
-    if needles.shape[0] != haystack.shape[0]:
-        raise ValueError("Needles and Haystack shape mismatch")
-
-    result = np.zeros((needles.shape[0], ), dtype=bool)
-
-    for idx in range(haystack.shape[0]):
-        result[idx] = np.isin(needles[idx], haystack[idx, :]).reshape(1, )[0]
-
-    return result
-
-
 def top_n_score(y_target, y_pred, class_labels, top_n=10, weighted=True):
     """
     This method returns the top_n_score.
@@ -78,7 +66,8 @@ def top_n_score(y_target, y_pred, class_labels, top_n=10, weighted=True):
     encoded_probability = np.take_along_axis(y_pred, encoded_labels[:, None], axis=1)
     encoded_probability = encoded_probability.reshape(encoded_probability.shape[0], )
 
-    bool_top_n = check_is_in(encoded_labels, top_n_predictions)
+    bool_top_n = encoded_labels.reshape(-1, 1) == top_n_predictions
+    bool_top_n = np.sum(bool_top_n, axis=1).astype(np.bool)
     combined = np.logical_and(bool_top_n, (encoded_probability > 0))
 
     score = sum(combined) if not weighted else sum(combined)/combined.shape[0]
