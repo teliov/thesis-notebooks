@@ -86,6 +86,8 @@ def train_nb(data_file, symptoms_db_json, output_dir):
         }
 
         for key, scorer in scorers.items():
+            if key == report.TOP2_SCORE or key == report.TOP5_SCORE:
+                continue
             train_score = scorer(clf, train_data, train_labels)
             test_score = scorer(clf, test_data, test_labels)
             train_results[key] = {
