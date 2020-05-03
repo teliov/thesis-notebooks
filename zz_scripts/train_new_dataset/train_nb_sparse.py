@@ -6,28 +6,24 @@ import os
 import joblib
 import argparse
 from timeit import default_timer as timer
-from thesislib.utils.ml import models, report
 from sklearn import naive_bayes
+import sys
 
 
-def train_nb(data_file, symptoms_db_json, conditions_db_json, output_dir):
+def train_nb(data_file, symptoms_db_json, output_dir):
     print("Starting Naive Bayes Classification")
     begin = timer()
     with open(symptoms_db_json) as fp:
         symptoms_db = json.load(fp)
         num_symptoms = len(symptoms_db)
 
-    with open(conditions_db_json) as fp:
-        conditions_db = json.load(fp)
-        num_conditions = len(conditions_db)
-
-    classes = list(range(num_conditions))
-
     print("Reading CSV")
     start = timer()
     data = pd.read_csv(data_file, index_col='Index')
     end = timer()
     print("Reading CSV: %.5f secs" % (end - start))
+
+    classes = data.LABEL.unique().tolist()
 
     print("Prepping Sparse Representation")
     start = timer()
@@ -87,8 +83,8 @@ def train_nb(data_file, symptoms_db_json, conditions_db_json, output_dir):
     recall_scorer_weighted = make_scorer(recall_score, average='weighted')
     precision_scorer_unweighted = make_scorer(precision_score, average='macro', zero_division=1)
     precision_scorer_weighted = make_scorer(precision_score, average='weighted', zero_division=1)
-    roc_auc_scorer_unweighted = make_scorer(roc_auc_score, average='macro', multi_class='ovo')
-    roc_auc_scorer_weighted = make_scorer(roc_auc_score, average='weighted', multi_class='ovr')
+    roc_auc_scorer_unweighted = make_scorer(roc_auc_score, average='macro', multi_class='ovo', needs_proba=True)
+    roc_auc_scorer_weighted = make_scorer(roc_auc_score, average='weighted', multi_class='ovr', needs_proba=True)
 
     top_2_scorer = make_scorer(report.top_n_score, needs_proba=True, class_labels=classes, top_n=2)
     top_5_scorer = make_scorer(report.top_n_score, needs_proba=True, class_labels=classes, top_n=5)
@@ -188,17 +184,22 @@ def train_nb(data_file, symptoms_db_json, conditions_db_json, output_dir):
 
 
 if __name__ == "__main__":
+    notebook_path = os.path.realpath(os.path.join(os.path.dirname(__file__), "../.."))
+
+    if not (notebook_path in sys.path):
+        sys.path.insert(0, notebook_path)
+
+    from thesislib.utils.ml import models, report
+
     parser = argparse.ArgumentParser(description='Medvice NaiveBayes Trainer')
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
-    parser.add_argument('--conditions_json', help='Path to conditions db.json')
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
 
     args = parser.parse_args()
     data_file = args.data
     output_dir = args.output_dir
     symptoms_db_json = args.symptoms_json
-    conditions_db_json = args.conditions_json
 
     if not os.path.isfile(data_file):
         raise ValueError("data file does not exist")
@@ -206,10 +207,7 @@ if __name__ == "__main__":
     if not os.path.isfile(symptoms_db_json):
         raise ValueError("Invalid symptoms db file passed")
 
-    if not os.path.isfile(conditions_db_json):
-        raise ValueError("Invalid conditions db file passed")
-
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    train_nb(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, conditions_db_json=conditions_db_json)
+    train_nb(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json)
