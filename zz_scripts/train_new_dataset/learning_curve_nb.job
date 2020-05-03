@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH -J l_curve
+#SBATCH -o nb.%j.out
+#SBATCH -p general
+#SBATCH --cpus-per-task=16
+#SBATCH --nodes=1
+#SBATCH -t 5:00:00
+#SBATCH --mem  80G
+
+source /shares/bulk/oagba/work/medvice-parser/activate
+
+python learning_curve_nb.py --data "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/parsed/train.csv_sparse.csv" \
+    --output_dir "/home/oagba/bulk/data/output_basic_5k/symptoms/csv/training/naive_bayes" \
+    --symptoms_json "/shares/bulk/oagba/data/kk/json/symptom_db.json"

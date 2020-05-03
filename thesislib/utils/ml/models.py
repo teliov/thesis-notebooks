@@ -172,12 +172,9 @@ class ThesisSymptomSparseMaker(BaseEstimator):
 class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
     def __init__(self, classifier_map, classes=None):
         self.fitted = False
-        self.classes = None
+        self.classes = classes
         self.labelbin = None
         self.classifier_map = classifier_map
-
-        if classes is not None:
-            self.fit_classes(classes)
 
     def fit_classes(self, classes):
         self.labelbin = LabelBinarizer()
@@ -209,8 +206,8 @@ class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
         :param y:
         :return:
         """
-        if self.classes is None:
-            classes = np.unique(y)
+        if self.classes is None or self.labelbin is None:
+            classes = self.classes if self.classes is not None else np.unique(y)
             self.fit_classes(classes)
 
         _y = self.labelbin.fit_transform(y)

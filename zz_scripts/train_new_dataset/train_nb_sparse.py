@@ -119,7 +119,6 @@ def train_nb(data_file, symptoms_db_json, output_dir):
     return res
 
 
-
 if __name__ == "__main__":
     notebook_path = os.path.realpath(os.path.join(os.path.dirname(__file__), "../.."))
 
