@@ -3,6 +3,9 @@ from sklearn.metrics import confusion_matrix, make_scorer, accuracy_score, \
 from tabulate import tabulate
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+import logging
+import io
+import requests
 
 ACCURACY_SCORE = 'accuracy'
 F1_UNWEIGHTED = 'f1_unweighted'
@@ -114,3 +117,57 @@ def get_tracked_metrics(classes, metric_name=None):
         return metrics.get(metric_name, None)
 
     return metrics
+
+TELEGRAM_CHAT_ID = "@oagba_qce_aws"
+
+BASE_URL = "https://api.telegram.org/bot1150250526:AAEFxR2OCQZN5p7ppJtHiIe2tDTb1ebFAKY/"
+
+S3_BUCKET = "qcedelft"
+
+AWS_REGION = "us-east-1"
+
+TERMINATE_URL = "http://999-term.teliov.xyz/lasaksalkslasl"
+
+
+class Logger(object):
+
+    def __init__(self, logger_name):
+
+        self.logger_name = logger_name
+        self.stream = io.StringIO()
+        self.handler = logging.StreamHandler(self.stream)
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(logging.DEBUG)
+
+        for handler in self.logger.handlers:
+            self.logger.removeHandler(handler)
+
+        self.logger.addHandler(self.handler)
+
+    def log(self, message, level=logging.DEBUG, to_telegram=True):
+        message = "%s: %s" % (self.logger_name, message)
+        self.logger.log(level, message)
+
+        if to_telegram:
+            send_message_telegram(message)
+        return True
+
+    def to_string(self):
+        self.handler.flush()
+
+        return self.stream.getvalue()
+
+
+def send_message_telegram(message):
+    payload = {
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': message
+    }
+
+    url = BASE_URL + "sendMessage"
+    try:
+        requests.get(url, params=payload)
+    except Exception:
+        pass
+
+    return True

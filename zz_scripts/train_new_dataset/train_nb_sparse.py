@@ -7,104 +7,117 @@ import argparse
 from timeit import default_timer as timer
 from sklearn import naive_bayes
 import sys
+import logging
 
 
 def train_nb(data_file, symptoms_db_json, output_dir):
-    print("Starting Naive Bayes Classification")
-    begin = timer()
-    with open(symptoms_db_json) as fp:
-        symptoms_db = json.load(fp)
-        num_symptoms = len(symptoms_db)
+    logger = report.Logger("Naive Bayes Classification on QCE")
 
-    print("Reading CSV")
-    start = timer()
-    data = pd.read_csv(data_file, index_col='Index')
-    end = timer()
-    print("Reading CSV: %.5f secs" % (end - start))
+    try:
+        message = "Starting Naive Bayes Classification"
+        logger.log(message)
+        begin = timer()
+        with open(symptoms_db_json) as fp:
+            symptoms_db = json.load(fp)
+            num_symptoms = len(symptoms_db)
 
-    classes = data.LABEL.unique().tolist()
+        logger.log("Reading CSV")
+        start = timer()
+        data = pd.read_csv(data_file, index_col='Index')
+        end = timer()
+        logger.log("Reading CSV: %.5f secs" % (end - start))
 
-    print("Prepping Sparse Representation")
-    start = timer()
-    label_values = data.LABEL.values
-    ordered_keys = ['GENDER', 'RACE', 'AGE', 'SYMPTOMS']
-    data = data[ordered_keys]
+        classes = data.LABEL.unique().tolist()
 
-    sparsifier = models.ThesisSymptomSparseMaker(num_symptoms=num_symptoms)
-    data = sparsifier.fit_transform(data)
+        logger.log("Prepping Sparse Representation")
+        start = timer()
+        label_values = data.LABEL.values
+        ordered_keys = ['GENDER', 'RACE', 'AGE', 'SYMPTOMS']
+        data = data[ordered_keys]
 
-    end = timer()
-    print("Prepping Sparse Representation: %.5f secs" % (end - start))
+        sparsifier = models.ThesisSymptomSparseMaker(num_symptoms=num_symptoms)
+        data = sparsifier.fit_transform(data)
 
-    print("Shuffling Data")
-    start = timer()
-    split_t = StratifiedShuffleSplit(n_splits=1, test_size=0.2)
-    train_data = None
-    train_labels = None
-    test_data = None
-    test_labels = None
-    for train_index, test_index in split_t.split(data, label_values):
-        train_data = data[train_index]
-        train_labels = label_values[train_index]
-        test_data = data[test_index]
-        test_labels = label_values[test_index]
+        end = timer()
+        logger.log("Prepping Sparse Representation: %.5f secs" % (end - start))
 
-    end = timer()
-    print("Shuffling Data: %.5f secs" % (end - start))
+        logger.log("Shuffling Data")
+        start = timer()
+        split_t = StratifiedShuffleSplit(n_splits=1, test_size=0.2)
+        train_data = None
+        train_labels = None
+        test_data = None
+        test_labels = None
+        for train_index, test_index in split_t.split(data, label_values):
+            train_data = data[train_index]
+            train_labels = label_values[train_index]
+            test_data = data[test_index]
+            test_labels = label_values[test_index]
 
-    print("Training Naive Bayes")
-    start = timer()
-    symptom_clf = naive_bayes.BernoulliNB()
-    gender_clf = naive_bayes.BernoulliNB()
-    race_clf = naive_bayes.MultinomialNB()
-    age_clf = naive_bayes.GaussianNB()
+        end = timer()
+        logger.log("Shuffling Data: %.5f secs" % (end - start))
 
-    classifier_map = [
-        [gender_clf, [0, False]],
-        [race_clf, [1, False]],
-        [age_clf, [2, False]],
-        [symptom_clf, [(3, None), True]],
-    ]
+        logger.log("Training Naive Bayes")
+        start = timer()
+        symptom_clf = naive_bayes.BernoulliNB()
+        gender_clf = naive_bayes.BernoulliNB()
+        race_clf = naive_bayes.MultinomialNB()
+        age_clf = naive_bayes.GaussianNB()
 
-    clf = models.ThesisSparseNaiveBayes(classifier_map=classifier_map, classes=classes)
+        classifier_map = [
+            [gender_clf, [0, False]],
+            [race_clf, [1, False]],
+            [age_clf, [2, False]],
+            [symptom_clf, [(3, None), True]],
+        ]
 
-    clf.fit(train_data, train_labels)
-    end = timer()
-    print("Training Naive Classifier: %.5f secs" % (end - start))
+        clf = models.ThesisSparseNaiveBayes(classifier_map=classifier_map, classes=classes)
 
-    print("Calculating Accuracy")
-    start = timer()
+        clf.fit(train_data, train_labels)
+        end = timer()
+        logger.log("Training Naive Classifier: %.5f secs" % (end - start))
 
-    scorers = report.get_tracked_metrics(classes=classes)
-    train_results = {
-        "name": "Naive Bayes Classifier",
-    }
+        logger.log("Calculating Accuracy")
+        start = timer()
 
-    for key, scorer in scorers.items():
-        train_score = scorer(clf, train_data, train_labels)
-        test_score = scorer(clf, test_data, test_labels)
-        train_results[key] = {
-            "train": train_score,
-            "test": test_score
+        scorers = report.get_tracked_metrics(classes=classes)
+        train_results = {
+            "name": "Naive Bayes Classifier",
         }
 
-    end = timer()
-    print("Calculating Accuracy: %.5f secs" % (end - start))
+        for key, scorer in scorers.items():
+            train_score = scorer(clf, train_data, train_labels)
+            test_score = scorer(clf, test_data, test_labels)
+            train_results[key] = {
+                "train": train_score,
+                "test": test_score
+            }
 
-    train_results_file = os.path.join(output_dir, "nb_train_results_sparse.json")
-    with open(train_results_file, "w") as fp:
-        json.dump(train_results, fp, indent=4)
+        end = timer()
+        logger.log("Calculating Accuracy: %.5f secs" % (end - start))
 
-    estimator_serialized = {
-        "clf": clf.serialize(),
-        "name": "naive bayes classifier on sparse"
-    }
-    estimator_serialized_file = os.path.join(output_dir, "nb_serialized_sparse.joblib")
-    joblib.dump(estimator_serialized, estimator_serialized_file)
+        train_results_file = os.path.join(output_dir, "nb_train_results_sparse.json")
+        with open(train_results_file, "w") as fp:
+            json.dump(train_results, fp, indent=4)
 
-    finish = timer()
-    print("Completed Naive Classification: %.5f secs" % (finish - begin))
-    return True
+        estimator_serialized = {
+            "clf": clf.serialize(),
+            "name": "naive bayes classifier on sparse"
+        }
+        estimator_serialized_file = os.path.join(output_dir, "nb_serialized_sparse.joblib")
+        joblib.dump(estimator_serialized, estimator_serialized_file)
+
+        finish = timer()
+        print("Completed Naive Classification: %.5f secs" % (finish - begin))
+        res = True
+    except Exception as e:
+        message = e.__str__()
+        logger.log(message, logging.ERROR)
+        res = False
+
+    print(logger.to_string())
+    return res
+
 
 
 if __name__ == "__main__":
