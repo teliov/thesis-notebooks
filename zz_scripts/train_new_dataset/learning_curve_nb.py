@@ -72,7 +72,7 @@ def learning_curve_nb(data_file, symptoms_db_json, output_dir, num_splits=5, sco
                        train_sizes=train_sizes,
                        scoring=scorer, n_jobs=num_jobs,
                        pre_dispatch='n_jobs/2', verbose=0,
-                       shuffle=True, return_times=True)
+                       shuffle=False, return_times=True)
         end = timer()
         logger.log("Evaluating Naive Bayes Learning Curve with : %s and %d splits: %.5f secs" % (scorer_name, num_splits, (end - start)))
 
