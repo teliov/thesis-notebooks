@@ -88,12 +88,16 @@ def train_nb(data_file, symptoms_db_json, output_dir):
         for key, scorer in scorers.items():
             if key == report.TOP2_SCORE or key == report.TOP5_SCORE:
                 continue
+            logger.log("Starting Score: %s" % key)
+            scorer_timer_start = timer()
             train_score = scorer(clf, train_data, train_labels)
             test_score = scorer(clf, test_data, test_labels)
             train_results[key] = {
                 "train": train_score,
                 "test": test_score
             }
+            duration = timer() - scorer_timer_start
+            logger.log("Finished score: %s.\nTook: %.5f seconds\nTrain: %.5f\n Test: %.5f" % (key, duration, train_score, test_score))
             break
 
         end = timer()
