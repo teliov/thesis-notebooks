@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J l_curve
-#SBATCH -o nb.%j.out
+#SBATCH -o lcv.%j.out
 #SBATCH -p general
 #SBATCH --cpus-per-task=16
 #SBATCH --nodes=1
