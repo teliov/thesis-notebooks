@@ -94,6 +94,7 @@ def train_nb(data_file, symptoms_db_json, output_dir):
                 "train": train_score,
                 "test": test_score
             }
+            break
 
         end = timer()
         logger.log("Calculating Accuracy: %.5f secs" % (end - start))
