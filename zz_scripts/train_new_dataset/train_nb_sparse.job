@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J train_random_forest
+#SBATCH -J train_nb
 #SBATCH -o nb.%j.out
 #SBATCH -p general
 #SBATCH --cpus-per-task=8

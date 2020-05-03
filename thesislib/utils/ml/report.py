@@ -1,7 +1,20 @@
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, make_scorer, accuracy_score, \
+    f1_score, recall_score, precision_score, roc_auc_score
 from tabulate import tabulate
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+
+ACCURACY_SCORE = 'accuracy'
+F1_UNWEIGHTED = 'f1_unweighted'
+F1_WEIGHTED = 'f1_weighted'
+RECALL_UNWEIGHTED = 'recall_unweighted'
+RECALL_WEIGHTED = 'recall_weighted'
+PRECISION_UNWEIGHTED = 'precision_unweighted'
+PRECISION_WEIGHTED = 'precision_weighted'
+ROC_UNWEIGHTED = 'roc_auc_unweighted'
+ROC_WEIGHTED = 'roc_auc_weighted'
+TOP2_SCORE = 'top_2'
+TOP5_SCORE = 'top52'
 
 
 def pretty_print_confusion_matrix(target, predicted, label_map):
@@ -67,3 +80,37 @@ def top_n_score(y_target, y_pred, class_labels, top_n=10, weighted=True):
 
     score = sum(combined) if not weighted else sum(combined)/combined.shape[0]
     return score
+
+
+def get_tracked_metrics(classes, metric_name=None):
+
+    accuracy_scorer = make_scorer(accuracy_score)
+    f1_scorer_unweighted = make_scorer(f1_score, average='macro')
+    f1_scorer_weighted = make_scorer(f1_score, average='weighted')
+    recall_scorer_unweighted = make_scorer(recall_score, average='macro')
+    recall_scorer_weighted = make_scorer(recall_score, average='weighted')
+    precision_scorer_unweighted = make_scorer(precision_score, average='macro', zero_division=1)
+    precision_scorer_weighted = make_scorer(precision_score, average='weighted', zero_division=1)
+    roc_auc_scorer_unweighted = make_scorer(roc_auc_score, average='macro', multi_class='ovo', needs_proba=True)
+    roc_auc_scorer_weighted = make_scorer(roc_auc_score, average='weighted', multi_class='ovr', needs_proba=True)
+    top_2_scorer = make_scorer(top_n_score, needs_proba=True, class_labels=classes, top_n=2)
+    top_5_scorer = make_scorer(top_n_score, needs_proba=True, class_labels=classes, top_n=5)
+
+    metrics = {
+        'top_2': top_2_scorer,
+        'top_5': top_5_scorer,
+        'accuracy': accuracy_scorer,
+        'f1_unweighted': f1_scorer_unweighted,
+        'f1_weighted': f1_scorer_weighted,
+        'recall_unweighted': recall_scorer_unweighted,
+        'recall_weighted': recall_scorer_weighted,
+        'precision_unweighted': precision_scorer_unweighted,
+        'precision_weighted': precision_scorer_weighted,
+        'roc_auc_unweighted': roc_auc_scorer_unweighted,
+        'roc_auc_weighted': roc_auc_scorer_weighted
+    }
+
+    if metric_name is not None:
+        return metrics.get(metric_name, None)
+
+    return metrics
