@@ -86,19 +86,21 @@ def train_nb(data_file, symptoms_db_json, output_dir):
         }
 
         for key, scorer in scorers.items():
-            if key == report.TOP2_SCORE or key == report.TOP5_SCORE:
-                continue
             logger.log("Starting Score: %s" % key)
-            scorer_timer_start = timer()
+            scorer_timer_train = timer()
             train_score = scorer(clf, train_data, train_labels)
+            scorer_timer_test = timer()
             test_score = scorer(clf, test_data, test_labels)
             train_results[key] = {
                 "train": train_score,
                 "test": test_score
             }
-            duration = timer() - scorer_timer_start
-            logger.log("Finished score: %s.\nTook: %.5f seconds\nTrain: %.5f\n Test: %.5f" % (key, duration, train_score, test_score))
-            break
+            scorer_timer_end = timer()
+            train_duration = scorer_timer_test - scorer_timer_train
+            test_duration = scorer_timer_end - scorer_timer_test
+            duration = scorer_timer_end - scorer_timer_train
+            logger.log("Finished score: %s.\nTook: %.5f seconds\nTrain: %.5f, %.5f secs\n Test: %.5f, %.5f secs"
+                       % (key, duration, train_score, train_duration, test_score, test_duration))
 
         end = timer()
         logger.log("Calculating Accuracy: %.5f secs" % (end - start))
@@ -115,7 +117,7 @@ def train_nb(data_file, symptoms_db_json, output_dir):
         joblib.dump(estimator_serialized, estimator_serialized_file)
 
         finish = timer()
-        print("Completed Naive Classification: %.5f secs" % (finish - begin))
+        logger.log("Completed Naive Classification: %.5f secs" % (finish - begin))
         res = True
     except Exception as e:
         message = e.__str__()
