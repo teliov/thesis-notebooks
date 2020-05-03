@@ -65,13 +65,12 @@ def learning_curve_nb(data_file, symptoms_db_json, output_dir, num_splits=5, sco
 
         scorer = report.get_tracked_metrics(metric_name=scorer_name, classes=classes)
 
-        num_jobs = 4
+        num_jobs = 2
 
         train_sizes = np.linspace(0.1, 1, num_splits)
         train_sizes_abs, train_scores, test_scores, fit_times, score_times = learning_curve(clf, data, label_values,
-                       train_sizes=train_sizes,
-                       scoring=scorer, n_jobs=num_jobs,
-                       pre_dispatch='n_jobs/2', verbose=0,
+                       train_sizes=train_sizes, cv=3, pre_dispatch="n_jobs",
+                       scoring=scorer, n_jobs=num_jobs, verbose=0,
                        shuffle=False, return_times=True)
         end = timer()
         logger.log("Evaluating Naive Bayes Learning Curve with : %s and %d splits: %.5f secs" % (scorer_name, num_splits, (end - start)))
