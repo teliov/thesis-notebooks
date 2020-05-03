@@ -17,7 +17,7 @@ PRECISION_WEIGHTED = 'precision_weighted'
 ROC_UNWEIGHTED = 'roc_auc_unweighted'
 ROC_WEIGHTED = 'roc_auc_weighted'
 TOP2_SCORE = 'top_2'
-TOP5_SCORE = 'top52'
+TOP5_SCORE = 'top_5'
 
 
 def pretty_print_confusion_matrix(target, predicted, label_map):
