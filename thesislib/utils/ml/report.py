@@ -103,6 +103,9 @@ def get_tracked_metrics(classes, metric_name=None):
     }
 
     if metric_name is not None:
+        if type(metric_name) is list:
+            return {key: metrics.get(key, None) for key in metric_name}
+
         return metrics.get(metric_name, None)
 
     return metrics

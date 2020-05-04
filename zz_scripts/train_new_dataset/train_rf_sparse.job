@@ -11,5 +11,4 @@ source /shares/bulk/oagba/work/medvice-parser/activate
 
 python train_rf_sparse.py --data "/shares/bulk/oagba/data/output_basic_5k/symptoms/csv/parsed/train.csv_sparse.csv" \
     --output_dir "/home/oagba/bulk/data/output_basic_5k/symptoms/csv/training/random_forest" \
-    --symptoms_json "/shares/bulk/oagba/data/kk/json/symptom_db.json" \
-    --conditions_json "/shares/bulk/oagba/data/kk/json/condition_db.json"
+    --symptoms_json "/shares/bulk/oagba/data/kk/json/symptom_db.json"
