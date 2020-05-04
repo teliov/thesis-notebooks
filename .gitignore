@@ -13,7 +13,6 @@ zz_scripts/**/pyvenv.cfg
 */**/venv
 *.out
 *.swp
-*/**/run_batch
-!*/**/run_batch/.gitkeep
-*/**/proc_batch
+*/**/run_batch/*
+*/**/proc_batch/*
 !*/**/proc_batch/*.sh
