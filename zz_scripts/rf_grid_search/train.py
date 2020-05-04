@@ -116,7 +116,8 @@ def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
             json.dump(train_results, fp)
 
         res = True
-    except Exception:
+    except Exception as e:
+        print(e.__str__())
         res = False
 
     return res
