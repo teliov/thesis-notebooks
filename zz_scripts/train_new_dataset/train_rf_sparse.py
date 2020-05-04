@@ -58,7 +58,7 @@ def train_rf(data_file, symptoms_db_json, output_dir):
 
         logger.log("Training RF Classifier")
         start = timer()
-        clf = RandomForestClassifier(n_estimators=5,
+        clf = RandomForestClassifier(n_estimators=100,
                                      criterion='gini',
                                      max_depth=190,
                                      min_samples_split=100,
