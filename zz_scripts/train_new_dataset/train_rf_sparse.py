@@ -139,23 +139,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Medvice RandomForest Trainer')
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
-    parser.add_argument('--conditions_json', help='Path to conditions db.json')
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
 
     args = parser.parse_args()
     data_file = args.data
     output_dir = args.output_dir
     symptoms_db_json = args.symptoms_json
-    conditions_db_json = args.conditions_json
 
     if not os.path.isfile(data_file):
         raise ValueError("data file does not exist")
 
     if not os.path.isfile(symptoms_db_json):
         raise ValueError("Invalid symptoms db file passed")
-
-    if not os.path.isfile(conditions_db_json):
-        raise ValueError("Invalid conditions db file passed")
 
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
