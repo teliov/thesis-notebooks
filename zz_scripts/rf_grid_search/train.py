@@ -5,18 +5,17 @@ import json
 import os
 import argparse
 from timeit import default_timer as timer
-from thesislib.utils.ml import models, report
 import pickle
 import sys
-
+from thesislib.utils.ml import models, report
 
 class RFParams(object):
-    n_estimators = 100,
-    criterion = 'gini',
-    max_depth = None,
-    min_samples_split = 2,
-    min_samples_leaf = 1,
-    max_leaf_nodes = None,
+    n_estimators = 100
+    criterion = 'gini'
+    max_depth = None
+    min_samples_split = 2
+    min_samples_leaf = 1
+    max_leaf_nodes = None
     max_features = 'auto'
 
     def get_params(self):
@@ -136,10 +135,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Medvice RandomForest Trainer')
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
-    parser.add_argument('--max_depth', default=None)
+    parser.add_argument('--max_depth')
     parser.add_argument('--min_samples_split', type=int, default=2)
     parser.add_argument('--min_samples_leaf', type=int, default=1)
-    parser.add_argument('--max_leaf_nodes', type=int, default=1)
+    parser.add_argument('--max_leaf_nodes')
     parser.add_argument('--max_features', default="auto")
     parser.add_argument('--estimators', default=100, type=int)
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
@@ -159,10 +158,10 @@ if __name__ == "__main__":
         os.mkdir(output_dir)
 
     rfparams = RFParams()
-    rfparams.max_depth = args.max_depth
+    rfparams.max_depth = int(args.max_depth) if args.max_depth else args.max_depth
     rfparams.min_samples_split = args.min_samples_split
     rfparams.min_samples_leaf = args.min_samples_leaf
-    rfparams.max_leaf_nodes = args.max_leaf_nodes
+    rfparams.max_leaf_nodes = int(args.max_leaf_nodes) if args.max_leaf_nodes else args.max_leaf_nodes
     rfparams.max_features = args.max_features
     rfparams.n_estimators = args.estimators
 
