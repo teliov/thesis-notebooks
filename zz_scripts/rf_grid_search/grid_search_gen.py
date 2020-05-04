@@ -22,7 +22,7 @@ for mxdepth in max_depth:
 
 JOB_TPL = """#!/bin/bash
 #SBATCH -J gs_rf
-#SBATCH -o rf.%j.out
+#SBATCH -o gs.%j.out
 #SBATCH -p general
 #SBATCH --cpus-per-task=8
 #SBATCH --nodes=1

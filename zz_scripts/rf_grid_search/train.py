@@ -158,7 +158,7 @@ if __name__ == "__main__":
         os.mkdir(output_dir)
 
     rfparams = RFParams()
-    rfparams.max_depth = args.max_depath
+    rfparams.max_depth = args.max_depth
     rfparams.min_samples_split = args.min_samples_split
     rfparams.min_samples_leaf = args.min_samples_leaf
     rfparams.max_leaf_nodes = args.max_leaf_nodes
