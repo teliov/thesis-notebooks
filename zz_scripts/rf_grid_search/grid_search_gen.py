@@ -26,7 +26,7 @@ JOB_TPL = """#!/bin/bash
 #SBATCH -p general
 #SBATCH --cpus-per-task=8
 #SBATCH --nodes=1
-#SBATCH -t 02:00:00
+#SBATCH -t 06:00:00
 #SBATCH --mem  90G
 
 source /shares/bulk/oagba/work/medvice-parser/activate
