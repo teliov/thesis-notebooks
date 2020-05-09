@@ -11,14 +11,14 @@ import logging
 
 
 class RFParams(object):
-    n_estimators = 100,
+    n_estimators = 20,
     criterion = 'gini',
-    max_depth = None,
+    max_depth = 380,
     min_samples_split = 2,
-    min_samples_leaf = 1,
+    min_samples_leaf = 2,
     max_leaf_nodes = None,
     min_impurity_decrease = 0.0
-    max_features = 'auto'
+    max_features = 'log2'
 
 
 def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
@@ -98,12 +98,13 @@ def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
 
         scorers = report.get_tracked_metrics(classes=classes, metric_name=[
             report.ACCURACY_SCORE,
-            report.TOP2_SCORE,
+            report.PRECISION_WEIGHTED,
+            report.RECALL_WEIGHTED,
             report.TOP5_SCORE
         ])
 
         train_results = {
-            "name": "Naive Bayes Classifier",
+            "name": "Random Forest",
         }
 
         for key, scorer in scorers.items():
@@ -126,7 +127,7 @@ def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
         end = timer()
         logger.log("Calculating Accuracy: %.5f secs" % (end - start))
 
-        train_results_file = os.path.join(output_dir, "rf_train_results_sparse_grid_search.json")
+        train_results_file = os.path.join(output_dir, "rf_train_results_sparse_grid_search_best.json")
         with open(train_results_file, "w") as fp:
             json.dump(train_results, fp)
 
@@ -134,7 +135,7 @@ def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
             "clf": clf,
             "name": "random forest classifier on sparse"
         }
-        estimator_serialized_file = os.path.join(output_dir, "rf_serialized_sparse_grid_search.joblib")
+        estimator_serialized_file = os.path.join(output_dir, "rf_serialized_sparse_grid_search_best.joblib")
         joblib.dump(estimator_serialized, estimator_serialized_file)
 
         finish = timer()
