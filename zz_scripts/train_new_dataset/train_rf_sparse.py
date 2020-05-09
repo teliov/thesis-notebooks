@@ -169,4 +169,5 @@ if __name__ == "__main__":
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json)
+    rfparams = RFParams()
+    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, rfparams=rfparams)
