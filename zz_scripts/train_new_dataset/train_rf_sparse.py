@@ -17,7 +17,7 @@ class RFParams(object):
     min_samples_split = 2,
     min_samples_leaf = 2,
     max_leaf_nodes = None,
-    min_impurity_decrease = 0.0
+    min_impurity_decrease = 0.0,
     max_features = 'log2'
 
 
