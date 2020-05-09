@@ -114,11 +114,12 @@ Delft University of Technology \\ % Your institution for the title page
 %------------------------------------------------
 \subsection{Baseline Data Generation}
 \begin{frame}
-\frametitle{Illness Sample Space}
+\frametitle{Sample Space}
 \begin{itemize}
 	\item 801 Conditions i.e diseases
 	\item 376 Symptoms
 	\item Assumption: these conditions and symptoms capture the "illness" space
+	\item Age, Gender and Race also captured
 \end{itemize}
 \end{frame}
 
@@ -128,6 +129,7 @@ Delft University of Technology \\ % Your institution for the title page
 	\item Generate Synthea compatible modules from Symcat data
 	\item Use generated modules with Synthea Generator
 	\item Use Symcat data as is i.e no modifications, plug and play
+	\item Generated 5 Million conditions for the baseline
 \end{itemize}
 \end{frame}
 
@@ -135,62 +137,29 @@ Delft University of Technology \\ % Your institution for the title page
 \begin{frame}
 \frametitle{Naive Bayes on Baseline}
 \begin{itemize}
-	\item What is Synthea?
-	\begin{itemize}
-			\item \textit{A Synthetic Patient Population Simulator}
-			\item Can generate \textit{realistic} Patient data
-	\end{itemize}
-	\item Expressive generic module framework, able to capture patient/condition descriptive statistics e.g.:
-		\begin{itemize}
-			\item Disease prevalence in different races, gender, etc.
-			\item Typical disease duration, treatment procedures, etc.
-		\end{itemize}
-	\item Open source, user contributed modules for almost 100 conditions
-	\item But ...
+	\item Naive Bayes (N.B.) assumes conditional independence among features
+	\item Features in this case include gender, age, race and all symptoms
+	\item No hyper-parameters to be optimized
 \end{itemize}
 \end{frame}
 
-\subsection{Ideal Generator}
 \begin{frame}
-\frametitle{Gathering Data: Ideal Generator}
+\frametitle{Learning Curve: Naive Bayes on Baseline}
 \begin{itemize}
-	\item Synthea more focused on interaction between patient, health care providers and payment providers
-	\item Symptomatic description missing from most modeled conditions.
-	\item And where symptoms are present, statistical expression is very limited.
-	\item An Ideal generator would model:
-		\begin{itemize}
-			\item Patient information
-			\item Medical conditions
-			\item Statistical relationship between conditions and presented symptoms
-		\end{itemize}
-	\item What if these statistical relationships exist ?
-		\begin{itemize}
-			\item Encode statistical relationships using Synthea expression
-			\item Generate generic modules for conditions which capture this relationship with symptoms
-		\end{itemize}
-	\item Enter Symcat!
+	\item Naive Bayes (N.B.) assumes conditional independence among features
+	\item Features in this case include gender, age, race and all symptoms
+	\item No hyper-parameters to be optimized
 \end{itemize}
 \end{frame}
 
-\subsection{Symcat with Synthea}
 \begin{frame}
-\frametitle{Gathering Data: Symcat with Synthea}
-\begin{itemize}
-	\item What is Symcat?
-		\begin{itemize}
-			\item \textit{A disease calculator that uses hundreds of thousands of patient records to estimate probability of disease}
-			\item Openly available probabilistic relationships between diseases and their symptoms
-			\item e.g how likely would a symptom $s_i$ be presented for a condition $C_j$
-			\item Data available for 801 conditions with 474 symptoms
-		\end{itemize}
-	\item With this data, as stated previously:
-		\begin{itemize}
-			\item Encode relationship using Synthea's expressive logic.
-			\item Generate Synthea modules with this data.
-			\item Generate patient data using these new modules.
-		\end{itemize}
-\end{itemize}
+\frametitle{Learning Curve: Naive Bayes on Baseline}
+\begin{figure}
+	\includegraphics[width=0.7\linewidth]{figs/nb_lc_baseline.pdf}
+	\caption{Learning Curve (Accuracy) for Naive Bayes}
+\end{figure}
 \end{frame}
+
 
 \subsection{Selecting  Samples}
 	\begin{frame}
