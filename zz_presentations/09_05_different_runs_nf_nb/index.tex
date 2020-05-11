@@ -144,20 +144,89 @@ Delft University of Technology \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-\frametitle{Learning Curve: Naive Bayes on Baseline}
-\begin{itemize}
-	\item Naive Bayes (N.B.) assumes conditional independence among features
-	\item Features in this case include gender, age, race and all symptoms
-	\item No hyper-parameters to be optimized
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Learning Curve: Naive Bayes on Baseline}
+\frametitle{Learning Curve (accuracy): Naive Bayes on Baseline}
 \begin{figure}
 	\includegraphics[width=0.7\linewidth]{figs/nb_lc_baseline.pdf}
 	\caption{Learning Curve (Accuracy) for Naive Bayes}
 \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Learning Curve (precision): Naive Bayes on Baseline}
+\begin{figure}
+	\includegraphics[width=0.7\linewidth]{figs/nb_lc_prec_baseline.pdf}
+	\caption{Learning Curve (Precision) for Naive Bayes}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Naive Bayes on Baseline: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Metric               & Train  & Validation \\ \hline
+		Accuracy             & 0.5897 & 0.5893     \\ \hline
+		Top 2 Accuracy       & 0.7090 & 0.7081     \\ \hline
+		Top 5 Accuracy       & 0.8416 & 0.8411     \\ \hline
+		F1 Unweighted        & 0.5711 & 0.5702     \\ \hline
+		F1 Weighted          & 0.5858 & 0.5853     \\ \hline
+		Recall Unweighted    & 0.5584 & 0.5578     \\ \hline
+		Recall Weighted      & 0.5897 & 0.5893     \\ \hline
+		Precision Unweighted & 0.7053 & 0.7079     \\ \hline
+		Precision Weighted   & 0.6743 & 0.6773     \\ \hline
+	\end{tabular}
+	\caption{Baseline Naive Bayes Metric Summary}
+	\label{table:tab_1}
+\end{table}
+\end{frame}
+
+\subsection{Random Forest on Baseline} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\begin{frame}
+\frametitle{Random Forest on Baseline}
+\begin{itemize}
+	\item Random Forest (RF) uses an ensemble of trees to learn different "\textit{selections}" of the data
+	\item Trees vote on the most probable class
+	\item Using sci-kit learn implementation - quite a number of hyper parameters to be optimized
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Random Forest on Baseline: Hyper-parameter Optimization}
+\begin{itemize}
+	\item Run a Grid Search on Hyper Parameter Space
+	\item Aim is to maximize validation score with "\textit{reasonable}" model size (in MB) and train time (seconds)
+	\item Targets for consideration must be within 1\% of best validation score
+	\item Select optimal parameter combination using a weighted metric and maximize:
+	$$
+	metric = 2 * test\_score - 0.1*train\_time - 0.1 * model\_size 
+	$$
+	\item All parameters have been normalized
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Random Forest on Baseline: Hyper-parameter Optimization}
+\begin{figure}
+	\includegraphics[width=0.6\linewidth]{figs/rf_hyper_pareto_val_size.pdf}
+	\caption{Random Forest Hyper-Parameter Optimization: Validation Score vs Model Size}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Random Forest on Baseline: Hyper-parameter Optimization}
+\begin{figure}
+	\includegraphics[width=0.6\linewidth]{figs/rf_hyper_pareto_val_time.pdf}
+	\caption{Random Forest Hyper-Parameter Optimization: Validation Score vs Time}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Random Forest on Baseline: Hyper-parameter Optimization}
+\begin{itemize}
+	\item Previous slides show that larger trees which in turn take longer to train do not produce best results
+	\item Also after a point, improvement in accuracy is no longer proportional to increased model size/ train time
+	\item Using weighted metric, hyper-parameter set selected was within 0.5\% of best test score but with a 32\% reduction in model size and 59\% reduction in train time.
+\end{itemize}
 \end{frame}
 
 
