@@ -10,8 +10,8 @@ import sys
 import logging
 
 
-def train_nb(data_file, symptoms_db_json, output_dir):
-    logger = report.Logger("Naive Bayes Classification on QCE")
+def train_nb(data_file, symptoms_db_json, output_dir, name=""):
+    logger = report.Logger("Naive Bayes %s Classification on QCE" %name)
 
     try:
         message = "Starting Naive Bayes Classification"
@@ -140,11 +140,13 @@ if __name__ == "__main__":
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
+    parser.add_argument('--name', type=str, default="")
 
     args = parser.parse_args()
     data_file = args.data
     output_dir = args.output_dir
     symptoms_db_json = args.symptoms_json
+    name = args.name
 
     if not os.path.isfile(data_file):
         raise ValueError("data file does not exist")
@@ -155,4 +157,4 @@ if __name__ == "__main__":
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    train_nb(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json)
+    train_nb(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, name=name)
