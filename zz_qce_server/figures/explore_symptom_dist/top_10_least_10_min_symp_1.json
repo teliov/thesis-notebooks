@@ -1,0 +1,86 @@
+{
+    "top_10": {
+        "0b2ac3ff10cbd5a730f0857c87ad19e7ae1aa8d2a594e9887cb702ff": {
+            "name": "Ependymoma",
+            "count": 4279
+        },
+        "4336ed5450e34a4c047265e1d333d067ad5e4330f5213f4faa8323af": {
+            "name": "Pulmonic valve disease",
+            "count": 4272
+        },
+        "7bb6ee9d729ad1dacc50d62e8be4394b9cfa3395d155a67c8588b12b": {
+            "name": "Myoclonus",
+            "count": 4221
+        },
+        "7ee012661d2f0ac6ea5313ce46706f6b3c357ddcd28ab0383bfd2d90": {
+            "name": "Patau syndrome",
+            "count": 4205
+        },
+        "8ce6989a407d4fd667009cfee478135b5e16debcc3bab1576bbbecc5": {
+            "name": "Vitamin B deficiency",
+            "count": 4185
+        },
+        "f68e6cffafafad60adabd72947a7c2ea5ea7ef520ac7cf320a687404": {
+            "name": "Subdural hemorrhage",
+            "count": 4174
+        },
+        "472a2b9859828acbec9b30870470867896ca7a6a701194b7868d7837": {
+            "name": "Syndrome of inappropriate secretion of ADH (SIADH)",
+            "count": 4162
+        },
+        "c551d17238311385a009c8f495481a22260f3c37c797cfe6d23003be": {
+            "name": "Lymphoma",
+            "count": 4148
+        },
+        "a69e85ba32fcd5a08dfab476207a0e8449da55811c6ed2e56152a1be": {
+            "name": "Meckel diverticulum",
+            "count": 4141
+        },
+        "f9765ab3da1bd40f35c840e99148eeea462cf866dd47f16ffb620ce1": {
+            "name": "Postoperative infection",
+            "count": 4135
+        }
+    },
+    "least_10": {
+        "44a967ff79a88969f8917f066bc2c2b5b7d118c723d4b02f6bf9c398": {
+            "name": "Cysticercosis",
+            "count": 321
+        },
+        "a4b6bc214e89247d7c1aad0658b07086229a0d68f17bab0b6987b5a8": {
+            "name": "Sickle cell anemia",
+            "count": 626
+        },
+        "7a35dfcd6d68c18cec2536cceeb60abb071a3d92df0e1a56309a3861": {
+            "name": "Sickle cell crisis",
+            "count": 627
+        },
+        "8e77fa86cee3e4e2ecfa8940475470709a18b29256954fcbf5e8de43": {
+            "name": "Chagas disease",
+            "count": 707
+        },
+        "3b28b2b953b79dd7277e2957fe3a90e1f1ae06329bb9ed3a03c8e669": {
+            "name": "Typhoid fever",
+            "count": 927
+        },
+        "839187e844f11167d516d493def00dcaf1a1edb2fd347344af8dee88": {
+            "name": "G6PD enzyme deficiency",
+            "count": 1347
+        },
+        "31adc9b6e42d96012544cb75589de222b278bf702c0b2e7e189d648a": {
+            "name": "Cryptococcosis",
+            "count": 1486
+        },
+        "2e9aa5e5fb0681f2b9767d574d189f8f01dcf685fdc5a9668cf07827": {
+            "name": "Trichomonas infection",
+            "count": 1541
+        },
+        "31cb7b68df60a99dd50af937a6737023d4f68216868635ba9ffd17f1": {
+            "name": "Acute fatty liver of pregnancy (AFLP)",
+            "count": 1736
+        },
+        "b4b34ee8761d1cc1c2f9910e35e40e1199b043f35207b3e61b290d2e": {
+            "name": "Uterine fibroids",
+            "count": 1838
+        }
+    }
+}
