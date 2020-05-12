@@ -166,14 +166,9 @@ Delft University of Technology \\ % Your institution for the title page
 		\hline
 		Metric               & Train  & Validation \\ \hline
 		Accuracy             & 0.5897 & 0.5893     \\ \hline
-		Top 2 Accuracy       & 0.7090 & 0.7081     \\ \hline
-		Top 5 Accuracy       & 0.8416 & 0.8411     \\ \hline
-		F1 Unweighted        & 0.5711 & 0.5702     \\ \hline
-		F1 Weighted          & 0.5858 & 0.5853     \\ \hline
-		Recall Unweighted    & 0.5584 & 0.5578     \\ \hline
-		Recall Weighted      & 0.5897 & 0.5893     \\ \hline
-		Precision Unweighted & 0.7053 & 0.7079     \\ \hline
 		Precision Weighted   & 0.6743 & 0.6773     \\ \hline
+		Recall Weighted      & 0.5897 & 0.5893     \\ \hline
+		Top 5 Accuracy       & 0.8416 & 0.8411     \\ \hline
 	\end{tabular}
 	\caption{Baseline Naive Bayes Metric Summary}
 	\label{table:tab_1}
@@ -225,334 +220,40 @@ Delft University of Technology \\ % Your institution for the title page
 \begin{itemize}
 	\item Previous slides show that larger trees which in turn take longer to train do not produce best results
 	\item Also after a point, improvement in accuracy is no longer proportional to increased model size/ train time
-	\item Using weighted metric, hyper-parameter set selected was within 0.5\% of best test score but with a 32\% reduction in model size and 59\% reduction in train time.
+	\item Using weighted metric, hyper-parameter set selected was within 0.5\% of best validation score but with a 32\% reduction in model size and 59\% reduction in train time.
 \end{itemize}
 \end{frame}
 
-
-\subsection{Selecting  Samples}
-	\begin{frame}
-	\frametitle{Gathering Data: Selecting  Samples}
-	\begin{itemize}
-		\item As a start, take a small set of conditions for initial evaluation
-		\item Samples chosen initially from conditions which originally had symptomatic relationship in Simple-Synthea (i.e. without Symcat probabilistic enrichment) 
-	\end{itemize}
-	\end{frame}
-
-	\subsubsection{Simple-Synthea Samples}
-		\begin{frame}
-		\frametitle{Gathering Data: Simple-Synthea  Samples}
-		\begin{itemize}
-			\item 11 conditions from Simple-Synthea with symptoms expressed
-			\begin{itemize}
-				\item Pharyngitis, Strep throat, Bronchitis, Sinusitis (Acute, Chronic, Viral)
-				\item Adult Asthma, Childhood Asthma
-				\item Urinary Tract Infections (UTI): Escherichia coli, Cystitis and Pyelonephritis
-			\end{itemize}
-			\item Each sample in the dataset consists of:
-				\begin{itemize}
-					\item Patient gender, race, age at time of diagnosis
-					\item Symptoms presented for the condition
-				\end{itemize}
-			\item Due to limited statistical expression of condition-symptom relations in Simple-Synthea
-				\begin{itemize}
-					\item All patients with the same condition have the exact same symptoms
-					\item Too ideal (a.ka. unrealistic)
-				\end{itemize}
-			\item Exact symptom vector match for certain conditions:
-			\begin{itemize}
-				\item The different types of UTI's
-				\item The different types of Sinusitis
-				\item The different types of Asthma
-			\end{itemize}
-		\end{itemize}
-		\end{frame}
-	
-	\begin{frame}
-		\frametitle{Gathering Data: Simple-Synthea Samples}
-		\begin{itemize}
-			\item 11 Conditions
-			\item 29 Symptoms
-			\item Includes patient age, gender and race
-			\item 94577 cases
-		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}
-		\frametitle{Gathering Data: Simple-Synthea  Samples}
-		\begin{table}
-			\begin{tabular}{l l}
-				\toprule
-				\textbf{Condition} & \textbf{Count}\\
-				\midrule
-				Viral Sinusitis &45361  \\
-				Acute Viral Sinusitis & 26275 \\
-				Acute Bronchitis & 8163 \\
-				Streptococcal sore throat  & 7669 \\
-				Acute Bacterial Sinusitis & 2650 \\
-				Sinusitis & 2388 \\
-				Escherichia coli & 1142 \\
-				Cystitis &  672 \\
-				Childhood asthma &226 \\
-				Pyelonephritis &  21 \\
-				Asthma &  10  \\
-				\bottomrule
-			\end{tabular}
-			\caption{Conditions generated from Simple-Synthea with their count occurrence }
-		\end{table}
-	\end{frame}
-
-	\begin{frame}
-	\frametitle{Gathering Data: Simple-Synthea  Samples}
-	\begin{table}
-		\begin{tabular}{l l}
-			\toprule
-			\textbf{Attribute} & \textbf{Value}\\
-			\midrule
-			age&34\\
-			gender&female\\
-			race&white\\
-			nasal\_discharge&1\\
-			odor\_of\_urine&0\\
-			nasal\_congestion&1\\
-			facial\_swelling&1\\
-			pain\_with\_bright\_lights&1\\
-			diarrhea&0\\
-			mucus&0\\
-			cough&1\\
-			... & ... \\
-			headache&1\\
-			\bottomrule
-		\end{tabular}
-		\caption{Vector for a Case of Viral Sinusitis}
-	\end{table}
+\begin{frame}
+\frametitle{Learning Curve (accuracy): Random Forest on Baseline}
+\begin{figure}
+	\includegraphics[width=0.7\linewidth]{figs/rf_lc_baseline.pdf}
+	\caption{Learning Curve (Accuracy) for Random Forest}
+\end{figure}
 \end{frame}
-	
-	\subsubsection{Symcat-Synthea Samples}
-	\begin{frame}
-	\frametitle{Gathering Data: Symcat-Synthea Samples}
-	\begin{itemize}
-		\item Conditions chosen to match those from Simple-Synthea Samples
-		\begin{itemize}
-			\item Pharyngitis, Strep throat, Bronchitis, Sinusitis (Acute, Chronic)
-			\item Asthma
-			\item Urinary Tract Infections (UTI): Urethritis, Cystitis and Pyelonephritis
-		\end{itemize}
-		\item Each sample in the dataset consists of:
-		\begin{itemize}
-			\item Patient gender, race, age at time of diagnosis
-			\item Symptoms presented for the condition
-		\end{itemize}
-		\item Patients with the same condition can present with different symptoms
-		\item Patients with similar conditions (e.g respiratory conditions, UTI) can have a significant overlap of symptoms, sometimes even the same symptoms for similar conditions
-		\item More \textit{realistic}
-	\end{itemize}
-	\end{frame}
-
-	\begin{frame}
-		\frametitle{Gathering Data: Symcat-Synthea Samples}
-		\begin{itemize}
-			\item 9 Conditions
-			\item 46 Symptoms
-			\item Includes patient age, gender and race
-			\item 352142 cases
-		\end{itemize}
-	\end{frame}
 
 \begin{frame}
-\frametitle{Gathering Data: Symcat-Synthea Samples}
-\begin{table}
-\begin{tabular}{l l}
-	\toprule
-	\textbf{Condition} & \textbf{Count}\\
-	\midrule
-	Chronic Sinusitis & 39675 \\
-	Acute Bronchitis & 39669 \\
-	Streptococcal sore throat  & 39664 \\
-	Acute  Sinusitis & 39458 \\
-	Pharyngitis & 39771 \\
-	Urethritis & 37740 \\
-	Cystitis &  38200 \\
-	Pyelonephritis &  38265 \\
-	Asthma &  39700  \\
-	\bottomrule
-\end{tabular}
-\caption{Conditions generated from Symcat-Synthea with their count occurrence }
+\frametitle{Learning Curve (precision): Random Forest on Baseline}
+\begin{figure}
+\includegraphics[width=0.7\linewidth]{figs/rf_lc_prec_baseline.pdf}
+\caption{Learning Curve (Precision) for Random Forest}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Learning Curve on Baseline: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Metric             & Train  & Validation \\ \hline
+		Accuracy           & 0.6378 & 0.5927     \\ \hline
+		Precision Weighted & 0.6841 & 0.6281     \\ \hline
+		Recall Weighted    & 0.6378 & 0.5927     \\ \hline
+		Top 5 Accuracy     & 0.8829 & 0.8539     \\ \hline
+	\end{tabular}
+	\caption{Baseline Random Forest Metric Summary}
+	\label{table:tab_2}
 \end{table}
-\end{frame}
-
-\begin{frame}
-\frametitle{Gathering Data:  Symcat-Synthea Samples}
-\begin{table}
-\begin{tabular}{l l}
-\toprule
-\textbf{Attribute} & \textbf{Value}\\
-\midrule
-age&8\\
-gender &male\\
-race &white\\
-Painful sinuses&0\\
-Frontal headache&0\\
-Coryza&1\\
-Nasal congestion&1\\
-Cough&1\\
-Skin rash&0\\
-Hurts to breath&0\\
-Ear pain&1\\
-... & ... \\
-Sinus congestion&1\\
-\bottomrule
-\end{tabular}
-\caption{Vector for a Case of Chronic Sinusitis}
-\end{table}
-\end{frame}
-
-\section{Model Evaluation}
-	\begin{frame}
-	\frametitle{Model Evaluation}
-	\begin{itemize}
-		\item Evaluate a couple models on the data from both Simple-Synthea and Symcat-Synthea.
-		\item What kind of accuracies are possible?
-		\item Model comparisons ? Learning curve, Averaged AUC curve, Confusion Matrix.
-	\end{itemize}
-	\end{frame}
-	\subsection {Simple-Synthea}
-		\subsubsection{Random Forest}
-			\begin{frame}
-				\frametitle{Model Evaluation: Random Forest on Simple-Synthea}
-				\begin{itemize}
-					\item Evaluate Random Forest despite simplicity of generated data
-					\item Data was split into 90\% train and 10\% test set.
-					\item Obtained 94.0\% accuracy on train set and 93.8\% accuracy on test set.
-					\item But ..., since it's a really simple dataset, we don't need machine learning.
-				\end{itemize}
-			\end{frame}
-		\subsubsection{Deterministic Solution}
-			\begin{frame}
-				\frametitle{Model Evaluation: Deterministic solution for Simple-Synthea}
-				\begin{itemize}
-					\item Every patient with the same conditions present same symptoms
-					\item Simple if/else checks sufficient to classify conditions
-					\item For conditions with same symptomatic expressions, use occurrence likelihood.
-					\item Example, if condition is a UTI, always pick the UTI that is most likely to occur (as estimated from the data)
-					\item This would be Escherichia coli
-					\item 94.0\% accuracy on train set, 93.9\% accuracy on test set
-					\item Almost identical to the Random Forest solution.
-					\item No need to have any model comparisons since a deterministic solution exists.
-				\end{itemize}
-			\end{frame}
-	\subsection{Probabilistic Symcat-Synthea Sample}
-		\subsection{Random Forest}
-		\begin{frame}
-			\frametitle{Model Evaluation: Random Forest on Symcat-Synthea}
-			\begin{itemize}
-				\item Evaluate Random Forest 
-				\item Data was split into 90\% train and 10\% test set.
-				\item Obtained 92.6\% accuracy on train set and 86.5\% accuracy on the held out test data.
-			\end{itemize}
-		\end{frame}
-	
-		\begin{frame}
-			\frametitle{Model Evaluation: Random Forest on Symcat-Synthea}
-			\begin{figure}
-			\includegraphics[width=0.8\linewidth]{figs/rf_learning_curve.pdf}
-			\caption{Learning Curve (Accuracy) for Random Forest}
-			\end{figure}
-		\end{frame}
-	
-		\begin{frame}
-			\frametitle{Model Evaluation: Random Forest on Symcat-Synthea}
-			\begin{figure}
-				\includegraphics[width=0.8\linewidth]{figs/rf_auc_learning_curve.pdf}
-				\caption{Learning Curve (Average AUC) for Random Forest}
-			\end{figure}
-		\end{frame}
-	
-		\begin{frame}
-		\frametitle{Model Evaluation: Random Forest  on Symcat-Synthea}
-		\begin{figure}
-			\includegraphics[width=\linewidth]{figs/rf_confusion_matrix.png}
-			\caption{Confusion Matrix for Random Forest}
-		\end{figure}
-		
-		U: Urethritis,  Ast: Asthma,  AS: Acute Sinusitis,  Ph: Pharyngitis, \\
-		Py: Pyelonephritis,  AB: Acute Bronchitis,  ST: Strep. Throat,\\
-		CS: Chronic Sinusitis,  Cy: Cystitis
-	\end{frame}
-	
-		\subsection{Naive Bayes}
-		\begin{frame}
-			\frametitle{Model Evaluation: Naive Bayes on Symcat-Synthea}
-			\begin{itemize}
-				\item But the Random Forest is not the only appropriate model
-				\item Naive Bayes is also a valid choice in this case
-				\item Assumes conditional independence for the attributes once the disease is known
-				\item Disease condition the only thing responsible for the presented symptoms
-				\item Does not model possible relationships between symptoms, e.g perhaps sneezing is more likely to occur if a cough is present
-				\item But despite this strong assumption, given enough data, Naive Bayes is a good classifier
-				\item Obtained 88.0\% accuracy on both the train set and the hold out test data.
-			\end{itemize}
-		\end{frame}
-	
-		\begin{frame}
-			\frametitle{Model Evaluation: Naive Bayes on Symcat-Synthea}
-			\begin{figure}
-				\includegraphics[width=0.8\linewidth]{figs/naive_bayes_learning_curve.pdf}
-				\caption{Learning Curve (Accuracy) for Naive Bayes}
-			\end{figure}
-		\end{frame}
-	
-		\begin{frame}
-			\frametitle{Model Evaluation: Naive Bayes on Symcat-Synthea}
-			\begin{figure}
-				\includegraphics[width=0.8\linewidth]{figs/naive_bayes_learning_auc_curve.pdf}
-				\caption{Learning Curve (Average AUC) for Naive Bayes}
-			\end{figure}
-		\end{frame}
-	
-		\begin{frame}
-			\frametitle{Model Evaluation: Naive Bayes on Symcat-Synthea}
-			\begin{figure}
-				\includegraphics[width=\linewidth]{figs/naive_bayes_confusion_matrix.png}
-				\caption{Confusion Matrix for Naive Bayes}
-			\end{figure}
-			
-			U: Urethritis,  Ast: Asthma,  AS: Acute Sinusitis,  Ph: Pharyngitis, \\
-			Py: Pyelonephritis,  AB: Acute Bronchitis,  ST: Strep. Throat,\\
-			CS: Chronic Sinusitis,  Cy: Cystitis
-		\end{frame}
-
-\section{Next Steps}
-\begin{frame}
-\frametitle{Next Steps}
-\begin{itemize}
-	\item From confusion matrix, the errors were from very \textit{similar} conditions with overlapping symptoms
-	\item One idea is to also augment the data with features that would make such distinction possible
-	\begin{itemize}
-		\item VAS scores for symptom intensity
-		\item Duration of symptom
-		\item Body localization of symptom, e.t.c
-	\end{itemize}
-	\item Extend analysis to full Symcat-Synthea dataset i.e all 801 conditions and 474 symptoms
-	\item Data standardization to allow for easy integration with other data sources e.g MIA
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Next Steps}
-\begin{itemize}
-	\item Naive Bayes is a good classifier with enough data, but bad estimator and hence not ideal for differential diagnosis
-	\begin{itemize}
-		\item A generative modeling using a Multivariate Bernoulli distribution might be a better idea
-	\end{itemize}
-	\item So far, classification has been performed, but differential diagnosis is the aim
-	\begin{itemize}
-		\item How to evaluate a differential diagnosis?
-		\item We are only sure of what the most likely condition is.
-		\item How to rank what the $n$ most likely conditions should be?
-		\item Select metric for evaluating the differential diagnoser
-	\end{itemize}
-\end{itemize}
 \end{frame}
 %------------------------------------------------
 

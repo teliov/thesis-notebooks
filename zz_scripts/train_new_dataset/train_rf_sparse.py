@@ -21,8 +21,8 @@ class RFParams(object):
     max_features = 'log2'
 
 
-def train_rf(data_file, symptoms_db_json, output_dir, rfparams):
-    logger = report.Logger("Random Forest Classification on QCE")
+def train_rf(data_file, symptoms_db_json, output_dir, rfparams, name=""):
+    logger = report.Logger("Random Forest %s Classification on QCE" % name)
 
     try:
         logger.log("Starting Random Forest Classification")
@@ -154,11 +154,13 @@ if __name__ == "__main__":
     parser.add_argument('--data', help='Path to train csv file')
     parser.add_argument('--symptoms_json', help='Path to symptoms db.json')
     parser.add_argument('--output_dir', help='Directory where results and trained model should be saved to')
+    parser.add_argument('--name', type=str, default="")
 
     args = parser.parse_args()
     data_file = args.data
     output_dir = args.output_dir
     symptoms_db_json = args.symptoms_json
+    name = args.name
 
     if not os.path.isfile(data_file):
         raise ValueError("data file does not exist")
@@ -170,4 +172,4 @@ if __name__ == "__main__":
         os.mkdir(output_dir)
 
     rfparams = RFParams()
-    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, rfparams=rfparams)
+    train_rf(data_file=data_file, output_dir=output_dir, symptoms_db_json=symptoms_db_json, rfparams=rfparams, name=name)
