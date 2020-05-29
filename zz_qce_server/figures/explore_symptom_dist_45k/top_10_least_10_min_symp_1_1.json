@@ -1,0 +1,86 @@
+{
+    "top_10": {
+        "7ee012661d2f0ac6ea5313ce46706f6b3c357ddcd28ab0383bfd2d90": {
+            "name": "Patau syndrome",
+            "count": 12691
+        },
+        "5f883e910f28ba6dc940f6161d4ed9b0ca065012232080365aad3f09": {
+            "name": "Lymphogranuloma venereum",
+            "count": 12659
+        },
+        "0b2ac3ff10cbd5a730f0857c87ad19e7ae1aa8d2a594e9887cb702ff": {
+            "name": "Ependymoma",
+            "count": 12641
+        },
+        "7bb6ee9d729ad1dacc50d62e8be4394b9cfa3395d155a67c8588b12b": {
+            "name": "Myoclonus",
+            "count": 12615
+        },
+        "a69e85ba32fcd5a08dfab476207a0e8449da55811c6ed2e56152a1be": {
+            "name": "Meckel diverticulum",
+            "count": 12549
+        },
+        "4336ed5450e34a4c047265e1d333d067ad5e4330f5213f4faa8323af": {
+            "name": "Pulmonic valve disease",
+            "count": 12484
+        },
+        "95e40ec6cdfd43ad284e7039d1e5cded86e74af3971167f667545641": {
+            "name": "Pseudohypoparathyroidism",
+            "count": 12464
+        },
+        "5e5bb0134f22518c0d582d940e1466c7a4c9d4c57ec06da7165479da": {
+            "name": "Bone cancer",
+            "count": 12362
+        },
+        "472a2b9859828acbec9b30870470867896ca7a6a701194b7868d7837": {
+            "name": "Syndrome of inappropriate secretion of ADH (SIADH)",
+            "count": 12352
+        },
+        "c11d10ea6ef9480aaf6cca36650a72ff63db17c18ba976fecf78e483": {
+            "name": "Colorectal cancer",
+            "count": 12326
+        }
+    },
+    "least_10": {
+        "44a967ff79a88969f8917f066bc2c2b5b7d118c723d4b02f6bf9c398": {
+            "name": "Cysticercosis",
+            "count": 972
+        },
+        "a4b6bc214e89247d7c1aad0658b07086229a0d68f17bab0b6987b5a8": {
+            "name": "Sickle cell anemia",
+            "count": 1926
+        },
+        "7a35dfcd6d68c18cec2536cceeb60abb071a3d92df0e1a56309a3861": {
+            "name": "Sickle cell crisis",
+            "count": 1935
+        },
+        "8e77fa86cee3e4e2ecfa8940475470709a18b29256954fcbf5e8de43": {
+            "name": "Chagas disease",
+            "count": 2045
+        },
+        "3b28b2b953b79dd7277e2957fe3a90e1f1ae06329bb9ed3a03c8e669": {
+            "name": "Typhoid fever",
+            "count": 2775
+        },
+        "839187e844f11167d516d493def00dcaf1a1edb2fd347344af8dee88": {
+            "name": "G6PD enzyme deficiency",
+            "count": 3883
+        },
+        "31adc9b6e42d96012544cb75589de222b278bf702c0b2e7e189d648a": {
+            "name": "Cryptococcosis",
+            "count": 4457
+        },
+        "2e9aa5e5fb0681f2b9767d574d189f8f01dcf685fdc5a9668cf07827": {
+            "name": "Trichomonas infection",
+            "count": 4650
+        },
+        "31cb7b68df60a99dd50af937a6737023d4f68216868635ba9ffd17f1": {
+            "name": "Acute fatty liver of pregnancy (AFLP)",
+            "count": 4942
+        },
+        "d91d8bf9824bdcf5f798eb31f8d9f86a10fcf9bb48d30ef39b0ac6d5": {
+            "name": "Benign vaginal discharge (leukorrhea)",
+            "count": 5411
+        }
+    }
+}
