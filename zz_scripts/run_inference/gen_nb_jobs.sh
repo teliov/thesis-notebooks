@@ -18,7 +18,6 @@ source /shares/bulk/oagba/work/medvice-parser/activate
 OPTIND=1
 
 # variable init
-data_dir=""
 test_files=""
 symptom_db=""
 run_sbatch=0
@@ -26,11 +25,8 @@ output_dir=""
 data_paths=()
 is_nb=1
 
-while getopts "d:s:t:o:p:er" opt; do
+while getopts "s:t:o:p:er" opt; do
     case "$opt" in
-    d)
-        data_dir=$OPTARG
-        ;;
     s)
         symptom_db=$OPTARG
         ;;
@@ -57,25 +53,23 @@ while getopts "d:s:t:o:p:er" opt; do
     esac
 done
 
-res_dir="${data_dir}/symptoms/csv/inference"
-if [[ $is_nb -eq 1 ]];then
-model_file="${data_dir}/symptoms/csv/trained/nb/nb_serialized_sparse.joblib"
-SPARSER=${SCRIPT_DIR}/nb.py
-else
-model_file="${data_dir}/symptoms/csv/trained/rf/rf_serialized_sparse_grid_search_best.joblib"
-SPARSER=${SCRIPT_DIR}/rf.py
-fi
-
-if [[ ! -d res_dir ]]; then
-    mkdir -p ${res_dir}
-fi
-
 if [[ ! -d output_dir ]]; then
     mkdir -p ${output_dir}
 fi
 
-for val in "${data_paths[@]}"; do
-    val_base="$(basename $val)"
+for data_dir in "${data_paths[@]}"; do
+    res_dir="${data_dir}/symptoms/csv/inference"
+    if [[ ! -d res_dir ]]; then
+        mkdir -p ${res_dir}
+    fi
+    if [[ $is_nb -eq 1 ]];then
+        model_file="${data_dir}/symptoms/csv/trained/nb/nb_serialized_sparse.joblib"
+        SPARSER=${SCRIPT_DIR}/nb.py
+    else
+        model_file="${data_dir}/symptoms/csv/trained/rf/rf_serialized_sparse_grid_search_best.joblib"
+        SPARSER=${SCRIPT_DIR}/rf.py
+    fi
+    val_base="$(basename $data_dir)"
     op_file="${output_dir}/${val_base}.job"
     parse_cmd="python ${SPARSER} --model_file ${model_file} --symptoms_json ${symptom_db} --output_dir ${res_dir}\
                 --test_files ${test_files}"
