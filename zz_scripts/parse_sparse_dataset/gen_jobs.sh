@@ -70,6 +70,7 @@ done
 
 # run through all the jobs and execute them
 if [[ ${run_sbatch} -eq 1 ]];then
+    cd ${output_dir}
     for entry in "${output_dir}/*.job"
     do
       sbatch ${entry}
