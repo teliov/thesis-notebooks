@@ -241,7 +241,7 @@ Delft University of Technology \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-\frametitle{Learning Curve on Baseline: Summary }
+\frametitle{Random Forest on Baseline: Summary }
 \begin{table}[]
 	\begin{tabular}{|l|l|l|}
 		\hline
@@ -255,6 +255,279 @@ Delft University of Technology \\ % Your institution for the title page
 	\label{table:tab_2}
 \end{table}
 \end{frame}
+
+\section{Beyond the Baseline}
+%------------------------------------------------
+\subsection{Real Data Behavior?}
+\begin{frame}
+\frametitle{Real Data Behavior}
+\begin{itemize}
+	\item How might real data behave?
+	\item Are there alterations to the generation process that might simulate conditions in reality?
+	\item Observe effects of this alterations to the performance of the models
+	\item Rationale: In the end, format of data is ideal. What would change in a real data set would be symptom-condition probabilistic relationships
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Approaches}
+\begin{itemize}
+	\item Combine the Condition-Symptom probabilities in a different manner
+	\item Randomly perturb the Symtom probabilities - models should be robust to relatively small perturbations in probabilities
+	\item Increase the minimum number of symptoms each condition must present
+	\item Inject \textit{"similar"} symptoms into conditions
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Alter Formulation of Condition-Symptom Probabilities}
+\begin{itemize}
+	\item Baseline uses \textit{"plug and play"} approach to factoring in the Symcat provided probabilities for conditions and symptoms
+	\item $$
+		P_{condition | age, gender, race} = P_{age|condition} * P_{gender|condition} * P_{race|condition}
+	$$
+	\item $P_{symptom|condition}$ is plugged in \textit{as-is} into the  Synthea generator
+	\item But using demographic data it is possible to obtain $P_{age}$, $P_{gender}$, $P_{race}$
+	\item Then using an application of the Bayes rule we can obtain a less direct formulation of $P_{condition | age, gender, race}$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Alter Formulation of Condition-Symptom Probabilities}
+\begin{itemize}
+	\item Symcat also provides information about $P_{symptom|age}, P_{symptom|gender}, P_{symptom|race}$
+	\item Using similar methodology, we can use $P_{symptom|condition, age, gender, race}$ instead of just $P_{symptom|condition}$
+	\item With these new formulations of the probabilities in Synthea, a different dataset can be generated
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Perturb Condition-Symptom Probabilities}
+\begin{itemize}
+	\item Randomly increase/decrease Symptom probabilities by given percentages
+	\item Generate data using 10\%, 20\% and 30\% perturbation of symptom probabilities
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Minimum Number of Symptoms}
+\begin{itemize}
+	\item During data generation, enforce a minimum number of symptoms that must be presented by a condition
+	\item Vary minimum number of symptoms from 1 (baseline) to 5 (average number of symptoms per condition /2)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Symptom Injection}
+\begin{itemize}
+	\item Using a graph based approach, inject \textit{"most likely"} symptoms into a condition which are not already present
+	\item The similarity of a symptoms (nodes) is measured by how many conditions (edges) they have in common
+	\item For a condition, the most similar symptom would be one which has the highest number of connections to original symptoms of the condition
+	\item But is not included as a symptom of the condition.
+	\item As an example, for \textit{Pharyngitis} the following additional symptoms were injected: 
+	\begin{itemize}
+		\item Vomiting, Headache, Difficulty in breathing
+		\item Shortness of Breath, Sharp Chest Pain
+	\end{itemize}
+	\item Injected symptoms are assigned probabilities lower than that of the lowest symptom
+\end{itemize}
+\end{frame}
+
+\subsection{Results on Newly Generated Data}
+\begin{frame}
+\frametitle{Altered Formulation of Condition-Symptom Prob.: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Metric             & NB Train & NB Val & RF Train  & RF Val \\ \hline
+		Accuracy         & 0.5913 & 0.5907   &0.6420 & 0.6035     \\ \hline
+		Precision Weighted & 0.6670 & 0.6660 &0.6879 & 0.6391     \\ \hline
+		Recall Weighted     & 0.5914 & 0.5908 & 0.6420 & 0.6035    \\ \hline
+		Top 5 Accuracy      & 0.8478 & 0.8472 & 0.8848 &  0.8623    \\ \hline
+	\end{tabular}
+	\caption{Altered Condition-Symptom Prob. Metric Summary}
+	\label{table:tab_3}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Perturbed (30\%) Symptom Prob.: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Metric             & NB Train & NB Val & RF Train  & RF Val \\ \hline
+		Accuracy         & 0.5967 & 0.5962   &0.6207 & 0.5842     \\ \hline
+		Precision Weighted & 0.6553 &  0.6548 &0.6698 & 0.6249     \\ \hline
+		Recall Weighted     & 0.5967 & 0.5962 & 0.6207 & 0.5842    \\ \hline
+		Top 5 Accuracy      &0.8610 & 0.8616 &0.8793 &  0.8570    \\ \hline
+	\end{tabular}
+	\caption{Perturbed (30\%) Symptom Prob. Metric Summary}
+	\label{table:tab_4}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Minimum of 3 Symptoms: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Metric             & NB Train & NB Val & RF Train  & RF Val \\ \hline
+		Accuracy         & 0.7871 & 0.7867  & 0.8189 & 0.7849    \\ \hline
+		Precision Weighted & 0.8006 &  0.8002 &0.8301 &0.7914    \\ \hline
+		Recall Weighted     & 0.7871 & 0.7867 & 0.8189 & 0.7848    \\ \hline
+		Top 5 Accuracy      &0.9634 & 0.9631 &0.9780 &  0.9621    \\ \hline
+	\end{tabular}
+	\caption{Minimum of 3 Symptoms. Metric Summary}
+	\label{table:tab_5}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Minimum of 5 Symptoms: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Metric             & NB Train & NB Val & RF Train  & RF Val \\ \hline
+		Accuracy         &0.9137 & 0.9135  & 0.9324 & 0.9129   \\ \hline
+		Precision Weighted & 0.9252 &  0.9250 &0.9351 &0.9148   \\ \hline
+		Recall Weighted     &  0.9136 &0.9135 & 0.9324 & 0.9129   \\ \hline
+		Top 5 Accuracy      &0.9888 & 0.9886 &0.9961 &  0.9878   \\ \hline
+	\end{tabular}
+	\caption{Minimum of 5 Symptoms. Metric Summary}
+	\label{table:tab_6}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Injected Symptoms: Summary }
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Metric             & NB Train & NB Val & RF Train  & RF Val \\ \hline
+		Accuracy         &0.5544 &0.5522 & 0.9324 & 0.9129   \\ \hline
+		Precision Weighted & 0.5997 &  0.5964 &0.9351 &0.9148   \\ \hline
+		Recall Weighted     &  0.5544 &0.5522& 0.9324 & 0.9129   \\ \hline
+		Top 5 Accuracy      &0.8194 & 0.8185 &0.9961 &  0.9878   \\ \hline
+	\end{tabular}
+	\caption{Injected Symptoms. Metric Summary}
+	\label{table:tab_7}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Results Discussion }
+\begin{itemize}
+	\item For the most of the differently generated data sets, results stay the same
+	\item (An important necessary test would be to see how each model performs on data generated differently than it's test data)
+	\item However, increasing the minimum number of symptoms that must be presented has a huge effect on the results
+	\item This increase in the symptom count per condition translates to having more \textit{relevant} features for the models to use in decision making
+	\item It also highlights the fact that with only one symptom there simply is not information to make a reasonable prediction.
+	\item Will there be the same performance measure if the same minimum number of symptoms are enforced but instead randomly selecting instead of a probabilistic selection?
+\end{itemize}
+\end{frame}
+
+\section{Medvice Mia Sync-Up}
+\frametitle{Background }
+\begin{frame}
+\begin{itemize}
+	\item The use of synthetic data was motivated by a lack of access to real data
+	\item All the analysis done so far has been aimed at obtaining models that might be able to perform reasonably well on real data
+	\item Medvice's MIA platform provides an option for access to actual patient data
+	\item So it is important to be able to translate Mia output to a Synthea-generated format
+\end{itemize}
+\end{frame}
+
+\frametitle{Mia Data Format }
+\begin{frame}
+\begin{itemize}
+	\item Mia is organized around \textit{"initial complaints"}
+	\item These is the symptoms for which the patient most likely is worried about.
+	\item Following a logical process - very much like how a doctor might act - follow up questions are asked based on the initial symptom
+	\item These questions either aim to discover more about the nature, location, duration of the initial complaint
+	\item Or they aim to identify other presented symptoms or details about patient history which might help the diagnosis
+	\item Based on the collected questions, a doctor might be able to make a confident first guess on the possible diagnosis
+\end{itemize}
+\end{frame}
+
+\frametitle{Translating Mia to Synthea }
+\begin{frame}
+\begin{itemize}
+	\item In creating a map from Mia to Synthea, the following simplifying assumptions have been made:
+	\begin{itemize}
+		\item The exported questions/complaints from Mia captures the space of all possible Mia output.
+		\item While the above assumption is true now, it would change with the addition of new questions/complaints - a feature which Mia has
+		\item As earlier stated, the Symcat data captures all the possible conditions/symptoms
+	\end{itemize}
+	\item An ideal solution might involve some use of Natural Language processing to deduce the topic matter/context of Mia questions and match them to Synthea symptoms
+	\item In the meantime though, a less intelligent mapping between the complaints in Mia and Synthea symptoms was created
+\end{itemize}
+\end{frame}
+
+\frametitle{Translating Mia to Synthea }
+\begin{frame}
+\begin{itemize}
+	\item As an example, consider the question: \textit{"Wat voor soort hoest heeft u?"}
+	\item Possible Mia answers are:
+	\begin{itemize}
+		\item drooge hoest, kriebelhoest
+		\item blaf-achtige hoest, hoest met slijm
+	\end{itemize}
+	\item These all indicate different types of cough. In Synthea however, there are only two types of cough:
+	\begin{itemize}
+		\item Cough and Cough with Sputum
+	\end{itemize}
+	\item In the Mia-Synthea map, \textit{hoest met slijm} is mapped to \textit{cough with sputum} while all the others get mapped to cough
+\end{itemize}
+\end{frame}
+
+\frametitle{Translating Mia to Synthea }
+\begin{frame}
+\begin{itemize}
+	\item Mia is also able to capture information about the nature of a symptom
+	\item Take this question as an example: \textit{Hoe voelt de buikpijn precies voor u?}
+	\item Possible Mia answers are:
+	\begin{itemize}
+		\item stekend of scherp, zeurend en sluimerend
+		\item krampend en weeïg, 
+	\end{itemize}
+	\item The Mia options can map to \textit{abdominal-pain}, \textit{sharp-abdominal-pain} \textit{burning-abdominal-pain} in Symcat
+\end{itemize}
+\end{frame}
+
+\frametitle{Translating Mia to Synthea }
+\begin{frame}
+\begin{itemize}
+	\item The mapping also captures information from Mia about the duration of the complaint, or actual measurements (e.g temperature in the case of Fever)
+	\item Information about the duration of a complaint, or temperature can then be used together with a threshold to make further classification
+	\item e.g a temperature of 39 deg. can be classified as \textit{high-fever} as opposed to just \textit{fever}
+	\item Similar analysis can be made for the duration of a complaint.
+\end{itemize}
+\end{frame}
+
+\frametitle{Drawbacks to this Approach}
+\begin{frame}
+\begin{itemize}
+	\item The synthea generated data currently does not capture information about patient previous history or current medication
+	\item Examples: questions about which pain killers a patient is on or if they had an operation previously on their back (in the case of back pain)
+	\item Answers to these questions would be extremely helpful in a diagnosis but since not modeled by Synthea they cannot be used
+\end{itemize}
+\end{frame}
+
+\frametitle{Drawbacks to this Approach}
+\begin{frame}
+\begin{itemize}
+	\item In some cases, a \textit{nearest-neighbor} mapping is used from Mia to Synthea
+	\item As an example, a question in Mia asks if patient stool is watery. The closes Synthea alternative is \textit{change in stool appearance}
+	\item There is obviously some loss in information when making the mapping.
+\end{itemize}
+\end{frame}
+
+
 %------------------------------------------------
 
 \begin{frame}

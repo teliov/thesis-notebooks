@@ -5,6 +5,16 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.utils.fixes import logsumexp
 
+class RFParams(object):
+    n_estimators = 20
+    criterion = 'gini'
+    max_depth = 380
+    min_samples_split = 2
+    min_samples_leaf = 2
+    max_leaf_nodes = None
+    min_impurity_decrease = 0.0
+    max_features = 'log2'
+
 
 class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
     """
@@ -141,6 +151,38 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
         clf.is_partial = is_partial
 
         return clf
+
+
+class ThesisAIMEDSymptomSparseMaker(BaseEstimator):
+    def __init__(self, num_symptoms):
+        self.num_symptoms = num_symptoms
+
+    def fit_transform(self, df, y=None):
+        symptoms = df.SYMPTOMS
+        df = df.drop(columns=['SYMPTOMS'])
+
+        dense_matrix = sparse.coo_matrix(df.values)
+        symptoms = symptoms.apply(lambda v: [idx for idx in v.split(",")])
+
+        columns = []
+        rows = []
+        data = []
+        for idx, val in enumerate(symptoms):
+            rows += [idx] * len(val)
+            cols_data = []
+            cols = []
+            for item in val:
+                _ = item.split("|")
+                cols.append(int(_[0]))
+                cols_data.append(int(_[1]))
+            columns += cols
+            data += cols_data
+
+        symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(df.shape[0],self.num_symptoms))
+
+        data_coo = sparse.hstack([dense_matrix, symptoms_coo])
+
+        return data_coo.tocsc()
 
 
 class ThesisSymptomSparseMaker(BaseEstimator):

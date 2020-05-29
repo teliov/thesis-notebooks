@@ -123,13 +123,14 @@ TERMINATE_URL = "http://999-term.teliov.xyz/lasaksalkslasl"
 
 class Logger(object):
 
-    def __init__(self, logger_name):
+    def __init__(self, logger_name, active=True):
 
         self.logger_name = logger_name
         self.stream = io.StringIO()
         self.handler = logging.StreamHandler(self.stream)
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(logging.DEBUG)
+        self.active = active
 
         for handler in self.logger.handlers:
             self.logger.removeHandler(handler)
@@ -137,6 +138,8 @@ class Logger(object):
         self.logger.addHandler(self.handler)
 
     def log(self, message, level=logging.DEBUG, to_telegram=True):
+        if not self.active:
+            return True
         message = "%s: %s" % (self.logger_name, message)
         self.logger.log(level, message)
 
