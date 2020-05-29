@@ -64,7 +64,7 @@ for val in "${data_paths[@]}"; do
     op_dir="${val}/symptoms/csv/parsed"
     parse_cmd="${SPARSER} --symptom_file ${symptom_file} --symptoms_json ${symptom_db} --conditions_json ${condition_db}\
                 --output_dir ${op_dir}"
-    job_content="${JOB_STR}${parse_cmd}\n"
+    job_content="${JOB_STR}${parse_cmd}"
     echo "$job_content" | tee -a ${op_file} > /dev/null 2>&1
 done
 
