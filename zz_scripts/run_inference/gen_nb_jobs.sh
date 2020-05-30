@@ -8,7 +8,7 @@ JOB_STR="#!/bin/bash
 #SBATCH -p general
 #SBATCH --cpus-per-task=8
 #SBATCH --nodes=1
-#SBATCH -t 00:30:00
+#SBATCH -t 02:00:00
 #SBATCH --mem  140G
 
 source /shares/bulk/oagba/work/medvice-parser/activate
