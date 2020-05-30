@@ -6,6 +6,7 @@ from thesislib.utils.ml import models, report
 import logging
 from timeit import default_timer as timer
 import pandas as pd
+import pathlib
 
 
 def nb_inference(model_file, test_files, symptoms_db_json, output_dir, name=""):
@@ -106,6 +107,6 @@ if __name__ == "__main__":
         raise ValueError("Invalid symptoms db file passed")
 
     if not os.path.isdir(output_dir):
-        os.mkdir(output_dir)
+        pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     nb_inference(model_file=model_file, test_files=test_files, symptoms_db_json=symptoms_db_json, output_dir=output_dir)

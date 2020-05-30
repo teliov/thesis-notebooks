@@ -71,7 +71,7 @@ for data_dir in "${data_paths[@]}"; do
     fi
     val_base="$(basename $data_dir)"
     op_file="${output_dir}/${val_base}.job"
-    parse_cmd="python ${SPARSER} --model_file ${model_file} --symptoms_json ${symptom_db} --output_dir ${res_dir}\
+    parse_cmd="python ${SPARSER} --model ${model_file} --symptoms_json ${symptom_db} --output_dir ${res_dir}\
                 --test_files ${test_files}"
     job_content="${JOB_STR}${parse_cmd}"
     echo "$job_content" | tee -a ${op_file} > /dev/null 2>&1
