@@ -12,7 +12,9 @@ import pathlib
 def nb_inference(model_file, test_files, symptoms_db_json, output_dir, name=""):
     logger = report.Logger("NB Forest %s Inference on QCE" % name)
     unserialized = joblib.load(model_file)
-    clf = unserialized["clf"]
+    clf_data = unserialized["clf"]
+    clf = models.ThesisSparseNaiveBayes.load(clf_data)
+
 
     with open(test_files) as fp:
         test_data = json.load(fp)
