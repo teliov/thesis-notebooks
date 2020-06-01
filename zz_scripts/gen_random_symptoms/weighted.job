@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH -J gen_symps
+#SBATCH -o op.%j.out
+#SBATCH -p general
+#SBATCH --cpus-per-task=32
+#SBATCH --nodes=1
+#SBATCH -t 02:00:00
+#SBATCH --mem  100G
+
+source /shares/bulk/oagba/work/medvice-parser/activate
+
+parser.add_argument('--symptom_dir', help='Symptom path')
+    parser.add_argument('--output_dir', help='Directory where results should be saved to')
+    parser.add_argument('--cond_db', help="Condition db")
+    parser.add_argument('--symp_db', help="Symptom db")
+    parser.add_argument('--random', help="Symptom db", action="store_true")
+    parser.add_argument('--cnd_symp_map', help='condition symptom map')
+
+python main.py --symptom_dir "/home/oagba/bulk/data/output_basic_avg_cnt_15k" \
+    --output_dir "/home/oagba/bulk/data/output_basic_weighted_symptoms" \
+    --cond_db "/home/oagba/bulk/data/definitions/condition_db.json" \
+    --symp_db "/home/oagba/bulk/data/definitions/symptom_db.json" \
+    --cnd_symp_map "/home/oagba/bulk/data/definitions/condition_prob_hash.json"
