@@ -74,7 +74,7 @@ if __name__ == "__main__":
     cond_db = args.cond_db
     output_dir = args.output_dir
     symp_db = args.symp_db
-    cnd_symp_map = args.symptoms_json
+    cnd_symp_map = args.cnd_symp_map
     is_random = args.random
 
     if not os.path.isfile(cond_db):
