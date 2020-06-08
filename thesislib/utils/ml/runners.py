@@ -214,20 +214,21 @@ def train_nb(data_file, symptoms_db_json, output_dir, name="", location="QCE", i
                 [symptom_clf, [(3, None), True]],
             ]
         else:
-            symptom_multinomial_clf = naive_bayes.MultinomialNB()
+            symptom_gaussian_clf = naive_bayes.GaussianNB()
+            reg_indices = [0, 1, 2] + [6, 9, 22]
+            bern_indices = []
+            for idx in range(train_data.shape[1]):
+                if idx not in reg_indices:
+                    bern_indices.append(idx)
+            new_indices = reg_indices + bern_indices
+            train_data = train_data[:, new_indices]
+            test_data = test_data[:, new_indices]
             classifier_map = [
                 [gender_clf, [0, False]],
                 [race_clf, [1, False]],
                 [age_clf, [2, False]],
-                [symptom_clf, [(3, 6), True]],
-                [symptom_multinomial_clf, [6, True]],
-                [symptom_clf, [(7, 9), True]],
-                [symptom_multinomial_clf, [9, True]],
-                [symptom_clf, [(10, 17), True]],
-                [symptom_multinomial_clf, [17, True]],
-                [symptom_clf, [(18, 22), True]],
-                [symptom_multinomial_clf, [22, True]],
-                [symptom_clf, [(23, None), True]]
+                # [symptom_gaussian_clf, [(3, 6), False]],
+                [symptom_clf, [(6, None), True]]
             ]
 
         clf = models.ThesisSparseNaiveBayes(classifier_map=classifier_map, classes=classes)

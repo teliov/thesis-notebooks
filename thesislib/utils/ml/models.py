@@ -228,6 +228,7 @@ class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
         index, is_sparse = keys
         if not sputils.issequence(index):
             data = X[:, index]
+            # data = data.resshape((-1, 1))
         else:
             start, end = index
             if end is None:
