@@ -2,8 +2,11 @@ import numpy as np
 import scipy.sparse as sparse
 from scipy.sparse import sputils
 from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer, OrdinalEncoder
 from sklearn.utils.fixes import logsumexp
+from sklearn.naive_bayes import CategoricalNB
+from copy import deepcopy
+
 
 class RFParams(object):
     n_estimators = 20
@@ -14,6 +17,57 @@ class RFParams(object):
     max_leaf_nodes = None
     min_impurity_decrease = 0.0
     max_features = 'log2'
+
+
+class ThesisCategoricalNB(CategoricalNB):
+    def __init__(self, alpha=1.0, fit_prior=True, class_prior=None, skip_zero=False):
+        super(ThesisCategoricalNB, self).__init__(alpha=alpha, fit_prior=fit_prior, class_prior=class_prior)
+        self.encoder = OrdinalEncoder(dtype=np.uint8)
+        self.skip_zero = skip_zero
+        self.default_categories = []
+
+    def handle_transformation(self, X):
+        if sputils.isdense(X):
+            X_transformed = X
+        else:
+            X_transformed = X.toarray()
+
+        shape = X_transformed.shape
+        if len(shape) == 1:
+            num_features = 1
+        else:
+            num_features = shape[1]
+
+        for idx in range(num_features):
+            unique, counts = np.unique(X_transformed[:, idx], return_counts=True)
+            if self.skip_zero:
+                maxidx = np.argmax(counts[1:])
+            else:
+                maxidx = np.argmax(counts[1:])
+
+            self.default_categories.append(unique[maxidx])
+
+        X_transformed = self.encoder.fit_transform(X_transformed)
+
+        return X_transformed
+
+    def fit(self, X, y, sample_weight=None):
+        X_transformed = self.handle_transformation(X)
+        return super().fit(X_transformed, y, sample_weight)
+
+    def partial_fit(self, X, y, classes=None, sample_weight=None):
+        raise NotImplementedError("Partial fit is not implemented for this Categorical NB")
+
+    def _joint_log_likelihood(self, X):
+        X_transformed = deepcopy(X)
+        for idx in range(self.n_features_):
+            is_present = X_transformed[:, idx].reshape((-1, 1)) == self.encoder.categories_[idx]
+            summed = np.sum(is_present, axis=1)
+            indices = np.where(summed == 0)[0]
+            if len(indices) > 0:
+                X_transformed[indices, idx] = self.default_categories[idx]
+        X_transformed = self.encoder.transform(X_transformed)
+        return super()._joint_log_likelihood(X_transformed)
 
 
 class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
@@ -154,8 +208,9 @@ class ThesisNaiveBayes(BaseEstimator, ClassifierMixin):
 
 
 class ThesisAIMEDSymptomSparseMaker(BaseEstimator):
-    def __init__(self, num_symptoms):
+    def __init__(self, num_symptoms, categorical_indices=None):
         self.num_symptoms = num_symptoms
+        self.categorical_indices = categorical_indices
 
     def fit_transform(self, df, y=None):
         symptoms = df.SYMPTOMS
@@ -181,8 +236,9 @@ class ThesisAIMEDSymptomSparseMaker(BaseEstimator):
         symptoms_coo = sparse.coo_matrix((data, (rows, columns)), shape=(df.shape[0],self.num_symptoms))
 
         data_coo = sparse.hstack([dense_matrix, symptoms_coo])
+        data_csc = data_coo.tocsc()
 
-        return data_coo.tocsc()
+        return data_csc
 
 
 class ThesisSymptomSparseMaker(BaseEstimator):
@@ -228,7 +284,7 @@ class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
         index, is_sparse = keys
         if not sputils.issequence(index):
             data = X[:, index]
-            # data = data.resshape((-1, 1))
+            data = data.reshape((-1, 1))
         else:
             start, end = index
             if end is None:
@@ -277,7 +333,6 @@ class ThesisSparseNaiveBayes(BaseEstimator, ClassifierMixin):
         for idx in range(len(self.classifier_map)):
             clf, keys = self.classifier_map[idx]
             data = self._get_data(keys, X)
-
             _probs += clf._joint_log_likelihood(data)
 
         return _probs
