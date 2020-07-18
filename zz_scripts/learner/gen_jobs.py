@@ -24,7 +24,7 @@ then
     mkdir -p $output_dir
 fi
 
-python "${{workdir}}/train_nb" --data "{data_file}" \\
+python "${{workdir}}/train_nb.py" --data "{data_file}" \\
     --num_symptoms {num_symptoms} \\
     --output_dir ${{output_dir}} \\
     --train_size {train_size:.8f} \\
