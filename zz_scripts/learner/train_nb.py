@@ -150,7 +150,7 @@ def train_nb(
                     "clf": clf.serialize(),
                     "name": "%s_classifier" % name
                 }
-                estimator_serialized_file = os.path.join(output_dir, "nb.joblib")
+                estimator_serialized_file = os.path.join(output_dir, "nb_%d_%d.joblib" % (train_size, fold_number))
                 joblib.dump(estimator_serialized, estimator_serialized_file)
             res = 1
             message = "success"
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     parser.add_argument('--name', type=str, help="Name for this experiment. "
                                                  "When tracking multiple runs, good to make this unique")
     parser.add_argument('--mlflow_uri', type=str, help="URI to Mlflow tracking server")
-    parser.add_argument('--save_model', type=bool, help="Should the models be saved? Defaults to false", default=False)
+    parser.add_argument('--save_model', type=int, help="Should the models be saved? Defaults to false", default=0)
 
     args = parser.parse_args()
     data_file = args.data
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     fold_number = args.fold_number
     name = args.name
     mlflow_uri = args.mlflow_uri
-    save_model = args.save_model
+    save_model = args.save_model > 0
 
     if not os.path.isfile(data_file):
         raise ValueError("Data file does not exist")
