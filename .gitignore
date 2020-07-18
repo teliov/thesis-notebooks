@@ -16,3 +16,4 @@ zz_scripts/**/pyvenv.cfg
 */**/run_batch/*
 */**/proc_batch/*
 !*/**/proc_batch/*.sh
+thesislib
