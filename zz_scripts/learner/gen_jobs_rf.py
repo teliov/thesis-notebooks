@@ -11,7 +11,7 @@ template_str = """#!/bin/bash
 #SBATCH -p general
 #SBATCH --cpus-per-task=8
 #SBATCH --nodes=1
-#SBATCH -t 1:30:00
+#SBATCH -t 02:00:00
 #SBATCH --mem  140G
 
 workdir="/home/oagba/bulk/thesis-notebooks/zz_scripts/learner"
@@ -24,7 +24,7 @@ then
     mkdir -p $output_dir
 fi
 
-python "${{workdir}}/train_nb.py" --data "{data_file}" \\
+python "${{workdir}}/train_rf.py" --data "{data_file}" \\
     --num_symptoms {num_symptoms} \\
     --output_dir ${{output_dir}} \\
     --train_size {train_size:.8f} \\
@@ -52,14 +52,14 @@ data_directories = [
 train_file_location = "symptoms/csv/parsed/train.csv_sparse.csv"
 output_dir_base = "symptoms/csv/parsed/learning"
 NUM_SYMPTOMS = 376
-TYPE="nb"
+TYPE="rf"
 MLFLOW_URI="http://131.180.106.142:15000"
 
 if __name__ == "__main__":
     train_sizes = np.arange(0.1, 1.1, 0.1)
     fold_numbers = list(range(1, 6))
 
-    jobs_dir = os.path.join(os.getcwd(), "jobs")
+    jobs_dir = os.path.join(os.getcwd(), "rfjobs")
     pathlib.Path(jobs_dir).mkdir(exist_ok=True, parents=True)
 
     job_names = []
@@ -110,11 +110,11 @@ if __name__ == "__main__":
         count = 0
         for item in data_directories:
             for fold_number in fold_numbers:
-                job_cmd = "sbatch %s_10_%d.job\n" % (item, fold_number)
+                job_cmd = "sbatch %s_10_%d.job\n" % (item,fold_number)
                 fp.write(job_cmd)
-                if (count + 1) % 10 == 0:
+                if (count+1) % 10 == 0:
                     fp.write("sleep 1\n")
-                count += 1
+                count +=1
         fp.write("\n")
 
     with open(run_file, "w") as fp:
