@@ -26,8 +26,8 @@ def confidence(model_path, model_type, data_file, output_dir, num_symptoms):
     predicted_prob = clf.predict_proba(data)
 
     # sort idx, max first
-    sort_idx = np.argsort(predicted_prob, axis=1)[:, ::-1]
-    sorted_predicted_prob = predicted_prob[:, sort_idx][:, 0, :]
+    sort_idx = np.argsort(-predicted_prob, axis=1)
+    sorted_predicted_prob = -np.sort(-predicted_prob, axis=1)
 
     predicted_labels = sort_idx[:, 0]
 
@@ -56,6 +56,11 @@ def confidence(model_path, model_type, data_file, output_dir, num_symptoms):
     top_5_idx = np.where(combined == True)[0]
     op_file = os.path.join(output_dir, "%s_confidence_matrix_5.joblib" % model_type)
     joblib.dump(sorted_predicted_prob[top_5_idx, : 5], op_file)
+
+    # where it's not even top 5 accurate ?
+    not_top_5_idx = np.where(combined == False)[0]
+    op_file = os.path.join(output_dir, "%s_confidence_matrix_n5.joblib" % model_type)
+    joblib.dump(sorted_predicted_prob[not_top_5_idx, : 5], op_file)
 
     return True
 
