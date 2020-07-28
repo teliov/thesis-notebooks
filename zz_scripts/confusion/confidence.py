@@ -46,7 +46,7 @@ def confidence(model_path, model_type, data_file, output_dir, num_symptoms):
     joblib.dump(sorted_predicted_prob[wrong_idx, : 5], op_file)
 
     # when it's top 5 ?
-    top_n_predictions = sorted_predicted_prob[:, :5]
+    top_n_predictions = sort_idx[:, :5]
     encoded_probability = np.take_along_axis(predicted_prob, label_values[:, None], axis=1)
     encoded_probability = encoded_probability.reshape(encoded_probability.shape[0], )
 
