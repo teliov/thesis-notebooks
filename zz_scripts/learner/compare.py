@@ -9,27 +9,12 @@ import mlflow
 BASE_DIR="/home/oagba/bulk/data/"
 TARGET_DIRS=[
     "output_basic_15k",
-    "output_basic_2_cnt_15k",
-    "output_basic_3_cnt_15k",
-    "output_basic_4_cnt_15k",
     "output_basic_avg_cnt_15k",
     "output_basic_pct_10_15k",
-    "output_basic_pct_20_15k",
     "output_basic_pct_30_15k",
-    "output_basic_rand_symptoms",
-    "output_basic_weighted_symptoms",
-    "output_basic_inc_2_15k",
-    "output_basic_inc_1_15k",
-    "output_basic_inc_3_15k",
-    "output_basic_inc_4_15k",
-    "output_basic_ran_1_15k",
-    "output_basic_ran_2_15k",
-    "output_basic_ran_4_15k",
     "output_basic_pct_70_15k",
-    "output_basic_ran_3_15k",
-    "output_basic_pct_50_15k",
+    "output_basic_inc_3_15k",
 ]
-
 
 def compare(directory, model_type, num_symptoms, mlflow_uri):
 
