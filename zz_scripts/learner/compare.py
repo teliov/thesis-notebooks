@@ -19,7 +19,7 @@ TARGET_DIRS=[
 
 def compare(directory, model_type, num_symptoms, mlflow_uri):
 
-    if model_type == "random_forest" or "rf":
+    if model_type == "random_forest":
         model_path = os.path.join(BASE_DIR, directory, "symptoms/csv/parsed/learning/rf/rf_1_5.joblib")
     else:
         model_path = os.path.join(BASE_DIR, directory, "symptoms/csv/parsed/learning/nb/nb_1_5.joblib")
