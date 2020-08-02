@@ -11,13 +11,17 @@ TARGET_DIRS=[
     "output_basic_15k",
     "output_basic_avg_cnt_15k",
     "output_basic_pct_10_15k",
+    "output_basic_pct_20_15k",
     "output_basic_pct_30_15k",
+    "output_basic_pct_50_15k",
     "output_basic_pct_70_15k",
-    "output_basic_inc_3_15k",
+    "output_basic_inc_1_15k",
+    "output_basic_inc_2_15k",
+    "output_basic_inc_3_15k"
 ]
 
 
-def compare(directory, model_type, num_symptoms, mlflow_uri):
+def compare(directory, model_type, num_symptoms, mlflow_uri, only_self=True):
 
     if model_type == "random_forest":
         model_path = os.path.join(BASE_DIR, directory, "symptoms/csv/parsed/learning/rf/rf_1_5.joblib")
@@ -53,7 +57,12 @@ def compare(directory, model_type, num_symptoms, mlflow_uri):
             run_metrics["model_load_time"] = end - start
 
             start_eval = timer()
-            for dirname in TARGET_DIRS:
+            if only_self:
+                dirlist = [directory]
+            else:
+                dirlist = TARGET_DIRS
+
+            for dirname in dirlist:
                 start_0 = timer()
                 data_file = os.path.join(BASE_DIR, dirname, "symptoms/csv/parsed/test.csv_sparse.csv")
                 data = pd.read_csv(data_file, index_col='Index')
@@ -102,11 +111,13 @@ if __name__ == "__main__":
     parser.add_argument('--model_type', help='Type of the model', type=str)
     parser.add_argument('--num_symptoms', help='The number of symptoms', type=int, default=376)
     parser.add_argument('--mlflow_uri', help='MLFlow URI', type=str)
+    parser.add_argument('--only_self', help='Only test for current model', type=int, default=1)
 
     args = parser.parse_args()
     directory = args.dir
     model_type = args.model_type
     num_symptoms = args.num_symptoms
     mlflow_uri = args.mlflow_uri
+    only_self = args.only_self > 0
 
-    compare(directory, model_type, num_symptoms, mlflow_uri)
+    compare(directory, model_type, num_symptoms, mlflow_uri, only_self)
