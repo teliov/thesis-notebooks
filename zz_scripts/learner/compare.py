@@ -9,6 +9,9 @@ import mlflow
 BASE_DIR="/home/oagba/bulk/data/"
 TARGET_DIRS=[
     "output_basic_15k",
+    "output_basic_2_cnt_15k",
+    "output_basic_3_cnt_15k",
+    "output_basic_4_cnt_15k",
     "output_basic_avg_cnt_15k",
     "output_basic_pct_10_15k",
     "output_basic_pct_20_15k",
