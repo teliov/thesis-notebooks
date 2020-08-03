@@ -5,19 +5,19 @@ import pathlib
 
 BASE_DIR="/home/oagba/bulk/data/"
 TARGET_SOURCES = {
-    "output_basic_10k": 20,
-    "output_basic_2_cnt_10k": 10,
-    "output_basic_3_cnt_10k": 10,
-    "output_basic_4_cnt_10k": 10,
-    "output_basic_avg_cnt_10k": 10,
-    "output_basic_pct_10_10k": 10,
-    "output_basic_pct_20_10k": 10,
-    "output_basic_pct_30_10k": 10,
-    "output_basic_pct_50_10k": 10,
-    "output_basic_pct_70_10k": 10,
-    "output_basic_inc_1_10k": 10,
-    "output_basic_inc_2_10k": 10,
-    "output_basic_inc_3_10k": 10
+    "output_basic_15k": 20,
+    "output_basic_2_cnt_15k": 10,
+    "output_basic_3_cnt_15k": 10,
+    "output_basic_4_cnt_15k": 10,
+    "output_basic_avg_cnt_15k": 10,
+    "output_basic_pct_10_15k": 10,
+    "output_basic_pct_20_15k": 10,
+    "output_basic_pct_30_15k": 10,
+    "output_basic_pct_50_15k": 10,
+    "output_basic_pct_70_15k": 10,
+    "output_basic_inc_1_15k": 10,
+    "output_basic_inc_2_15k": 10,
+    "output_basic_inc_3_15k": 10
 }
 
 if __name__ == "__main__":
