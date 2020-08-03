@@ -55,6 +55,6 @@ if __name__ == "__main__":
     df.to_csv(filename)
 
     # train
-    df = pd.concat(test_dfs)
+    df = pd.concat(train_dfs)
     filename = os.path.join(opdir, "train.csv_sparse.csv")
     df.to_csv(filename)
