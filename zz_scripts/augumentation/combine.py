@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
         for idx in range(2):
             df = pd.read_csv(files[idx], index_col="Index")
-            label_values = df.LABEL.values = df['LABEL']
+            label_values = df.LABEL.values
 
             for _, test_index in split_t.split(df, label_values):
                 df = df.iloc[test_index]
