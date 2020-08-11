@@ -8,7 +8,7 @@ layer_config_file=$5
 
 python main.py --run_name test_run \
     --train_file $train_file \
-    --mlflow_uri http://mlflow.teliov.xyz \
+    --mlflow_uri $MLFLOW_URL \
     --input_dim $input_dim \
     --num_symptoms $num_symptoms \
     --num_conditions $num_conditions \
