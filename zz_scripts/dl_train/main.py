@@ -18,6 +18,7 @@ if __name__ == "__main__":
     train_dl_group.add_argument('--visdom_password', type=str, help="password to visdom server")
     train_dl_group.add_argument('--visdom_env', type=str, help="env to visdom server")
     train_dl_group.add_argument('--layer_config_file', type=str, help="path to layer configuration")
+    train_dl_group.add_argument('--epochs', type=int, help="path to layer configuration", default=200)
 
     args = parser.parse_args()
 
@@ -33,6 +34,7 @@ if __name__ == "__main__":
     visdom_password = args.visdom_password
     visdom_env = args.visdom_env
     layer_config_file = args.layer_config_file
+    epochs = args.epochs
 
     train_dl(
         run_name,
@@ -47,6 +49,6 @@ if __name__ == "__main__":
         visdom_password,
         visdom_env,
         layer_config_file,
-        epochs=10
+        epochs=epochs
     )
 
