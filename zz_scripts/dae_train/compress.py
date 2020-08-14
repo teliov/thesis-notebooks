@@ -53,7 +53,7 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
     dae = to_device(dae, device)
 
     num_samples = race_symptoms.shape[0]
-    batch_size = 1024*200
+    batch_size = 1024*1024
     start = 0
     end = start + batch_size
     with torch.no_grad():
