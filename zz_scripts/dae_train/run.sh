@@ -6,7 +6,7 @@ target_dim=$3
 num_symptoms=$4
 epoch_count=200
 
-python main.py --run_name test_run \
+python main.py --run_name dae_run \
     --train_file $train_file \
     --mlflow_uri $MLFLOW_URL \
     --input_dim ${input_dim} \

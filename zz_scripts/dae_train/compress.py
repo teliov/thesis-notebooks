@@ -14,6 +14,7 @@ import pathlib
 import argparse
 
 import torch
+from torch.utils.data import DataLoader
 
 
 def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
@@ -51,12 +52,26 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
     device = get_default_device()
     dae = to_device(dae, device)
 
-    dataset = torch.LongTensor(race_symptoms.todense())
-    dataset = to_device(dataset, device)
-
+    num_samples = race_symptoms.shape[0]
+    batch_size = 1024*2
+    start = 0
+    end = start + batch_size
     with torch.no_grad():
-        compressed = dae.encoder(dataset)
-        compressed = compressed.numpy()
+        if num_samples <= batch_size:
+            tensor = torch.LongTensor(race_symptoms.todense())
+            compressed = dae.encoder(to_device(tensor, device)).numpy()
+        else:
+            compressed = np.zeros((num_samples, target_dim), dtype=np.float32)
+            while end <= num_samples:
+                tensor = torch.LongTensor(race_symptoms[start: end, :].todense())
+                temp = dae.encoder(to_device(tensor, device)).numpy()
+                compressed[start:end, :] = temp
+
+                start += batch_size
+                end += batch_size
+
+                if end > num_samples:
+                    end = num_samples
 
     df = np.hstack((df.todense(), compressed))
     df = pd.DataFrame(df)
