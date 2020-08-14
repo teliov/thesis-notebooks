@@ -1,6 +1,7 @@
 import argparse
+import os
 
-from thesislib.utils.dl.bench import train_dl
+from thesislib.utils.dl.bench import train_dl, train_aedl
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Medvice AWS Runner")
@@ -19,6 +20,8 @@ if __name__ == "__main__":
     train_dl_group.add_argument('--visdom_env', type=str, help="env to visdom server")
     train_dl_group.add_argument('--layer_config_file', type=str, help="path to layer configuration")
     train_dl_group.add_argument('--epochs', type=int, help="path to layer configuration", default=200)
+    train_dl_group.add_argument('--pre_train', action='store_true', help="Use Pretrained DAE for compression")
+    train_dl_group.add_argument('--dae_path', type=str, help="Path to trained DAE", default="")
 
     args = parser.parse_args()
 
@@ -35,20 +38,44 @@ if __name__ == "__main__":
     visdom_env = args.visdom_env
     layer_config_file = args.layer_config_file
     epochs = args.epochs
+    use_pre_train = args.pre_train
+    dae_path = args.dae_path
 
-    train_dl(
-        run_name,
-        train_file,
-        mlflow_uri,
-        input_dim,
-        num_symptoms,
-        num_conditions,
-        visdom_url,
-        visdom_port,
-        visdom_username,
-        visdom_password,
-        visdom_env,
-        layer_config_file,
-        epochs=epochs
-    )
+    if use_pre_train:
+        if len(dae_path) < 0 or not os.path.exists(dae_path):
+            raise ValueError("If using the pre-trained procedure, you must provide a valid path to the DAE module")
+
+        train_aedl(
+            run_name,
+            dae_path,
+            train_file,
+            mlflow_uri,
+            input_dim,
+            num_symptoms,
+            num_conditions,
+            visdom_url,
+            visdom_port,
+            visdom_username,
+            visdom_password,
+            visdom_env,
+            layer_config_file,
+            epochs=epochs
+        )
+
+    else:
+        train_dl(
+            run_name,
+            train_file,
+            mlflow_uri,
+            input_dim,
+            num_symptoms,
+            num_conditions,
+            visdom_url,
+            visdom_port,
+            visdom_username,
+            visdom_password,
+            visdom_env,
+            layer_config_file,
+            epochs=epochs
+        )
 
