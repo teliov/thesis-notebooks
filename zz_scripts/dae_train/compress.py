@@ -26,7 +26,7 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
 
     pathlib.Path(output_dir).mkdir(exist_ok=True, parents=True)
 
-    train_artifacts = torch.load(state_dict_path, map_location=torch.device('cpu'))
+    train_artifacts = torch.load(state_dict_path)
     if not "input_dim" in train_artifacts or not "target_dim" in train_artifacts \
             or not "model_dict" in train_artifacts:
         raise ValueError("Invalid train artifacts retrieved from state dict")
