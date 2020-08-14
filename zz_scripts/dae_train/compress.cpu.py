@@ -47,8 +47,10 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
     assert input_dim == race_symptoms.shape[1], \
         "Dimension of prepped data (%d) does not match specified input dimension (%d)" % (input_dim, race_symptoms.shape[1])
 
-    tensor = torch.FloatTensor(race_symptoms.todense())
-    compressed = dae.encoder(tensor).numpy()
+    with torch.no_grad():
+        tensor = torch.FloatTensor(race_symptoms.todense())
+        compressed = dae.encoder(tensor).numpy()
+
     df = np.hstack((df.todense(), compressed))
     df = pd.DataFrame(df)
     opfilename = "comp_%s" % os.path.basename(train_file_path)
