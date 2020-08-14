@@ -59,12 +59,12 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
     with torch.no_grad():
         if num_samples <= batch_size:
             tensor = torch.FloatTensor(race_symptoms.todense())
-            compressed = dae.encoder(to_device(tensor, device)).numpy()
+            compressed = dae.encoder(to_device(tensor, device)).cpu().numpy()
         else:
             compressed = np.zeros((num_samples, target_dim), dtype=np.float32)
             while end <= num_samples:
                 tensor = torch.FloatTensor(race_symptoms[start: end, :].todense())
-                temp = dae.encoder(to_device(tensor, device)).numpy()
+                temp = dae.encoder(to_device(tensor, device)).cpu().numpy()
                 compressed[start:end, :] = temp
 
                 start += batch_size
