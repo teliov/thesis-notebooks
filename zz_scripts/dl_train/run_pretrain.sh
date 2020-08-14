@@ -7,7 +7,7 @@ num_conditions=$4
 layer_config_file=$5
 dae_path=$6
 
-python main.py --run_name test_run \
+python main.py --run_name dae_dl_run \
     --train_file $train_file \
     --mlflow_uri $MLFLOW_URL \
     --input_dim $input_dim \
