@@ -74,10 +74,11 @@ def train_rf(
             train_labels = None
             test_data = None
             test_labels = None
-            for train_index, test_index in split_t.split(data, label_values):
-                train_data = data[train_index]
+            # use label_values instead of  full data when splitting, should give same results
+            for train_index, test_index in split_t.split(label_values.reshape(-1, 1), label_values):
+                train_data = data.iloc[train_index]
                 train_labels = label_values[train_index]
-                test_data = data[test_index]
+                test_data = data.iloc[test_index]
                 test_labels = label_values[test_index]
 
             end = timer()
