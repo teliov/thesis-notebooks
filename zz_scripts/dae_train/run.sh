@@ -4,7 +4,7 @@ train_file=$1
 input_dim=$2
 target_dim=$3
 num_symptoms=$4
-epoch_count=200
+epoch_count=20
 
 python main.py --run_name dae_run \
     --train_file $train_file \

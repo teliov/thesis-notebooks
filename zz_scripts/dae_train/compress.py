@@ -79,7 +79,7 @@ def compress(state_dict_path, train_file_path, num_symptoms, output_dir):
     opfilename = "comp_%s" % os.path.basename(train_file_path)
     opfilepath = os.path.join(output_dir, opfilename)
 
-    df.to_csv(opfilepath)
+    df.to_csv(opfilepath, index_label="Index")
 
 
 if __name__ == "__main__":
