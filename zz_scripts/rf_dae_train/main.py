@@ -9,6 +9,7 @@ import mlflow
 import pathlib
 import time
 from thesislib.utils.ml import report
+import numpy as np
 
 
 class RFParams(object):
@@ -55,14 +56,12 @@ def train_rf(
 
             # read the csv file
             start = timer()
-            data = pd.read_csv(data_file, index_col='Index')
+            data = pd.read_csv(data_file, index_col='Index', dtype={'0': np.uint16})
             end = timer()
             run_metrics["csv_read_time"] = end - start
 
-            classes = data.LABEL.unique().tolist()
+            classes = list(range(801))
 
-            # Prepping Sparse Representation
-            start = timer()
             label_values = data['0'].values
             data = data.drop(columns=['0'])
 
