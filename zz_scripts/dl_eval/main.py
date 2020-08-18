@@ -5,7 +5,7 @@ from thesislib.utils.dl.utils import compute_top_n, compute_precision, get_cnf_m
 import json
 import os
 import pandas as pd
-import numpy as np
+from timeit import default_timer as timer
 import pathlib
 import argparse
 
@@ -20,6 +20,7 @@ INPUT_DIM = 383
 
 
 def eval(state_dict_path, train_file_path, output_dir, run_name):
+    begin = timer()
     if not os.path.exists(state_dict_path):
         raise ValueError("Invalid state dict path passed")
 
@@ -65,6 +66,8 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
             "top5": top_5_acc
         }, fp)
 
+    duration = timer() - begin
+    print("Took : %.7f seconds" % duration)
     return True
 
 
