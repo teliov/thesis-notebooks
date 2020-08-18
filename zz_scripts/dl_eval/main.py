@@ -45,7 +45,7 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
 
     with torch.no_grad():
         labels = torch.LongTensor(labels)
-        df = torch.LongTensor(df.todense())
+        df = torch.FloatTensor(df.todense())
 
         out = model(df)
         _, y_pred = torch.max(out, dim=1)
