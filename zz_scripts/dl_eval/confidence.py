@@ -1,10 +1,6 @@
 from thesislib.utils.dl.models import DNN, DEFAULT_LAYER_CONFIG
 from thesislib.utils.dl.data import DLSparseMaker
-from thesislib.utils.dl.utils import compute_top_n
 
-from sklearn.metrics import precision_score
-
-import json
 import os
 import pandas as pd
 from timeit import default_timer as timer
@@ -12,6 +8,8 @@ import pathlib
 import argparse
 
 import torch
+import torch.nn.functional as F
+import joblib
 
 AGE_MEAN = 38.741316816862515
 AGE_STD = 23.380120690086834
@@ -21,7 +19,7 @@ NUM_CONDITIONS = 801
 INPUT_DIM = 383
 
 
-def eval(state_dict_path, train_file_path, output_dir, run_name):
+def confidence(state_dict_path, train_file_path, output_dir):
     begin = timer()
     if not os.path.exists(state_dict_path):
         raise ValueError("Invalid state dict path passed")
@@ -40,8 +38,6 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
     labels = df.LABEL
     df = df.drop(columns=['LABEL'])
 
-    num_samples = labels.shape[0]
-
     sparsifier = DLSparseMaker(num_symptoms=NUM_SYMPTOMS, age_mean=AGE_MEAN, age_std=AGE_STD)
     df = sparsifier.transform(df)
 
@@ -50,20 +46,32 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
         df = torch.FloatTensor(df.todense())
 
         out = model(df)
-        _, y_pred = torch.max(out, dim=1)
+        predicted_prob = F.softmax(out, dim=1)
+        sorted_predicted_prob, sort_idx = torch.sort(predicted_prob, dim=1, descending=True)
 
-        accuracy = torch.true_divide(torch.sum(y_pred == labels), num_samples)
-        precision = precision_score(labels.numpy(), y_pred.numpy(), average='weighted', zero_division=1)
-        top_5_acc, _ = compute_top_n(out, labels, 5)
-        top_5_acc /= num_samples
+        predicted_labels = sort_idx[:, 0]
 
-    filename = os.path.join(output_dir, "%s_dl_eval.json" % run_name)
-    with open(filename, "w") as fp:
-        json.dump({
-            "precision": precision,
-            "accuracy": accuracy.item(),
-            "top5": top_5_acc
-        }, fp)
+        # for all the data
+        op_file = os.path.join(output_dir, "mlp_confidence_matrix_all.joblib")
+        joblib.dump(sorted_predicted_prob[:, :5].numpy(), op_file)
+
+        # when it;s correct
+        op_file = os.path.join(output_dir, "mlp_confidence_matrix_1.joblib")
+        joblib.dump(sorted_predicted_prob[predicted_labels == labels, :5].numpy(), op_file)
+
+        # when it's wrong
+        op_file = os.path.join(output_dir, "mlp_confidence_matrix_0.joblib")
+        joblib.dump(sorted_predicted_prob[predicted_labels != labels, : 5].numpy(), op_file)
+
+        # when it's top 5 ?
+        top_5 = sort_idx[:, :5]
+        combined = torch.sum(top_5 == labels.view(-1, 1), dim=1)
+        op_file = os.path.join(output_dir, "mlp_confidence_matrix_5.joblib")
+        joblib.dump(sorted_predicted_prob[combined == 1, : 5].numpy(), op_file)
+
+        # where it's not even top 5 accurate ?
+        op_file = os.path.join(output_dir, "mlp_confidence_matrix_n5.joblib")
+        joblib.dump(sorted_predicted_prob[combined == 0, : 5], op_file)
 
     duration = timer() - begin
     print("Took : %.7f seconds" % duration)
@@ -71,19 +79,16 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="DL Evaluator")
+    parser = argparse.ArgumentParser(description="DL Confidence Evaluator")
 
     parser.add_argument('--state_dict_path', type=str, help='Path to State Dict')
     parser.add_argument('--data_path', type=str, help='Path to data file')
     parser.add_argument('--output_dir', type=str, help='Output directory')
-    parser.add_argument('--run_name', type=str, help='Name of this run')
 
     args = parser.parse_args()
 
     state_dict_path = args.state_dict_path
     data_path = args.data_path
     output_dir = args.output_dir
-    run_name = args.run_name
 
-    # def eval(state_dict_path, train_file_path, output_dir, run_name):
-    eval(state_dict_path, data_path, output_dir, run_name)
+    confidence(state_dict_path, data_path, output_dir)
