@@ -40,7 +40,7 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
 
     num_samples = labels.shape[0]
 
-    sparsifier = DLSparseMaker(num_symptoms=NUM_CONDITIONS, age_mean=AGE_MEAN, age_std=AGE_STD)
+    sparsifier = DLSparseMaker(num_symptoms=NUM_SYMPTOMS, age_mean=AGE_MEAN, age_std=AGE_STD)
     df = sparsifier.transform(df)
 
     with torch.no_grad():
