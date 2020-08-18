@@ -2,6 +2,8 @@ from thesislib.utils.dl.models import DNN, DEFAULT_LAYER_CONFIG
 from thesislib.utils.dl.data import DLSparseMaker
 from thesislib.utils.dl.utils import compute_top_n, compute_precision, get_cnf_matrix
 
+from sklearn.metrics import precision_score
+
 import json
 import os
 import pandas as pd
@@ -49,12 +51,9 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
 
         out = model(df)
         _, y_pred = torch.max(out, dim=1)
-        unique_labels = torch.LongTensor(range(NUM_CONDITIONS))
 
-        cnf = get_cnf_matrix(labels, y_pred, unique_labels)
-
-        precision = compute_precision(cnf)
-        accuracy = torch.true_divide(torch.sum(torch.diagonal(cnf)), num_samples)
+        accuracy = torch.true_divide(torch.sum(y_pred == labels), num_samples)
+        precision = precision_score(labels.numpy(), y_pred.numpy(), average='weighted', zero_division=1)
         top_5_acc, _ = compute_top_n(out, labels, 5)
         top_5_acc /= num_samples
 
