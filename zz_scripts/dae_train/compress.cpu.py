@@ -4,7 +4,7 @@ the sparse features into the latent representation
 """
 
 from thesislib.utils.dl.dae import DAE
-from thesislib.utils.dl.models import DLSparseMaker
+from thesislib.utils.dl.data import DLSparseMaker
 
 import os
 import pandas as pd
