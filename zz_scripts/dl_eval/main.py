@@ -54,7 +54,7 @@ def eval(state_dict_path, train_file_path, output_dir, run_name):
         cnf = get_cnf_matrix(labels, y_pred, unique_labels)
 
         precision = compute_precision(cnf)
-        accuracy = torch.sum(torch.diagonal(cnf)) / num_samples
+        accuracy = torch.true_divide(torch.sum(torch.diagonal(cnf)), num_samples)
         top_5_acc, _ = compute_top_n(out, labels, 5)
         top_5_acc /= num_samples
 
