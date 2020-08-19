@@ -19,6 +19,7 @@ def top_5_qual(model_path, model_type, data_file, output_dir, num_symptoms):
         clf = models.ThesisSparseNaiveBayes.load(clf_serialized)
 
     data = pd.read_csv(data_file, index_col='Index')
+    data = data[data['LABEL'].isin(EVAL_CONDITIONS)]
     label_values = data.LABEL.values
     data = data.drop(columns=['LABEL'])
 
