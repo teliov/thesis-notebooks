@@ -40,7 +40,7 @@ def top_5_qual(state_dict_path, train_file_path, output_dir):
     df = pd.read_csv(train_file_path, index_col="Index")
     df = df[df['LABEL'].isin(EVAL_CONDITIONS)]
 
-    labels = df.LABEL
+    labels = df.LABEL.values
     df = df.drop(columns=['LABEL'])
 
     sparsifier = DLSparseMaker(num_symptoms=NUM_SYMPTOMS, age_mean=AGE_MEAN, age_std=AGE_STD)
