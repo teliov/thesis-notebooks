@@ -48,6 +48,7 @@ def top_5_qual(state_dict_path, train_file_path, output_dir):
 
     with torch.no_grad():
         df = torch.FloatTensor(df.todense())
+        labels = torch.LongTensor(labels)
 
         out = model(df)
         sorted_prob = torch.argsort(out, dim=1, descending=True)
