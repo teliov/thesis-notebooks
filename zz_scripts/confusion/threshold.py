@@ -12,15 +12,15 @@ INPUT_DIM = 383
 
 
 def extract_stats(prob_data, prob_index, labels, threshold):
-
     index_threshold = prob_data[:, 0] >= threshold
+    _index_threshold = index_threshold == False
 
     # num_predictions
     num_allowed_predictions = np.sum(index_threshold)
+    num_rejected_predictions = np.sum(_index_threshold)
 
     # how many are accurate
     _labels = labels[index_threshold]
-    _prob = prob_data[index_threshold, :]
     _index = prob_index[index_threshold, :]
 
     top_1 = np.sum(_index[:, 0] == _labels)
@@ -28,12 +28,30 @@ def extract_stats(prob_data, prob_index, labels, threshold):
     top_0 = num_allowed_predictions - top_1
     top_n5 = num_allowed_predictions - top_5
 
+    # how many are inaccurate
+    n_labels = labels[_index_threshold]
+    n_index = prob_index[_index_threshold, :]
+
+    ntop_1 = np.sum(n_index[:, 0] == n_labels)
+    ntop_5 = np.sum(n_index == n_labels.reshape(-1, 1))
+    ntop_0 = num_rejected_predictions - ntop_1
+    ntop_n5 = num_rejected_predictions - ntop_5
+
     return {
-        "allowed_predictions": num_allowed_predictions,
-        "num_top1_accurate": top_1,
-        "num_top5_accurate": top_5,
-        "num_top1_inaccurate": top_0,
-        "num_top5_inaccurate": top_n5
+        "allowed": {
+            "count": num_allowed_predictions,
+            "num_top1_accurate": top_1,
+            "num_top5_accurate": top_5,
+            "num_top1_inaccurate": top_0,
+            "num_top5_inaccurate": top_n5
+        },
+        "rejected": {
+            "count": num_rejected_predictions,
+            "num_top1_accurate": ntop_1,
+            "num_top5_accurate": ntop_5,
+            "num_top1_inaccurate": ntop_0,
+            "num_top5_inaccurate": ntop_n5
+        }
     }
 
 
