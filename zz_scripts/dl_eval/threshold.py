@@ -25,12 +25,12 @@ def extract_stats(prob_data, prob_index, labels, threshold):
     index_threshold = prob_data[:, 0] >= threshold
 
     # num_predictions
-    num_allowed_predictions = index_threshold.shape[0]
+    num_allowed_predictions = np.sum(index_threshold)
 
     # how many are accurate
-    _labels = labels[num_allowed_predictions]
-    _prob = prob_data[num_allowed_predictions, :]
-    _index = prob_index[num_allowed_predictions, :]
+    _labels = labels[index_threshold]
+    _prob = prob_data[index_threshold, :]
+    _index = prob_index[index_threshold, :]
 
     top_1 = np.sum(_index[:, 0] == _labels)
     top_5 = np.sum(_index == _labels.reshape(-1, 1))
