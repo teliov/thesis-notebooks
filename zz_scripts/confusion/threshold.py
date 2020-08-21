@@ -42,7 +42,7 @@ def threshold_definitions(model_path, model_type, threshold_path, data_file, out
 
     if model_type == "random_forest":
         clf = clf_data.get("clf")
-        threshold_key = "rb"
+        threshold_key = "rf"
     else:
         clf_serialized = clf_data.get("clf")
         clf = models.ThesisSparseNaiveBayes.load(clf_serialized)
