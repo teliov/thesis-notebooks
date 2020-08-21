@@ -75,7 +75,7 @@ def threshold_definitions(state_dict_path, threshold_path, test_file_path, outpu
 
         out = model(df)
         predicted_prob = F.softmax(out, dim=1)
-        sorted_prob, sorted_index = torch.argsort(predicted_prob, descending=True, dim=1)
+        sorted_prob, sorted_index = torch.sort(predicted_prob, descending=True, dim=1)
 
         sorted_prob = sorted_prob[:, :5].numpy()
         sorted_index = sorted_index[:, :5].numpy()
