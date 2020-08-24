@@ -77,7 +77,7 @@ def threshold_definitions(model_path, model_type, threshold_path, data_file, out
 
     # sort idx, max first
     sorted_index = np.argsort(-predicted_prob, axis=1)[:, :5]
-    sorted_prob = np.sort(-predicted_prob, axis=1)[:, :5]
+    sorted_prob = -np.sort(-predicted_prob, axis=1)[:, :5]
 
     threshold_data = joblib.load(threshold_path)
     _data = threshold_data.get(threshold_key)
