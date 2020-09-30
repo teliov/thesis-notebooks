@@ -1,0 +1,366 @@
+{
+    "nausea": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "abdominal_pain": {
+        "nature": [
+            "stinging",
+            "dull",
+            "cramping"
+        ],
+        "location": [
+            "abdomen_upper_abdomen",
+            "abdomen_llq",
+            "abdomen_umbilical",
+            "abdomen_right_abdomen",
+            "abdomen_lower_abdomen",
+            "abdomen_epigastric",
+            "abdomen_left_abdomen"
+        ],
+        "location_main": [
+            "abdomen"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "car_over_bumps"
+        ],
+        "frequency": []
+    },
+    "vomiting": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "anorexia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "fever": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [],
+        "frequency": []
+    },
+    "bloating": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "hard_stool": {
+        "nature": [
+            "lumpy"
+        ],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "jaundice": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "flatulence": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "lower_back_pain": {
+        "nature": [
+            "radiating"
+        ],
+        "location": [
+            "lower_back_paravertebral",
+            "lower_back_si",
+            "lower_back_lumbar"
+        ],
+        "location_main": [
+            "lower_back"
+        ],
+        "vas": [],
+        "excitation": [
+            "walking",
+            "standing"
+        ],
+        "frequency": []
+    },
+    "cough": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "mucus_expectoration": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "shortness_of_breath": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "fatigue": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "head_pain": {
+        "nature": [
+            "pressure",
+            "aching",
+            "stabbing",
+            "throbbing",
+            "thunderclap"
+        ],
+        "location": [
+            "head_unilateral_right",
+            "head_occipital",
+            "head_unilateral_left",
+            "head_bilateral_side"
+        ],
+        "location_main": [
+            "head"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [],
+        "frequency": []
+    },
+    "sore_throat": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "nasal_congestion": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "cyanosis": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "chest_pain": {
+        "nature": [
+            "stinging",
+            "cramping"
+        ],
+        "location": [],
+        "location_main": [
+            "chest"
+        ],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "headache": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "photophobia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "phonophobia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "aura": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "limb_weakness": {
+        "nature": [
+            "contraleteral_proximal_weakness",
+            "hemiparesis",
+            "paraparesis"
+        ],
+        "location": [
+            "left_arm",
+            "lower_extremities",
+            "right_arm"
+        ],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "double_vision": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "head_stiffness": {
+        "nature": [],
+        "location": [
+            "head_neck"
+        ],
+        "location_main": [
+            "head"
+        ],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "loss_of_consciousness": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "transient_focal_symptoms": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "lower_extremities_pain": {
+        "nature": [
+            "radiating"
+        ],
+        "location": [
+            "lower_extremities_bilateral_legs",
+            "lower_extremities_unilateral_left_leg",
+            "lower_extremities_unilateral_right_leg"
+        ],
+        "location_main": [
+            "lower_extremities"
+        ],
+        "vas": [],
+        "excitation": [
+            "standing"
+        ],
+        "frequency": []
+    },
+    "sensibility_problems": {
+        "nature": [
+            "numbness",
+            "tingling",
+            "radiating"
+        ],
+        "location": [
+            "hip_inner_thighs"
+        ],
+        "location_main": [
+            "hip",
+            "lower_extremities"
+        ],
+        "vas": [],
+        "excitation": [
+            "standing"
+        ],
+        "frequency": []
+    },
+    "pain_relief": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [
+            "sitting_bending_forward",
+            "walking_bending_forward"
+        ],
+        "frequency": []
+    },
+    "intermittent_claudication": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    },
+    "incontinence": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [],
+        "excitation": [],
+        "frequency": []
+    }
+}

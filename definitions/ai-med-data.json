@@ -1,0 +1,560 @@
+{
+	"migrane": {
+		"condition_name": "Migrane",
+		"condition_slug": "migrane",
+		"symptoms": {
+			"headache": {
+				"slug": "headache",
+				"probability": 100,
+				"nlice": {
+					"nature": {
+						"throbbing": 90.9,
+						"stabbing": 70.9,
+						"pressure": 90.1,
+						"aching": 86.5
+					},
+					"vas": {
+						"mild": 4.4,
+						"moderate": 45.1,
+						"severe": 102.9
+					},
+					"duration": {
+						"short": 65.6,
+						"medium": 21.3,
+						"long": 13.1
+					}
+				}
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 77.6
+			},
+			"vomiting": {
+				"slug": "vomiting",
+				"probability": 40.90
+			},
+			"photophobia": {
+				"slug": "photophobia",
+				"probability": 83.7
+			},
+			"phonophobia": {
+				"slug": "phonophobia",
+				"probability": 76.5
+			}
+		},
+		"age": {
+			"age-0-9-years": {
+				"slug": "age-0-9-years",
+				"probability": 3.9
+			},
+			"age-10-19-years": {
+				"slug": "age-10-19-years",
+				"probability": 3.8
+			},
+			"age-20-29-years": {
+				"slug": "age-20-29-years",
+				"probability": 29.8
+			},
+			"age-30-39-years": {
+				"slug": "age-30-39-years",
+				"probability": 22.2
+			},
+			"age-40-49-years": {
+				"slug": "age-40-49-years",
+				"probability": 10.1
+			},
+			"age-50-59-years": {
+				"slug": "age-50-59-years",
+				"probability": 4.4
+			},
+			"age-g-60-years": {
+				"slug": "age-g-60-years",
+				"probability": 2.6
+			}
+		},
+		"race": {},
+		"sex": {
+			"sex-male": {
+				"slug": "sex-male",
+				"odds": 8.6
+			},
+			"sex-female": {
+				"slug": "sex-female",
+				"odds": 17.5
+			}
+		}
+	},
+	"tension-type-headache": {
+		"condition_name": "Tension Type Headache",
+		"condition_slug": "tension-type-headache",
+		"symptoms": {
+			"headache": {
+				"slug": "headache",
+				"probability": 100,
+				"nlice": {
+					"nature": {
+						"throbbing": 62,
+						"pressure": 38
+					},
+					"vas": {
+						"mild": 67.5,
+						"moderate": 29.4,
+						"severe": 3.1
+					},
+					"duration": {
+						"short": 100
+					}
+				}
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 6
+			},
+			"photophobia": {
+				"slug": "photophobia",
+				"probability": 45.1
+			},
+			"phonophobia": {
+				"slug": "phonophobia",
+				"probability": 7.1
+			}
+		},
+		"age": {
+			"age-0-9-years": {
+				"slug": "age-0-9-years",
+				"probability": 3.8
+			},
+			"age-10-19-years": {
+				"slug": "age-10-19-years",
+				"probability": 29.8
+			},
+			"age-20-29-years": {
+				"slug": "age-20-29-years",
+				"probability": 27.2
+			},
+			"age-30-39-years": {
+				"slug": "age-30-39-years",
+				"probability": 22.2
+			},
+			"age-40-49-years": {
+				"slug": "age-40-49-years",
+				"probability": 10.1
+			},
+			"age-50-59-years": {
+				"slug": "age-50-59-years",
+				"probability": 4.4
+			},
+			"age-g-60-years": {
+				"slug": "age-g-60-years",
+				"probability": 2.6
+			}
+		},
+		"race": {},
+		"sex": {
+			"sex-male": {
+				"slug": "sex-male",
+				"odds": 3.1
+			},
+			"sex-female": {
+				"slug": "sex-female",
+				"odds": 8.1
+			}
+		}
+	},
+	"subarachnoideal-bleeding": {
+		"condition_name": "Subarachnoideal Bleeding",
+		"condition_slug": "subarachnoideal-bleeding",
+		"symptoms": {
+			"headache": {
+				"slug": "headache",
+				"probability": 74,
+				"nlice": {
+					"nature": {
+						"thunderclap": 100,
+						"stabbing": 35
+					},
+					"vas": {
+						"severe": 100
+					},
+					"duration": {
+						"short": 100
+					}
+				}
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 77
+			},
+			"vomiting": {
+				"slug": "vomiting",
+				"probability": 69
+			},
+			"aura": {
+				"slug": "aura",
+				"probability": 0.2
+			},
+			"limb-weakness": {
+				"slug": "limb-weakness",
+				"probability": 10,
+				"nlice": {
+					"nature": {
+						"quadri-hemi-paresis": 30,
+						"paraparesis": 27,
+						"contraleteral-proximal-weakness": 12,
+						"other": 30.7
+					}
+				}
+			},
+			"neckpain": {
+				"slug": "neckpain",
+				"probability": 33.5
+			},
+			"loss-of-consciousness": {
+				"slug": "loss-of-consciousness",
+				"probability": 26
+			},
+			"transient-focal-symptoms": {
+				"slug": "transient-focal-symptoms",
+				"probability": 33
+			}
+		},
+		"age": {},
+		"race": {},
+		"sex": {}
+	},
+	"appendicitis": {
+		"condition_name": "Appendicitis",
+		"condition_slug": "appendicitis",
+		"symptoms": {
+			"abdominal-pain": {
+				"slug": "abdominal-pain",
+				"probability": 94,
+				"nlice": {
+					"nature": {
+						"stinging":50,
+						"dull": 50
+					},
+					"vas": {
+						"mild": 0,
+						"moderate": 25,
+						"severe": 75
+					},
+					"duration": {
+						"short": 70,
+						"medium": 25,
+						"long": 5
+					},
+					"location": {
+						"umbilical": 70,
+						"upper-abdomen": 45,
+						"rlq": 100
+					}
+				}
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 30
+			},
+			"vomiting": {
+				"slug": "vomiting",
+				"probability": 44
+			},
+			"anorexia": {
+				"slug": "anorexia",
+				"probability": 75
+			},
+			"fever": {
+				"slug": "fever",
+				"probability": 54
+			},
+			"tenderness": {
+				"slug": "tenderness",
+				"probability": 100
+			}
+		},
+		"age": {},
+		"race": {},
+		"sex": {}
+	},
+	"functional-constipation": {
+		"condition_name": "Function Constipation",
+		"condition_slug": "functional-constipation",
+		"symptoms": {
+			"abdominal-pain": {
+				"slug": "abdominal-pain",
+				"probability": 20,
+				"nlice": {
+					"nature": {
+						"stinging":50,
+						"dull": 50
+					},
+					"vas": {
+						"mild": 78,
+						"moderate": 11,
+						"severe": 11
+					},
+					"duration": {
+						"short": 70,
+						"medium": 25,
+						"long": 5
+					},
+					"location": {
+						"left-abdomen": 70,
+						"right-abdomen": 45,
+						"llq": 20,
+						"umbilical": 10,
+						"epigastric": 10,
+						"rlq": 100
+					}
+				}
+			},
+			"heartburn": {
+				"slug": "heartburn",
+				"probability": 28
+			},
+			"difficulty-swallowing": {
+				"slug": "difficulty-swallowing",
+				"probability": 21
+			},
+			"discomfort-after-eating": {
+				"slug": "discomfort-after-eating",
+				"probability": 22
+			},
+			"difficulty-defecating": {
+				"slug": "difficulty-defecating",
+				"probability": 61
+			}
+		},
+		"age": {},
+		"race": {},
+		"sex": {
+			"sex-female": {
+				"slug": "sex-female",
+				"probability": 25
+			},
+			"sex-male": {
+				"slug": "sex-male",
+				"probability": 75
+			}
+		}
+	},
+	"irritable-bowel-syndrome": {
+		"condition_name": "Irritable Bowel Syndrome",
+		"condition_slug": "irritable-bowel-syndrome",
+		"symptoms": {
+			"abdominal-pain": {
+				"slug": "abdominal-pain",
+				"probability": 12,
+				"nlice": {
+					"nature": {
+						"stinging":50,
+						"dull": 50
+					},
+					"vas": {
+						"mild": 33,
+						"moderate": 34,
+						"severe": 33
+					},
+					"duration": {
+						"short": 70,
+						"medium": 25,
+						"long": 5
+					},
+					"location": {
+						"left-abdomen": 30,
+						"right-abdomen": 30,
+						"llq": 15,
+						"umbilical": 15,
+						"epigastric": 10
+					}
+				}
+			},
+			"heartburn": {
+				"slug": "heartburn",
+				"probability": 45
+			},
+			"difficulty-swallowing": {
+				"slug": "difficulty-swallowing",
+				"probability": 26
+			},
+			"discomfort-after-eating": {
+				"slug": "discomfort-after-eating",
+				"probability": 41
+			},
+			"difficulty-defecating": {
+				"slug": "difficulty-defecating",
+				"probability": 80
+			}
+		},
+		"age": {},
+		"race": {},
+		"sex": {
+			"sex-female": {
+				"slug": "sex-female",
+				"probability": 16
+			},
+			"sex-male": {
+				"slug": "sex-male",
+				"probability": 84
+			}
+		}
+	},
+	"covid-19": {
+		"condition_name": "Covid 19",
+		"condition_slug": "covid-19",
+		"symptoms": {
+			"cough": {
+				"slug": "cough",
+				"probability": 68,
+				"nlice": {
+				}
+			},
+			"mucus": {
+				"slug": "mucus",
+				"probability": 33
+			},
+			"shortness-of-breath": {
+				"slug": "shortness-of-breath",
+				"probability": 19
+			},
+			"fatigue": {
+				"slug": "fatigue",
+				"probability": 38
+			},
+			"headache": {
+				"slug": "headache",
+				"probability": 14
+			},
+			"sore-throat": {
+				"slug": "sore-throat",
+				"probability": 14
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 5
+			},
+			"vomiting": {
+				"slug": "vomiting",
+				"probability": 5
+			},
+			"nasal-congestion": {
+				"slug": "nasal-congestion",
+				"probability": 48
+			},
+			"fever": {
+				"slug": "fever",
+				"probability": 43.8,
+				"nlice": {
+					"vas": {
+						"mild": 56.2,
+						"moderate": 40.2,
+						"high": 3.6
+					}
+				}
+			}
+		},
+		"age": {
+			"age-0-14-years": {
+				"slug": "age-0-14-years",
+				"probability": 0.9
+			},
+			"age-15-49-years": {
+				"slug": "age-15-49-years",
+				"probability": 55.1
+			},
+			"age-50-64-years": {
+				"slug": "age-50-64-years",
+				"probability": 29.9
+			},
+			"age-g-65-years": {
+				"slug": "age-g-65-years",
+				"probability": 15.1
+			}
+		},
+		"race": {},
+		"sex": {
+			"sex-female": {
+				"slug": "sex-female",
+				"probability": 50
+			},
+			"sex-male": {
+				"slug": "sex-male",
+				"probability": 50
+			}
+		}
+	},
+	"seasonal-influenza": {
+		"condition_name": "Seasonal Influenza",
+		"condition_slug": "seasonal-influenza",
+		"symptoms": {
+			"cough": {
+				"slug": "cough",
+				"probability": 88,
+				"nlice": {
+				}
+			},
+			"mucus": {
+				"slug": "mucus",
+				"probability": 88
+			},
+			"shortness-of-breath": {
+				"slug": "shortness-of-breath",
+				"probability": 47.7
+			},
+			"sore-throat": {
+				"slug": "sore-throat",
+				"probability": 53.8
+			},
+			"nausea": {
+				"slug": "nausea",
+				"probability": 13
+			},
+			"vomiting": {
+				"slug": "vomiting",
+				"probability": 13
+			},
+			"nasal-congestion": {
+				"slug": "nasal-congestion",
+				"probability": 53.8
+			},
+			"fever": {
+				"slug": "fever",
+				"probability": 53,
+				"nlice": {
+					"vas": {
+						"high": 100
+					}
+				}
+			}
+		},
+		"age": {
+			"age-0-14-years": {
+				"slug": "age-0-14-years",
+				"probability": 0.9
+			},
+			"age-15-49-years": {
+				"slug": "age-15-49-years",
+				"probability": 55.1
+			},
+			"age-50-64-years": {
+				"slug": "age-50-64-years",
+				"probability": 29.9
+			},
+			"age-g-65-years": {
+				"slug": "age-g-65-years",
+				"probability": 15.1
+			}
+		},
+		"race": {},
+		"sex": {
+			"sex-female": {
+				"slug": "sex-female",
+				"probability": 50
+			},
+			"sex-male": {
+				"slug": "sex-male",
+				"probability": 50
+			}
+		}
+	}
+}

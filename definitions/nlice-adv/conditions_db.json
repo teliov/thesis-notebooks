@@ -1,0 +1,16 @@
+{
+    "acute_pancreatitis": 0,
+    "appendicitis": 1,
+    "cauda_equina": 2,
+    "covid-19": 3,
+    "functional_constipation": 4,
+    "hernia_nuclei_pulposi": 5,
+    "ibs": 6,
+    "lumbago": 7,
+    "lumbar_spinal_stenosis": 8,
+    "migraine": 9,
+    "pneumothorax": 10,
+    "seasonal_influenza": 11,
+    "subarachnoideal_bleeding": 12,
+    "tension_type_headache": 13
+}

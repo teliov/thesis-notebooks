@@ -1,0 +1,9 @@
+{
+    "other": 1,
+    "worsening_after_meals": 2,
+    "walking": 3,
+    "standing": 4,
+    "walking_bending_forward": 5,
+    "sitting_bending_forward": 6,
+    "car_over_bumps": 7
+}

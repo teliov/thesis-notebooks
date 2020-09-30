@@ -1,0 +1,17 @@
+{
+    "lumpy": 2,
+    "dull": 3,
+    "cramping": 4,
+    "pressure": 5,
+    "radiating": 6,
+    "aching": 7,
+    "hemiparesis": 8,
+    "paraparesis": 9,
+    "contraleteral_proximal_weakness": 10,
+    "numbness": 11,
+    "tingling": 12,
+    "stabbing": 13,
+    "stinging": 14,
+    "throbbing": 15,
+    "thunderclap": 16
+}

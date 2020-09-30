@@ -1,0 +1,141 @@
+s-Right arm
+Epicondyle
+Upper Arm
+Hand
+Lower Arm
+Thumb
+Dig2
+Dig3
+Dig4
+Dig5
+Wrist
+Palm
+Backhand
+s-Left arm
+Epicondyle
+Upper Arm
+Hand
+Lower Arm
+Thumb
+Dig2
+Dig3
+Dig4
+Dig5
+Wrist
+Palm
+Backhand
+s-Lower extremities
+Unilateral left leg
+Unilateral right leg
+Bilateral legs
+Foot
+Adductor
+Abductor
+Hamstrings
+Popliteal
+Calve
+Quadriceps
+Dig1
+Dig2
+Dig3
+Dig4
+Dig5
+Forefoot
+Ankle
+Heel
+Sole
+Upper leg right
+Upper leg left
+Lower leg right
+Lower leg left
+Knee
+s-Left lower extremity
+Upper leg
+Lower leg
+Knee
+Foot
+Adductor
+Abductor
+Hamstrings
+Popliteal
+Calve
+Quadriceps
+Dig1
+Dig2
+Dig3
+Dig4
+Dig5
+Forefoot
+Ankle
+Heel
+Sole
+s-Head
+Occipital
+Unilateral left
+Unilateral right
+Bilateral side
+Top
+Forehead
+Temporal right
+Temporal left
+Cheek
+Jaw
+Neck
+Cervical
+Trapezius
+Mastoid
+Chin
+Mouth
+Throat
+Left eye
+Right eye
+Left ear
+Right ear
+Nose
+Nostrils
+s-Chest
+Upper flank left
+Upper flank right
+Middle Upper Back
+Shoulder(blade) left
+Shoulder(blade) right
+Ribs left
+Ribs right
+Upper spine 
+Middle spine
+Sternum
+Sternum
+Lower left chest
+Lower right chest
+Upper left chest
+Upper right chest
+Right clavicle
+Left clavicle
+s-Abdomen
+Epigastric
+ULQ
+URQ
+LLQ
+LRQ
+Umbilical
+Lower abdomen
+Upper abdomen
+Left abdomen
+Right abdomen
+s-Lower back
+Paravertebral
+SI 
+Lumbar
+Right flank
+Left flank
+s-Hip
+Left hipbone
+Right hipbone
+Left inguinal (groin)
+Right inguinal (groin)
+Pubic area
+Glute left
+Glute right
+Peri-anal
+Coccyx
+Inner thighs

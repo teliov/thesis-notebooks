@@ -1,0 +1,1005 @@
+{
+    "nausea": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "abdominal_pain": {
+        "nature": [
+            "stinging",
+            "dull",
+            "cramping"
+        ],
+        "location": [
+            "abdomen_upper_abdomen",
+            "abdomen_urq",
+            "abdomen_llq",
+            "abdomen_umbilical",
+            "abdomen_right_abdomen",
+            "abdomen_lower_abdomen",
+            "abdomen_epigastric",
+            "abdomen_lrq",
+            "abdomen_ulq",
+            "abdomen_left_abdomen",
+            "abdomen"
+        ],
+        "location_main": [
+            "abdomen"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "vomiting": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "anorexia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "fever": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "bloating": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "hard_stool": {
+        "nature": [
+            "lumpy"
+        ],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "jaundice": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "flatulence": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "lower_back_pain": {
+        "nature": [
+            "radiating"
+        ],
+        "location": [
+            "lower_back_paravertebral",
+            "lower_back_si",
+            "lower_back_lumbar",
+            "lower_back_left_flank",
+            "lower_back_right_flank",
+            "lower_back"
+        ],
+        "location_main": [
+            "lower_back"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "cough": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "mucus_expectoration": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "shortness_of_breath": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "fatigue": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "head_pain": {
+        "nature": [
+            "pressure",
+            "aching",
+            "stabbing",
+            "throbbing",
+            "thunderclap"
+        ],
+        "location": [
+            "head_left_ear",
+            "head_occipital",
+            "head_temporal_left",
+            "head_trapezius",
+            "head",
+            "head_neck",
+            "head_throat",
+            "head_chin",
+            "head_temporal_right",
+            "head_unilateral_right",
+            "head_left_eye",
+            "head_mastoid",
+            "head_nose",
+            "head_right_eye",
+            "head_unilateral_left",
+            "head_jaw",
+            "head_forehead",
+            "head_top",
+            "head_nostrils",
+            "head_right_ear",
+            "head_bilateral_side",
+            "head_mouth",
+            "head_cheek",
+            "head_cervical"
+        ],
+        "location_main": [
+            "head"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "sore_throat": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "nasal_congestion": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "cyanosis": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "chest_pain": {
+        "nature": [
+            "stinging",
+            "cramping"
+        ],
+        "location": [
+            "chest_upper_left_chest",
+            "chest_right_clavicle",
+            "chest_ribs_left",
+            "chest_shoulderblade_right",
+            "chest_upper_flank_right",
+            "chest_upper_flank_left",
+            "chest_upper_spine",
+            "chest_sternum",
+            "chest_lower_left_chest",
+            "chest_lower_right_chest",
+            "chest_middle_spine",
+            "chest_upper_right_chest",
+            "chest_ribs_right",
+            "chest_left_clavicle",
+            "chest_shoulderblade_left",
+            "chest",
+            "chest_middle_upper_back"
+        ],
+        "location_main": [
+            "chest"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "headache": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "photophobia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "phonophobia": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "aura": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "limb_weakness": {
+        "nature": [
+            "contraleteral_proximal_weakness",
+            "hemiparesis",
+            "paraparesis"
+        ],
+        "location": [
+            "right_arm_backhand",
+            "right_arm_upper_arm",
+            "right_arm_dig3",
+            "left_arm_backhand",
+            "lower_extremities_unilateral_right_leg",
+            "left_arm_upper_arm",
+            "right_arm_dig4",
+            "right_arm",
+            "lower_extremities_sole",
+            "lower_extremities_forefoot",
+            "lower_extremities_lower_leg_right",
+            "lower_extremities_foot",
+            "lower_extremities_adductor",
+            "lower_extremities",
+            "left_arm_palm",
+            "lower_extremities_hamstrings",
+            "left_arm_hand",
+            "left_arm_thumb",
+            "left_arm_dig3",
+            "lower_extremities_quadriceps",
+            "left_arm_wrist",
+            "right_arm_hand",
+            "left_arm_epicondyle",
+            "left_arm_dig2",
+            "lower_extremities_ankle",
+            "lower_extremities_popliteal",
+            "right_arm_epicondyle",
+            "right_arm_dig2",
+            "lower_extremities_heel",
+            "right_arm_dig5",
+            "lower_extremities_dig5",
+            "lower_extremities_unilateral_left_leg",
+            "left_arm",
+            "lower_extremities_calve",
+            "lower_extremities_dig1",
+            "lower_extremities_knee",
+            "left_arm_dig4",
+            "left_arm_lower_arm",
+            "right_arm_thumb",
+            "lower_extremities_upper_leg_right",
+            "right_arm_wrist",
+            "lower_extremities_abductor",
+            "left_arm_dig5",
+            "lower_extremities_dig2",
+            "lower_extremities_bilateral_legs",
+            "lower_extremities_dig3",
+            "lower_extremities_upper_leg_left",
+            "right_arm_lower_arm",
+            "lower_extremities_lower_leg_left",
+            "right_arm_palm",
+            "lower_extremities_dig4"
+        ],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "double_vision": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "head_stiffness": {
+        "nature": [],
+        "location": [
+            "head_left_ear",
+            "head_occipital",
+            "head_temporal_left",
+            "head_trapezius",
+            "head",
+            "head_neck",
+            "head_throat",
+            "head_chin",
+            "head_temporal_right",
+            "head_unilateral_right",
+            "head_left_eye",
+            "head_mastoid",
+            "head_nose",
+            "head_right_eye",
+            "head_unilateral_left",
+            "head_jaw",
+            "head_forehead",
+            "head_top",
+            "head_nostrils",
+            "head_right_ear",
+            "head_bilateral_side",
+            "head_mouth",
+            "head_cheek",
+            "head_cervical"
+        ],
+        "location_main": [
+            "head"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "loss_of_consciousness": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "transient_focal_symptoms": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "lower_extremities_pain": {
+        "nature": [
+            "radiating"
+        ],
+        "location": [
+            "lower_extremities_unilateral_right_leg",
+            "lower_extremities_sole",
+            "lower_extremities_forefoot",
+            "lower_extremities_lower_leg_right",
+            "lower_extremities_foot",
+            "lower_extremities_adductor",
+            "lower_extremities",
+            "lower_extremities_hamstrings",
+            "lower_extremities_quadriceps",
+            "lower_extremities_ankle",
+            "lower_extremities_popliteal",
+            "lower_extremities_heel",
+            "lower_extremities_dig5",
+            "lower_extremities_unilateral_left_leg",
+            "lower_extremities_calve",
+            "lower_extremities_dig1",
+            "lower_extremities_knee",
+            "lower_extremities_upper_leg_right",
+            "lower_extremities_abductor",
+            "lower_extremities_dig2",
+            "lower_extremities_bilateral_legs",
+            "lower_extremities_dig3",
+            "lower_extremities_upper_leg_left",
+            "lower_extremities_lower_leg_left",
+            "lower_extremities_dig4"
+        ],
+        "location_main": [
+            "lower_extremities"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "sensibility_problems": {
+        "nature": [
+            "numbness",
+            "tingling",
+            "radiating"
+        ],
+        "location": [
+            "hip_glute_left",
+            "hip_glute_right",
+            "lower_extremities_unilateral_right_leg",
+            "lower_extremities_sole",
+            "lower_extremities_forefoot",
+            "lower_extremities_lower_leg_right",
+            "lower_extremities_foot",
+            "lower_extremities_adductor",
+            "lower_extremities",
+            "lower_extremities_hamstrings",
+            "hip_right_inguinal_groin",
+            "lower_extremities_quadriceps",
+            "hip_left_inguinal_groin",
+            "lower_extremities_ankle",
+            "lower_extremities_popliteal",
+            "hip_pubic_area",
+            "lower_extremities_heel",
+            "lower_extremities_dig5",
+            "lower_extremities_unilateral_left_leg",
+            "lower_extremities_calve",
+            "lower_extremities_dig1",
+            "lower_extremities_knee",
+            "hip",
+            "lower_extremities_upper_leg_right",
+            "hip_left_hipbone",
+            "hip_coccyx",
+            "lower_extremities_abductor",
+            "lower_extremities_dig2",
+            "lower_extremities_bilateral_legs",
+            "hip_peri-anal",
+            "lower_extremities_dig3",
+            "lower_extremities_upper_leg_left",
+            "hip_inner_thighs",
+            "lower_extremities_lower_leg_left",
+            "hip_right_hipbone",
+            "lower_extremities_dig4"
+        ],
+        "location_main": [
+            "hip",
+            "lower_extremities"
+        ],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "pain_relief": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "intermittent_claudication": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    },
+    "incontinence": {
+        "nature": [],
+        "location": [],
+        "location_main": [],
+        "vas": [
+            "moderate",
+            "severe",
+            "mild"
+        ],
+        "excitation": [
+            "worsening_after_meals",
+            "walking",
+            "car_over_bumps",
+            "walking_bending_forward",
+            "sitting_bending_forward",
+            "standing"
+        ],
+        "frequency": [
+            "regular",
+            "rare",
+            "often"
+        ]
+    }
+}

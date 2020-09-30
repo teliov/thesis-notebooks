@@ -1,0 +1,56 @@
+{
+    "nature": [
+        "lumpy",
+        "dull",
+        "cramping",
+        "pressure",
+        "radiating",
+        "aching",
+        "hemiparesis",
+        "paraparesis",
+        "contraleteral_proximal_weakness",
+        "numbness",
+        "tingling",
+        "stabbing",
+        "stinging",
+        "throbbing",
+        "thunderclap"
+    ],
+    "location": [
+        "lower_back_paravertebral",
+        "abdomen_upper_abdomen",
+        "abdomen_umbilical",
+        "abdomen_lower_abdomen",
+        "lower_extremities_unilateral_right_leg",
+        "head_occipital",
+        "right_arm",
+        "head_neck",
+        "abdomen_llq",
+        "lower_extremities",
+        "head_unilateral_right",
+        "abdomen_right_abdomen",
+        "lower_extremities_unilateral_left_leg",
+        "head_unilateral_left",
+        "left_arm",
+        "lower_back_lumbar",
+        "abdomen_epigastric",
+        "abdomen_left_abdomen",
+        "lower_back_si",
+        "head_bilateral_side",
+        "lower_extremities_bilateral_legs",
+        "hip_inner_thighs"
+    ],
+    "vas": [
+        "moderate",
+        "severe",
+        "mild"
+    ],
+    "exciation": [
+        "worsening_after_meals",
+        "walking",
+        "standing",
+        "walking_bending_forward",
+        "sitting_bending_forward",
+        "car_over_bumps"
+    ]
+}
